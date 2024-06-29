@@ -5,29 +5,6 @@ import { z } from "zod";
 
 
 
-// The data the post contains ig
-const postProps = z.object({
-  id: z.string(),
-  attachments: z.array(z.string()),
-  isDeleted: z.boolean(),
-  post: z.string(),
-  pinned: z.boolean(),
-  post_id: z.string(),
-  post_origin: z.string(),
-  time: z.object({
-    mo: z.number(),
-    d: z.number(),
-    y: z.number(),
-    h: z.number(),
-    mi: z.number(),
-    s: z.number(),
-    e: z.number(),
-  }),
-  type: z.number(),
-  user: z.string(),
-})
-
-
 // Replaces their text counterpart with the image counterpart
 type EmojiMap = { [key: string]: string }; // Interface for emoji key-value pairs
 
@@ -91,7 +68,7 @@ const emojiData: EmojiMap = {
 };
 
 const EmojiImage = (text: string): string => {
-  const emojiRegex = /:([^:]+?):/g;
+  const emojiRegex = /:\b(.+?)\b:/g;
 
   return text.replace(emojiRegex, (match, emojiKey) => {
     const lowercaseEmojiKey = emojiKey.toLowerCase(); // Convert captured key to lowercase
@@ -107,38 +84,63 @@ const EmojiImage = (text: string): string => {
   });
 };
 
+const extractInfo = (text: string): { name: string; number: string } | null => {
+  const match = text.match(/<:(\w+):(\d+)>/);
+  return match ? { name: match[1], number: match[2] } : null;
+};
+
+const DiscEmojiSupport = (text: string): string => {
+  const regex = /<:([^\n:>])*?:([0-9])*?>/gi;
+
+  return text.replace(regex, function() {
+    const info = extractInfo(text);
+    const url = `https://cdn.discordapp.com/emojis/${info.number}.webp?size=32&quality=lossless`;
+
+
+    return `<img src="${url}" alt=discord emoji id="${info.name}" width="15"/>`;
+  });
+};
+
+
+
+
 // Revises post
 function revisePost(text: any) {
-  return EmojiImage(text);
+  var revisedString = DiscEmojiSupport(text)
+  revisedString = EmojiImage(revisedString)
+  return revisedString;
 }
 
-// replace
+// Handling attachents
+
+
 // S U P P O S E D to render the post using the data from the postProps
-export function PostComponent({...postProps}) {
+export function PostComponent ({...postProps}) {
   const {
-    id,
+//    id,
     attachments,
-    isDeleted,
+//    isDeleted,
     post,
-    pinned,
-    post_id,
-    post_origin,
+//    pinned,
+//    post_id,
+//    post_origin,
     time,
-    type,
+//    type,
     user
   } = postProps;
 
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const date = new Date(time.y, time.mo - 1, time.d);
-  const dayOfWeek = daysOfWeek[date.getDay()];
-  const month = months[time.mo]
-  if (time.h > 11) {
-    var period = 'PM'
-  } else {
-    var period = 'AM'
-  }
-
+  const realDate = new Date(time.e * 1000);
+  const formattedDate = realDate.toLocaleString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZoneName: 'short' // Include time zone abbreviation
+  });
+  
 
   return (
     <div className="container">
@@ -147,34 +149,33 @@ export function PostComponent({...postProps}) {
         <p className="post-username-text"><strong>{user}</strong></p>
       </div>
       <div className="post-content">
-        <div className="timestamp"><i>{dayOfWeek}, {month} {time.d}, {time.y} at {time.h}:{time.mi}:{time.s} {period}</i></div>
-        <div className="postmessage" dangerouslySetInnerHTML={{ __html: revisePost(post) }} />
+        <div className="timestamp"><i>{formattedDate}</i></div>
+        <div className="postmessage" dangerouslySetInnerHTML={{ __html: revisePost(post) }}/>
           </div>
       </div>
   );
 }
 
 
+
+
 // Recieves posts from the server and passes the data into the <PostComponent />
+
 const ws = new WebSocket('wss://server.meower.org');
 
 const MyComponent = () => {
-  const [posts, setPosts] = useState([]); // State to hold posts
-  
-  
-  // useEffect for handling websocket messages
+  const [posts, setPosts] = useState<string[]>([]);
+
   useEffect(() => {
     ws.onmessage = (message) => {
       console.log('Received message:', message.data);
       const data = JSON.parse(message.data);
 
-      const expectedKey = "_id";
-
       // Access data within the "val" property if it exists
-      if (expectedKey in data.val) {
+      if ("_id" in data.val) {
         setPosts((prevPosts) => [data, ...prevPosts]);
-      } else {
-        console.warn(`Received data missing expected key: ${expectedKey}`);
+      } else if ("update_post" in data.val) {
+        console.log(data)
       }
     };
 
@@ -184,9 +185,11 @@ const MyComponent = () => {
     };
   }, []);
 
+
   return (
     <div>
             {posts.map((post) => (
+      
      <PostComponent
           id="someid"
           key={post.val?._id || 'unknown'} // Use optional chaining for _id

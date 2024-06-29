@@ -1,19 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
 }
 
 body {
@@ -63,13 +51,14 @@ body {
   width: 600px;
   max-height: 350px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
+  transform: scale()
 }
 
 .timestamp {
   display: flex;
   font-size: 0.6rem; /* Adjust font size as needed */
   color: #999; /* Adjust color as needed */
-  margin-bottom: 5px; /* Add some space between timestamp and line */
+  margin-bottom: 0.5em; /* Add some space between timestamp and line */
 }
 
 .container:hover {
@@ -104,14 +93,12 @@ body {
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+.container:hover {
+  filter: drop-shadow(0 0 .25em #6c777a67);
 }
 
-@keyframes logo-spin {
+.container:hover {
   from {
     transform: rotate(0deg);
   }
