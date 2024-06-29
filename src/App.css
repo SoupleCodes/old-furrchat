@@ -19,7 +19,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
+      to top,
       transparent,
       rgb(var(--background-end-rgb))
     )
@@ -37,7 +37,7 @@ body {
   padding-top: 10px;
   font-size: 0.8rem;
   width: 480px;
-  max-height: 80px;
+  max-height: 250px;
   overflow-y: auto;
   text-align: left;
 }
@@ -45,9 +45,9 @@ body {
 .post-username-text {
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
-  max-width: 100px; /* Adjust width as needed */
+  max-width: 80px; /* Adjust width as needed */
   word-wrap: break-word; /* Allow breaking words */
   white-space: normal; /* Allow line breaks for spaces and hyphens */
 }
@@ -58,9 +58,10 @@ body {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   padding:5px;
+  padding-bottom: 35px;
   font-family: Verdana;
   width: 600px;
-  height: 130px;
+  max-height: 350px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
 }
 
@@ -72,7 +73,6 @@ body {
 }
 
 .container:hover {
-  transition: all 0.2s ease-in-out;
   background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
  }
 

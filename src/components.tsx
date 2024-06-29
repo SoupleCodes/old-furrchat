@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import { z } from "zod";
 
+
+
+
 // The data the post contains ig
 const postProps = z.object({
   id: z.string(),
@@ -25,13 +28,91 @@ const postProps = z.object({
 })
 
 
-// Markdown
-function markDownIt(string: string) {
-  var markdown = require("markdown").markdown;
-  return markdown.toHTML(string);
+// Replaces their text counterpart with the image counterpart
+type EmojiMap = { [key: string]: string }; // Interface for emoji key-value pairs
+
+const emojiData: EmojiMap = {
+  "lick": "./src/assets/smilies/a_puh.gif",
+  "ban": "./src/assets/smilies/ban.gif",
+  "bday": "./src/assets/smilies/bdaybiggrin.gif",
+  "beer": "./src/assets/smilies/bier.gif",
+  "chubby": "./src/assets/smilies/chubby.gif",
+  "clown": "./src/assets/smilies/clown.gif",
+  "confused": "./src/assets/smilies/confused.gif",
+  "cool": "./src/assets/smilies/coool.gif",
+  "devilwhip": "./src/assets/smilies/devil_whip.gif",
+  "devil": "./src/assets/smilies/devil.gif",
+  "spain": "./src/assets/smilies/es.gif",
+  "finland": "./src/assets/smilies/fi.gif",
+  "france": "./src/assets/smilies/fr.gif",
+  "frown": "./src/assets/smilies/frown.gif",
+  "frusty": "./src/assets/smilies/frusty.gif",
+  "fyou": "./src/assets/smilies/fyou.gif",
+  "hooligan": "./src/assets/smilies/got-hooligan.gif",
+  "headshake_fast": "./src/assets/smilies/headshakesmile-fast.gif",
+  "hypocrite": "./src/assets/smilies/hypocrite2.gif",
+  "king": "./src/assets/smilies/koning.gif",
+  "southkorea": "./src/assets/smilies/kr.png",
+  "drool": "./src/assets/smilies/kwijl.gif",
+  "list": "./src/assets/smilies/lijstje.gif",
+  "loveit": "./src/assets/smilies/loveit.gif",
+  "lurk": "./src/assets/smilies/lurk.gif",
+  "marry": "./src/assets/smilies/marrysmile.gif",
+  "noo": "./src/assets/smilies/nooo.gif",
+  "nothumbs": "./src/assets/smilies/nosthumbs.gif",
+  "offtopic": "./src/assets/smilies/offtopic.gif",
+  "service": "./src/assets/smilies/pimatyourservice.gif",
+  "poland": "./src/assets/smilies/pl.png",
+  "plzdie": "./src/assets/smilies/plzdie.gif",
+  "puh": "./src/assets/smilies/puh.gif",
+  "puh2": "./src/assets/smilies/puh2.gif",
+  "puhbye": "./src/assets/smilies/puhbye.gif",
+  "puke": "./src/assets/smilies/pukey.gif",
+  "cow": "./src/assets/smilies/rc5.gif",
+  "redcard": "./src/assets/smilies/redcard.gif",
+  "bored": "./src/assets/smilies/saai.gif",
+  "shiny": "./src/assets/smilies/shiny.gif",
+  "sleeping": "./src/assets/smilies/slapen.gif",
+  "zzz": "./src/assets/smilies/sleepey.gif",
+  "sleephappy": "./src/assets/smilies/sleephappy.gif",
+  "smile": "./src/assets/smilies/smile.gif",
+  "snap": "./src/assets/smilies/smiliecam.gif",
+  "steam": "./src/assets/smilies/steam.gif",
+  "toilet_puke": "./src/assets/smilies/toilet-puke.gif",
+  "wink": "./src/assets/smilies/wink.gif",
+  "winkthumbs": "./src/assets/smilies/winkthumbs.gif",
+  "worship": "./src/assets/smilies/worshippy.gif",
+  "yawn": "./src/assets/smilies/yawnee.gif",
+  "yes": "./src/assets/smilies/yes.gif",
+  "yum": "./src/assets/smilies/yummie.gif",
+  "zoom": "./src/assets/smilies/zoefzoef.gif",
+  "mc": "./src/assets/smilies/minecraft.png",
+
+};
+
+const EmojiImage = (text: string): string => {
+  const emojiRegex = /:([^:]+?):/g;
+
+  return text.replace(emojiRegex, (match, emojiKey) => {
+    const lowercaseEmojiKey = emojiKey.toLowerCase(); // Convert captured key to lowercase
+
+    if (emojiData.hasOwnProperty(lowercaseEmojiKey)) {
+      const emojiPath = emojiData[lowercaseEmojiKey];
+      return `<img src="${emojiPath}" alt="${emojiKey}" id="emoji"/>`;
+
+    } else {
+      return match;
+
+    }
+  });
+};
+
+// Revises post
+function revisePost(text: any) {
+  return EmojiImage(text);
 }
 
-
+// replace
 // S U P P O S E D to render the post using the data from the postProps
 export function PostComponent({...postProps}) {
   const {
@@ -48,9 +129,16 @@ export function PostComponent({...postProps}) {
   } = postProps;
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const date = new Date(time.y, time.mo - 1, time.d);
   const dayOfWeek = daysOfWeek[date.getDay()];
+  const month = months[time.mo]
+  if (time.h > 11) {
+    var period = 'PM'
+  } else {
+    var period = 'AM'
+  }
+
 
   return (
     <div className="container">
@@ -59,10 +147,10 @@ export function PostComponent({...postProps}) {
         <p className="post-username-text"><strong>{user}</strong></p>
       </div>
       <div className="post-content">
-        <div className="timestamp"><i>{dayOfWeek}, {time.mo} {time.d}, {time.y} at {time.h}:{time.mi}:{time.s} PM</i></div>
-        <div className="postmessage">{post}</div>
+        <div className="timestamp"><i>{dayOfWeek}, {month} {time.d}, {time.y} at {time.h}:{time.mi}:{time.s} {period}</i></div>
+        <div className="postmessage" dangerouslySetInnerHTML={{ __html: revisePost(post) }} />
+          </div>
       </div>
-    </div>
   );
 }
 
@@ -73,6 +161,7 @@ const ws = new WebSocket('wss://server.meower.org');
 const MyComponent = () => {
   const [posts, setPosts] = useState([]); // State to hold posts
   
+  
   // useEffect for handling websocket messages
   useEffect(() => {
     ws.onmessage = (message) => {
@@ -82,9 +171,8 @@ const MyComponent = () => {
       const expectedKey = "_id";
 
       // Access data within the "val" property if it exists
-      const newPosts = data;
       if (expectedKey in data.val) {
-        setPosts((prevPosts) => [...prevPosts, data]);
+        setPosts((prevPosts) => [data, ...prevPosts]);
       } else {
         console.warn(`Received data missing expected key: ${expectedKey}`);
       }
@@ -141,27 +229,3 @@ const MyComponent = () => {
 export default MyComponent;
 
 
-
-
-
-/*const Post = ({ id, attachments, isDeleted, post, pinned, post_id, post_origin, time, type, user }) => {
-  const markdown = require("markdown").markdown;
-
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const date = new Date(time.y, time.mo - 1, time.d); // Note: Months are 0-indexed in JavaScript Date
-  const dayOfWeek = daysOfWeek[date.getDay()];
-
-  return (
-    <div className="container">
-      <div className="user">
-        <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="72" height="72" style={{ padding: 5 }} />
-        <p className="post-username-text"><strong>{user}</strong></p>
-      </div>
-      <div className="post-content">
-        <div className="timestamp"><i>{dayOfWeek}, {time.mo} {time.d}, {time.y}  at {time.h}:{time.mi}:{time.s} PM</i></div>
-        <div className="postmessage"> {markdown.toHTML(post)} </div>
-      </div>
-    </div>
-  )
-
-};*/
