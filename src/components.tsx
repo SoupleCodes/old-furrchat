@@ -1,69 +1,67 @@
 // Import necessary stuff
 import { useState, useEffect } from 'react';
-
-
-
+import ReactMarkdown from 'react-markdown';
 
 
 // Replaces their text counterpart with the image counterpart
 type EmojiMap = { [key: string]: string }; // Interface for emoji key-value pairs
 
 const emojiData: EmojiMap = {
-  "lick": "./src/assets/smilies/a_puh.gif",
-  "ban": "./src/assets/smilies/ban.gif",
-  "bday": "./src/assets/smilies/bdaybiggrin.gif",
-  "beer": "./src/assets/smilies/bier.gif",
-  "chubby": "./src/assets/smilies/chubby.gif",
-  "clown": "./src/assets/smilies/clown.gif",
-  "confused": "./src/assets/smilies/confused.gif",
-  "cool": "./src/assets/smilies/coool.gif",
-  "devilwhip": "./src/assets/smilies/devil_whip.gif",
-  "devil": "./src/assets/smilies/devil.gif",
-  "spain": "./src/assets/smilies/es.gif",
-  "finland": "./src/assets/smilies/fi.gif",
-  "france": "./src/assets/smilies/fr.gif",
-  "frown": "./src/assets/smilies/frown.gif",
-  "frusty": "./src/assets/smilies/frusty.gif",
-  "fyou": "./src/assets/smilies/fyou.gif",
-  "hooligan": "./src/assets/smilies/got-hooligan.gif",
-  "headshake_fast": "./src/assets/smilies/headshakesmile-fast.gif",
-  "hypocrite": "./src/assets/smilies/hypocrite2.gif",
-  "king": "./src/assets/smilies/koning.gif",
-  "southkorea": "./src/assets/smilies/kr.png",
-  "drool": "./src/assets/smilies/kwijl.gif",
-  "list": "./src/assets/smilies/lijstje.gif",
-  "loveit": "./src/assets/smilies/loveit.gif",
-  "lurk": "./src/assets/smilies/lurk.gif",
-  "marry": "./src/assets/smilies/marrysmile.gif",
-  "noo": "./src/assets/smilies/nooo.gif",
-  "nothumbs": "./src/assets/smilies/nosthumbs.gif",
-  "offtopic": "./src/assets/smilies/offtopic.gif",
-  "service": "./src/assets/smilies/pimatyourservice.gif",
-  "poland": "./src/assets/smilies/pl.png",
-  "plzdie": "./src/assets/smilies/plzdie.gif",
-  "puh": "./src/assets/smilies/puh.gif",
-  "puh2": "./src/assets/smilies/puh2.gif",
-  "puhbye": "./src/assets/smilies/puhbye.gif",
-  "puke": "./src/assets/smilies/pukey.gif",
-  "cow": "./src/assets/smilies/rc5.gif",
-  "redcard": "./src/assets/smilies/redcard.gif",
-  "bored": "./src/assets/smilies/saai.gif",
-  "shiny": "./src/assets/smilies/shiny.gif",
-  "sleeping": "./src/assets/smilies/slapen.gif",
-  "zzz": "./src/assets/smilies/sleepey.gif",
-  "sleephappy": "./src/assets/smilies/sleephappy.gif",
-  "smile": "./src/assets/smilies/smile.gif",
-  "snap": "./src/assets/smilies/smiliecam.gif",
-  "steam": "./src/assets/smilies/steam.gif",
-  "toilet_puke": "./src/assets/smilies/toilet-puke.gif",
-  "wink": "./src/assets/smilies/wink.gif",
-  "winkthumbs": "./src/assets/smilies/winkthumbs.gif",
-  "worship": "./src/assets/smilies/worshippy.gif",
-  "yawn": "./src/assets/smilies/yawnee.gif",
-  "yes": "./src/assets/smilies/yes.gif",
-  "yum": "./src/assets/smilies/yummie.gif",
-  "zoom": "./src/assets/smilies/zoefzoef.gif",
-  "grass": "./src/assets/smilies_minecraft/grass.png",
+  "lick": "./public/assets/smilies/a_puh.gif",
+  "ban": "./public/assets/smilies/ban.gif",
+  "bday": "./public/assets/smilies/bdaybiggrin.gif",
+  "beer": "./public/assets/smilies/bier.gif",
+  "chubby": "./public/assets/smilies/chubby.gif",
+  "clown": "./public/assets/smilies/clown.gif",
+  "confused": "./public/assets/smilies/confused.gif",
+  "cool": "./public/assets/smilies/coool.gif",
+  "devilwhip": "./public/assets/smilies/devil_whip.gif",
+  "devil": "./public/assets/smilies/devil.gif",
+  "spain": "./public/assets/smilies/es.gif",
+  "finland": "./public/assets/smilies/fi.gif",
+  "france": "./public/assets/smilies/fr.gif",
+  "frown": "./public/assets/smilies/frown.gif",
+  "frusty": "./public/assets/smilies/frusty.gif",
+  "fyou": "./public/assets/smilies/fyou.gif",
+  "hooligan": "./public/assets/smilies/got-hooligan.gif",
+  "headshake_fast": "./public/assets/smilies/headshakesmile-fast.gif",
+  "hypocrite": "./public/assets/smilies/hypocrite2.gif",
+  "king": "./public/assets/smilies/koning.gif",
+  "southkorea": "./public/assets/smilies/kr.png",
+  "drool": "./public/assets/smilies/kwijl.gif",
+  "list": "./public/assets/smilies/lijstje.gif",
+  "loveit": "./public/assets/smilies/loveit.gif",
+  "lurk": "./public/assets/smilies/lurk.gif",
+  "marry": "./public/assets/smilies/marrysmile.gif",
+  "noo": "./public/assets/smilies/nooo.gif",
+  "nothumbs": "./public/assets/smilies/nosthumbs.gif",
+  "offtopic": "./public/assets/smilies/offtopic.gif",
+  "service": "./public/assets/smilies/pimatyourservice.gif",
+  "poland": "./public/assets/smilies/pl.png",
+  "plzdie": "./public/assets/smilies/plzdie.gif",
+  "puh": "./public/assets/smilies/puh.gif",
+  "puh2": "./public/assets/smilies/puh2.gif",
+  "puhbye": "./public/assets/smilies/puhbye.gif",
+  "puke": "./public/assets/smilies/pukey.gif",
+  "cow": "./public/assets/smilies/rc5.gif",
+  "redcard": "./public/assets/smilies/redcard.gif",
+  "bored": "./public/assets/smilies/saai.gif",
+  "shiny": "./public/assets/smilies/shiny.gif",
+  "sleeping": "./public/assets/smilies/slapen.gif",
+  "zzz": "./public/assets/smilies/sleepey.gif",
+  "sleephappy": "./public/assets/smilies/sleephappy.gif",
+  "smile": "./public/assets/smilies/smile.gif",
+  "snap": "./public/assets/smilies/smiliecam.gif",
+  "steam": "./public/assets/smilies/steam.gif",
+  "toilet_puke": "./public/assets/smilies/toilet-puke.gif",
+  "wink": "./public/assets/smilies/wink.gif",
+  "winkthumbs": "./public/assets/smilies/winkthumbs.gif",
+  "worship": "./public/assets/smilies/worshippy.gif",
+  "yawn": "./public/assets/smilies/yawnee.gif",
+  "yes": "./public/assets/smilies/yes.gif",
+  "yum": "./public/assets/smilies/yummie.gif",
+  "zoom": "./public/assets/smilies/zoefzoef.gif",
+  "grass": "./public/assets/smilies_minecraft/grass.png",
 };
 
 const EmojiImage = (text: string): string => {
@@ -74,7 +72,7 @@ const EmojiImage = (text: string): string => {
 
     if (emojiData.hasOwnProperty(lowercaseEmojiKey)) {
       const emojiPath = emojiData[lowercaseEmojiKey];
-      return `<img src="${emojiPath}" alt="${emojiKey}" id="emoji"/>`;
+      return `<img src="${emojiPath}" alt="${emojiKey}" id="emoji" width="16"/>`;
 
     } else {
       return match;
@@ -83,38 +81,33 @@ const EmojiImage = (text: string): string => {
   });
 };
 
-const extractInfo = (text: string): { name: string; number: string } | null => {
-  const match = text.match(/<:(\w+):(\d+)>/);
-  return match ? { name: match[1], number: match[2] } : null;
+const extractInfo = (text: string): { name: string; number: string; isAnimated: boolean } | null => {
+  const match = text.match(/<(a)?:(\w+):(\d+)>/);
+  return match ? { name: match[2], number: match[3], isAnimated: !!match[1] } : null;
 };
 
 const DiscEmojiSupport = (text: string): string => {
-  const regex = /<:([^\n:>])*?:([0-9])*?>/gi;
+  const regex = /<(a)?:(\w+):(\d+)>/gi;
 
   return text.replace(regex, function(text) {
     const info = extractInfo(text);
 
     if (info) {
-    const url = `https://cdn.discordapp.com/emojis/${info.number}.webp?size=32&quality=lossless`;
-    return `<img src="${url}" alt=discord emoji id="${info.name}" width=3.3%/>`;
+      const url = `https://cdn.discordapp.com/emojis/${info.number}.${info.isAnimated ? 'gif' : 'png'}?size=32&quality=lossless`;
+      return `<img src="${url}" alt="discord emoji" id=${info.name}" width="2%"/>`;
     } else {
-      return text
+      return text;
     }
-
   });
 };
-
-
 
 
 // Revises post
 function revisePost(text: any) {
   var revisedString = DiscEmojiSupport(text)
-  revisedString = EmojiImage(revisedString)
-  return revisedString;
+    revisedString = EmojiImage(revisedString)
+    return <ReactMarkdown>{revisedString}</ReactMarkdown>
 }
-
-// Handling attachments
 
 
 // Renders the post using the data from the postProps
@@ -148,12 +141,12 @@ export function PostComponent ({...postProps}) {
   return (
     <div className="container">
       <div className="user">
-        <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="72" height="72" style={{ padding: 5 }} />
+        <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
         <p className="post-username-text"><strong>{user}</strong></p>
       </div>
       <div className="post-content">
         <div className="timestamp"><i>{formattedDate}</i></div>
-        <div className="postmessage" dangerouslySetInnerHTML={{ __html: revisePost(post) }}/>
+        <div className="postmessage">{revisePost(post)}</div>
           </div>
       </div>
   );
@@ -162,7 +155,7 @@ export function PostComponent ({...postProps}) {
 
 
 
-// Recieves posts from the server and passes the data into the <PostComponent />
+// Recieves posts from the server and passes the data as props
 
 const ws = new WebSocket('wss://server.meower.org');
 
@@ -174,7 +167,7 @@ const MyComponent = () => {
       console.log('Received message:', message.data);
       const data = JSON.parse(message.data);
 
-      // Access data within the "val" property if it exists
+ 
       if ("_id" in data.val) {
         setPosts((prevPosts) => [data, ...prevPosts]);
       } else if ("update_post" in data.val) {

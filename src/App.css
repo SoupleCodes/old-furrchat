@@ -22,9 +22,8 @@ body {
 
 .postmessage {
   border-top: 1px solid #ccc; /* Adjust line style and color */
-  padding-top: 10px;
-  font-size: 0.8rem;
-  width: 480px;
+  font-size: 0.5rem;
+  width: 700px;
   max-height: 250px;
   overflow-y: auto;
   text-align: left;
@@ -33,9 +32,9 @@ body {
 .post-username-text {
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 10px;
+  font-size: 7px;
   text-align: center;
-  max-width: 80px; /* Adjust width as needed */
+  max-width: 60px; /* Adjust width as needed */
   word-wrap: break-word; /* Allow breaking words */
   white-space: normal; /* Allow line breaks for spaces and hyphens */
 }
@@ -48,15 +47,14 @@ body {
   padding:5px;
   padding-bottom: 35px;
   font-family: Verdana;
-  width: 600px;
+  width: 800px;
   max-height: 350px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
-  display: flex inline-block;
 }
 
 .timestamp {
   display: flex;
-  font-size: 0.6rem; /* Adjust font size as needed */
+  font-size: 0.5rem; /* Adjust font size as needed */
   color: #999; /* Adjust color as needed */
   margin-bottom: 0.5em; /* Add some space between timestamp and line */
 }
