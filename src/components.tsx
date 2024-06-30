@@ -1,6 +1,6 @@
 // Import necessary stuff
 import { useState, useEffect } from 'react';
-import { z } from "zod";
+
 
 
 
@@ -63,8 +63,7 @@ const emojiData: EmojiMap = {
   "yes": "./src/assets/smilies/yes.gif",
   "yum": "./src/assets/smilies/yummie.gif",
   "zoom": "./src/assets/smilies/zoefzoef.gif",
-  "mc": "./src/assets/smilies/minecraft.png",
-
+  "grass": "./src/assets/smilies_minecraft/grass.png",
 };
 
 const EmojiImage = (text: string): string => {
@@ -92,12 +91,16 @@ const extractInfo = (text: string): { name: string; number: string } | null => {
 const DiscEmojiSupport = (text: string): string => {
   const regex = /<:([^\n:>])*?:([0-9])*?>/gi;
 
-  return text.replace(regex, function() {
+  return text.replace(regex, function(text) {
     const info = extractInfo(text);
+
+    if (info) {
     const url = `https://cdn.discordapp.com/emojis/${info.number}.webp?size=32&quality=lossless`;
+    return `<img src="${url}" alt=discord emoji id="${info.name}" width=3.3%/>`;
+    } else {
+      return text
+    }
 
-
-    return `<img src="${url}" alt=discord emoji id="${info.name}" width="15"/>`;
   });
 };
 
@@ -111,14 +114,14 @@ function revisePost(text: any) {
   return revisedString;
 }
 
-// Handling attachents
+// Handling attachments
 
 
-// S U P P O S E D to render the post using the data from the postProps
+// Renders the post using the data from the postProps
 export function PostComponent ({...postProps}) {
   const {
 //    id,
-    attachments,
+//    attachments,
 //    isDeleted,
     post,
 //    pinned,
@@ -164,7 +167,7 @@ export function PostComponent ({...postProps}) {
 const ws = new WebSocket('wss://server.meower.org');
 
 const MyComponent = () => {
-  const [posts, setPosts] = useState<string[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     ws.onmessage = (message) => {
@@ -189,10 +192,8 @@ const MyComponent = () => {
   return (
     <div>
             {posts.map((post) => (
-      
      <PostComponent
-          id="someid"
-          key={post.val?._id || 'unknown'} // Use optional chaining for _id
+          id={post.val?.id || 'unknown'}
           attachments={post.val?.attachments || []} // Assuming no attachments for now
           isDeleted={post.val?.isDeleted || false} // Set to false explicitly
           post={post.val?.p || ''} // Set empty string for missing post

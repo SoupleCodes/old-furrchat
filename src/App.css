@@ -51,7 +51,7 @@ body {
   width: 600px;
   max-height: 350px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
-  transform: scale()
+  display: flex inline-block;
 }
 
 .timestamp {
@@ -60,6 +60,7 @@ body {
   color: #999; /* Adjust color as needed */
   margin-bottom: 0.5em; /* Add some space between timestamp and line */
 }
+
 
 .container:hover {
   background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
