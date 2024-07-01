@@ -1,6 +1,8 @@
 // Import necessary stuff
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
+// import DOMPurify from 'dompurify';
 
 
 // Replaces their text counterpart with the image counterpart
@@ -64,6 +66,25 @@ const emojiData: EmojiMap = {
   "grass": "./public/assets/smilies_minecraft/grass.png",
 };
 
+function getReply(post: string, get?: string): string | any {
+  const regex = /@(\w+)\s+"([^"]+)"\s+\(([\da-f-]+)\)/;
+  const match = post.match(regex);
+
+  if (match) {
+    if (get === 'user') {
+      return match[1];
+    } else if (get === 'replyContent') {
+      return match[2];
+    } else if (get === 'uuid') {
+      return match[3];
+    } else {
+      return match[0];
+    }
+  }
+
+  return null; // Return null if no match is found
+}
+
 const EmojiImage = (text: string): string => {
   const emojiRegex = /:\b(.+?)\b:/g;
 
@@ -72,8 +93,9 @@ const EmojiImage = (text: string): string => {
 
     if (emojiData.hasOwnProperty(lowercaseEmojiKey)) {
       const emojiPath = emojiData[lowercaseEmojiKey];
-      return `<img src="${emojiPath}" alt="${emojiKey}" id="emoji" width="16"/>`;
-
+      return `<img src='${emojiPath}' alt='${emojiKey}' id='emoji' width='16'/>`
+      
+// 
     } else {
       return match;
 
@@ -104,9 +126,13 @@ const DiscEmojiSupport = (text: string): string => {
 
 // Revises post
 function revisePost(text: any) {
-  var revisedString = DiscEmojiSupport(text)
+  let revisedString: any
+  revisedString = DiscEmojiSupport(text)
     revisedString = EmojiImage(revisedString)
-    return <ReactMarkdown>{revisedString}</ReactMarkdown>
+    var wholeReply = getReply(revisedString)
+    revisedString = revisedString.replace(wholeReply, "");
+    return <ReactMarkdown remarkPlugins={[remarkGfm]}>{revisedString}</ReactMarkdown>
+
 }
 
 
@@ -137,8 +163,21 @@ export function PostComponent ({...postProps}) {
     timeZoneName: 'short' // Include time zone abbreviation
   });
   
+  var shouldRender;
+  var postReply = getReply(post)
+  if (postReply === null) {
+    shouldRender = false;
+  } else {
+    shouldRender = true;
+}
 
-  return (
+const username = new String(getReply(post, 'user'));
+const replyContent = new String(getReply(post, 'replyContent'));
+const wholeReply = `@${username}: "${replyContent}"`;
+
+// username.concat(uuid.toString()));
+
+return (
     <div className="container">
       <div className="user">
         <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
@@ -146,7 +185,12 @@ export function PostComponent ({...postProps}) {
       </div>
       <div className="post-content">
         <div className="timestamp"><i>{formattedDate}</i></div>
-        <div className="postmessage">{revisePost(post)}</div>
+        <div className="postmessage">
+        {shouldRender ? (
+          <div className="effect"><i>
+          <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="8" height="8" style={{ paddingRight: '4px', boxShadow: 'inset 0 0 1.6px rgba(0, 0, 0, 0.1)'}} />
+          {wholeReply}</i></div>
+        ) : null} {revisePost(post)}</div>
           </div>
       </div>
   );
@@ -154,13 +198,14 @@ export function PostComponent ({...postProps}) {
 
 
 
-
 // Recieves posts from the server and passes the data as props
+
+
 
 const ws = new WebSocket('wss://server.meower.org');
 
 const MyComponent = () => {
-  const [posts, setPosts] = useState<any[]>([]);
+  var [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     ws.onmessage = (message) => {
@@ -169,16 +214,37 @@ const MyComponent = () => {
 
  
       if ("_id" in data.val) {
-        setPosts((prevPosts) => [data, ...prevPosts]);
+        setPosts((prevPosts) => [data.val, ...prevPosts]);
       } else if ("update_post" in data.val) {
         console.log(data)
+      } else if ("delete" in data.val) {
+
       }
     };
-
+// {"cmd": "direct", "val": {"mode": "delete", "id": "2fde958f-a8f4-47da-bb73-54554238fe68"}}
 
     return () => {
       ws.onmessage = null; 
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://api.meower.org/home');
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data)
+          setPosts(data.autoget || []);
+        } else {
+          console.error('Error fetching posts:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
 
@@ -186,22 +252,22 @@ const MyComponent = () => {
     <div>
             {posts.map((post) => (
      <PostComponent
-          id={post.val?.id || 'unknown'}
-          attachments={post.val?.attachments || []} // Assuming no attachments for now
-          isDeleted={post.val?.isDeleted || false} // Set to false explicitly
-          post={post.val?.p || ''} // Set empty string for missing post
-          pinned={post.val?.pinned || false} // Set to false explicitly
-          post_id={post.val?.post_id || 'unknown'} // Set default post_id
-          post_origin={post.val?.post_origin || 'unknown'} // Set default post_origin
-          time={post.val?.t
+          id={post._id || 'unknown'}
+          attachments={post.attachments || []} // Assuming no attachments for now
+          isDeleted={post.isDeleted || false} // Set to false explicitly
+          post={post.p || ''} // Set empty string for missing post
+          pinned={post.pinned || false} // Set to false explicitly
+          post_id={post.post_id || 'unknown'} // Set default post_id
+          post_origin={post.post_origin || 'unknown'} // Set default post_origin
+          time={post.t
             ? {
-              mo: parseInt(post.val.t.mo),
-              d: parseInt(post.val.t.d),
-              y: post.val.t.y,
-              h: post.val.t.h,
-              mi: parseInt(post.val.t.mi),
-              s: parseInt(post.val.t.s),
-              e: post.val.t.e,
+              mo: parseInt(post.t.mo),
+              d: parseInt(post.t.d),
+              y: post.t.y,
+              h: post.t.h,
+              mi: parseInt(post.t.mi),
+              s: parseInt(post.t.s),
+              e: post.t.e,
             }
             : {
               mo: 0,
@@ -212,8 +278,8 @@ const MyComponent = () => {
               s: 0,
               e: 0,
             }}
-          type={post.val?.type || 0} // Set default type
-          user={post.val?.u || 'unknown'} // Set default user
+          type={post.type || 0} // Set default type
+          user={post.u || 'unknown'} // Set default user
         />
       ))}
 
@@ -224,5 +290,4 @@ const MyComponent = () => {
 
 
 export default MyComponent;
-
 
