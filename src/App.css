@@ -22,7 +22,7 @@ body {
 
 .postmessage {
   border-top: 1px solid #ccc; /* Adjust line style and color */
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   width: 700px;
   max-height: 250px;
   overflow-y: auto;
