@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import next from 'next'
 
 
 // Replaces their text counterpart with the image counterpart
