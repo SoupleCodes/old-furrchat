@@ -8,61 +8,61 @@ import remarkGfm from 'remark-gfm'
 type EmojiMap = { [key: string]: string }; // Interface for emoji key-value pairs
 
 const emojiData: EmojiMap = {
-  "lick": "furrchat/public/assets/smilies/a_puh.gif",
-  "ban": "furrchat/public/assets/smilies/ban.gif",
-  "bday": "furrchat/public/assets/smilies/bdaybiggrin.gif",
-  "beer": "furrchat/public/assets/smilies/bier.gif",
-  "chubby": "furrchat/public/assets/smilies/chubby.gif",
-  "clown": "furrchat/public/assets/smilies/clown.gif",
-  "confused": "furrchat/public/assets/smilies/confused.gif",
-  "cool": "furrchat/public/assets/smilies/coool.gif",
-  "devilwhip": "furrchat/public/assets/smilies/devil_whip.gif",
-  "devil": "furrchat/public/assets/smilies/devil.gif",
-  "spain": "furrchat/public/assets/smilies/es.gif",
-  "finland": "furrchat/public/assets/smilies/fi.gif",
-  "france": "furrchat/public/assets/smilies/fr.gif",
-  "frown": "furrchat/public/assets/smilies/frown.gif",
-  "frusty": "furrchat/public/assets/smilies/frusty.gif",
-  "fyou": "furrchat/public/assets/smilies/fyou.gif",
-  "hooligan": "furrchat/public/assets/smilies/got-hooligan.gif",
-  "headshake_fast": "furrchat/public/assets/smilies/headshakesmile-fast.gif",
-  "hypocrite": "furrchat/public/assets/smilies/hypocrite2.gif",
-  "king": "furrchat/public/assets/smilies/koning.gif",
-  "southkorea": "furrchat/public/assets/smilies/kr.png",
-  "drool": "furrchat/public/assets/smilies/kwijl.gif",
-  "list": "furrchat/public/assets/smilies/lijstje.gif",
-  "loveit": "furrchat/public/assets/smilies/loveit.gif",
-  "lurk": "furrchat/public/assets/smilies/lurk.gif",
-  "marry": "furrchat/public/assets/smilies/marrysmile.gif",
-  "noo": "furrchat/public/assets/smilies/nooo.gif",
-  "nothumbs": "furrchat/public/assets/smilies/nosthumbs.gif",
-  "offtopic": "furrchat/public/assets/smilies/offtopic.gif",
-  "service": "furrchat/public/assets/smilies/pimatyourservice.gif",
-  "poland": "furrchat/public/assets/smilies/pl.png",
-  "plzdie": "furrchat/public/assets/smilies/plzdie.gif",
-  "puh": "furrchat/public/assets/smilies/puh.gif",
-  "puh2": "furrchat/public/assets/smilies/puh2.gif",
-  "puhbye": "furrchat/public/assets/smilies/puhbye.gif",
-  "puke": "furrchat/public/assets/smilies/pukey.gif",
-  "cow": "furrchat/public/assets/smilies/rc5.gif",
-  "redcard": "furrchat/public/assets/smilies/redcard.gif",
-  "bored": "furrchat/public/assets/smilies/saai.gif",
-  "shiny": "furrchat/public/assets/smilies/shiny.gif",
-  "sleeping": "furrchat/public/assets/smilies/slapen.gif",
-  "zzz": "furrchat/public/assets/smilies/sleepey.gif",
-  "sleephappy": "furrchat/public/assets/smilies/sleephappy.gif",
-  "smile": "furrchat/public/assets/smilies/smile.gif",
-  "snap": "furrchat/public/assets/smilies/smiliecam.gif",
-  "steam": "furrchat/public/assets/smilies/steam.gif",
-  "toilet_puke": "furrchat/public/assets/smilies/toilet-puke.gif",
-  "wink": "furrchat/public/assets/smilies/wink.gif",
-  "winkthumbs": "furrchat/public/assets/smilies/winkthumbs.gif",
-  "worship": "furrchat/public/assets/smilies/worshippy.gif",
-  "yawn": "furrchat/public/assets/smilies/yawnee.gif",
-  "yes": "furrchat/public/assets/smilies/yes.gif",
-  "yum": "furrchat/public/assets/smilies/yummie.gif",
-  "zoom": "furrchat/public/assets/smilies/zoefzoef.gif",
-  "grass": "furrchat/public/assets/smilies_minecraft/grass.png",
+  "lick": "/furrchat/assets/smilies/a_puh.gif",
+  "ban": "/furrchat/assets/smilies/ban.gif",
+  "bday": "/furrchat/assets/smilies/bdaybiggrin.gif",
+  "beer": "/furrchat/assets/smilies/bier.gif",
+  "chubby": "/furrchat/assets/smilies/chubby.gif",
+  "clown": "/furrchat/assets/smilies/clown.gif",
+  "confused": "/furrchat/assets/smilies/confused.gif",
+  "cool": "/furrchat/assets/smilies/coool.gif",
+  "devilwhip": "/furrchat/assets/smilies/devil_whip.gif",
+  "devil": "/furrchat/assets/smilies/devil.gif",
+  "spain": "/furrchat/assets/smilies/es.gif",
+  "finland": "/furrchat/assets/smilies/fi.gif",
+  "france": "/furrchat/assets/smilies/fr.gif",
+  "frown": "/furrchat/assets/smilies/frown.gif",
+  "frusty": "/furrchat/assets/smilies/frusty.gif",
+  "fyou": "/furrchat/assets/smilies/fyou.gif",
+  "hooligan": "/furrchat/assets/smilies/got-hooligan.gif",
+  "headshake_fast": "/furrchat/assets/smilies/headshakesmile-fast.gif",
+  "hypocrite": "/furrchat/assets/smilies/hypocrite2.gif",
+  "king": "/furrchat/assets/smilies/koning.gif",
+  "southkorea": "/furrchat/assets/smilies/kr.png",
+  "drool": "/furrchat/assets/smilies/kwijl.gif",
+  "list": "/furrchat/assets/smilies/lijstje.gif",
+  "loveit": "/furrchat/assets/smilies/loveit.gif",
+  "lurk": "/furrchat/assets/smilies/lurk.gif",
+  "marry": "/furrchat/assets/smilies/marrysmile.gif",
+  "noo": "/furrchat/assets/smilies/nooo.gif",
+  "nothumbs": "/furrchat/assets/smilies/nosthumbs.gif",
+  "offtopic": "/furrchat/assets/smilies/offtopic.gif",
+  "service": "/furrchat/assets/smilies/pimatyourservice.gif",
+  "poland": "/furrchat/assets/smilies/pl.png",
+  "plzdie": "/furrchat/assets/smilies/plzdie.gif",
+  "puh": "/furrchat/assets/smilies/puh.gif",
+  "puh2": "/furrchat/assets/smilies/puh2.gif",
+  "puhbye": "/furrchat/assets/smilies/puhbye.gif",
+  "puke": "/furrchat/assets/smilies/pukey.gif",
+  "cow": "/furrchat/assets/smilies/rc5.gif",
+  "redcard": "/furrchat/assets/smilies/redcard.gif",
+  "bored": "/furrchat/assets/smilies/saai.gif",
+  "shiny": "/furrchat/assets/smilies/shiny.gif",
+  "sleeping": "/furrchat/assets/smilies/slapen.gif",
+  "zzz": "/furrchat/assets/smilies/sleepey.gif",
+  "sleephappy": "/furrchat/assets/smilies/sleephappy.gif",
+  "smile": "/furrchat/assets/smilies/smile.gif",
+  "snap": "/furrchat/assets/smilies/smiliecam.gif",
+  "steam": "/furrchat/assets/smilies/steam.gif",
+  "toilet_puke": "/furrchat/assets/smilies/toilet-puke.gif",
+  "wink": "/furrchat/assets/smilies/wink.gif",
+  "winkthumbs": "/furrchat/assets/smilies/winkthumbs.gif",
+  "worship": "/furrchat/assets/smilies/worshippy.gif",
+  "yawn": "/furrchat/assets/smilies/yawnee.gif",
+  "yes": "/furrchat/assets/smilies/yes.gif",
+  "yum": "/furrchat/assets/smilies/yummie.gif",
+  "zoom": "/furrchat/assets/smilies/zoefzoef.gif",
+  "grass": "/furrchat/assets/smilies_minecraft/grass.png",
 };
 
 type User = {
@@ -84,36 +84,61 @@ type User = {
 
 const userData: User[] = [];
 
-function fetchUserData(user: string) {
-  fetch(user)
-    .then((response) => response.json())
-    .then((data) => {
-      userData.push(data._id);
-    })
-    .catch((error) => {
-      console.error('Error fetching user data:', error);
-    });
+function fetchUserData(user: string, find: keyof User) {
+  const foundUser = userData.find(u => u._id === user);
+  if (foundUser) {
+    console.log("User data already exists for:", user);
+    return foundUser[find];
+  } else {
+    // Fetch from API only if user data is not in local database
+    fetch(`https://api.meower.org/users/${user}`)
+      .then((response) => response.json())
+      .then((data: User) => {
+        userData.push(data);
+        return (data as User)[find];
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        return null;
+      });
+  }
 }
 
 
-function getReply(post: string, get?: string): string | any {
-  const regex = /@(\w+)\s+"([^"]+)"\s+\(([\da-f-]+)\)/;
+
+type Reply = {
+  id: string;
+  postContent: string;
+  replyText: string;
+};
+
+const getReply = (post: string): Reply | null => {
+  // Stolen from @mybearworld's meower client lol
+  const regex = /^(@[a-z_0-9-]+(?: "[^\n]*" (?:\(([a-f0-9\-]+)\))| \[([a-f0-9\-]+)\])(?:\n| )?)(.*)$/is;
   const match = post.match(regex);
 
-  if (match) {
-    if (get === 'user') {
-      return match[1];
-    } else if (get === 'replyContent') {
-      return match[2];
-    } else if (get === 'uuid') {
-      return match[3];
-    } else {
-      return match[0];
-    }
+  if (!match) {
+    return null;
   }
+  const postContent = match[4];
+  if (postContent === undefined) {
+    throw new Error("Post content is not defined");
+  }
+  const replyText = match[1];
+  if (replyText === undefined) {
+    throw new Error("Reply text is not defined");
+  }
+  const id = match[2] || match[3];
+  if (id === undefined) {
+    throw new Error("ID is not defined");
+  }
+  return {
+    id,
+    postContent,
+    replyText,
+  };
+};
 
-  return null; // Return null if no match is found
-}
 
 const EmojiImage = (text: string): string => {
   const emojiRegex = /:\b(.+?)\b:/g;
@@ -155,15 +180,12 @@ function revisePost(text: any) {
   let revisedString: any
   revisedString = DiscEmojiSupport(text)
     revisedString = EmojiImage(revisedString)
-    var wholeReply = getReply(revisedString)
+    var wholeReply = getReply(revisedString)?.replyText
     revisedString = revisedString.replace(wholeReply, "");
     return revisedString;
 
 }
 
-function getUserData(searchField: keyof User, searchValue: string, userData: User[]): User | undefined {
-  return userData.find((user) => user[searchField] === searchValue);
-}
 
 // Renders the post using the data from the postProps
 export function PostComponent ({...postProps}) {
@@ -201,22 +223,26 @@ export function PostComponent ({...postProps}) {
     shouldRender = true;
 }
 
-const username = new String(getReply(post, 'user'));
-const replyContent = new String(getReply(post, 'replyContent'));
-const wholeReply = `@${username}: "${replyContent}"`;
-fetchUserData(`https://api.meower.org/users/${user}`)
-var pfp = getUserData(user, 'avatar', userData)?.avatar;
-pfp = `https://uploads.meower.org/icons/${pfp}` || `/public/assets/default.png`;
+const wholeReply = postReply?.replyText;
+var pfp = (fetchUserData(user, 'avatar'))?.toString();
 console.log(pfp)
+if (pfp === "") {
+  pfp = "furrchat/assets/default.png"
+} else {
+  pfp = `https://uploads.meower.org/icons/${pfp}`
+}
 
+// var avatar_color = (fetchUserData(user, 'avatar_color'))?.toString();
+// avatar_color = `#${avatar_color}`
+// console.log(avatar_color)
 const ImageRenderer = ({ src, alt }:any) => {
-  return <img src={src} alt={alt} style={{ width: '12px', height: 'auto' }} />;
+  return <img src={src} alt={alt} style={{ height: '3%', width: 'auto' }} />;
 };
 
 return (
     <div className="container">
       <div className="user">
-        <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
+        <img src={pfp} alt="pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
         <p className="post-username-text"><strong>{user}</strong></p>
       </div>
       <div className="post-content">
@@ -224,7 +250,7 @@ return (
         <div className="postmessage">
         {shouldRender ? (
           <div className="effect"><i>
-          <img src={"https://alliedhealth.ouhsc.edu/Portals/1058/EasyDNNNews/4317/images/nophoto_large-300-350-c-C-95.png"} alt="default pfp" className="post-pfp" width="8" height="8" style={{ paddingRight: '4px', boxShadow: 'inset 0 0 1.6px rgba(0, 0, 0, 0.1)'}} />
+          <img src={"furrchat/assets/default.png"} alt="default pfp" className="post-pfp" width="8" height="8" style={{ paddingRight: '4px', boxShadow: 'inset 0 0 1.6px rgba(0, 0, 0, 0.1)'}} />
           {wholeReply}</i></div>
         ) : null}   <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
@@ -329,7 +355,6 @@ const MyComponent = () => {
     </div>
   )
 }
-
 
 
 export default MyComponent;
