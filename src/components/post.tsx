@@ -1,5 +1,12 @@
 import { emojiData } from './data.tsx'
 
+const handleAttachments = (attachments: any[]): string => {
+  // Loop through attachments and build markdown image elements
+  return attachments.map((attachment) => (
+    `![](https://uploads.meower.org/attachments/${attachment.id}/${attachment.filename})`
+  )).join(' ');
+};
+
 const EmojiImage = (text: string): string => {
     const emojiRegex = /:\b(.+?)\b:/g;
     return text.replace(emojiRegex, (match, emojiKey) => {
@@ -35,4 +42,4 @@ const DiscEmojiSupport = (text: string): string => {
   };
 
 
-  export {EmojiImage, DiscEmojiSupport}
+  export {EmojiImage, DiscEmojiSupport, handleAttachments}

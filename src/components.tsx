@@ -6,6 +6,7 @@ import { defaultPFPS } from './components/data'
 import { EmojiImage } from './components/post'
 import { DiscEmojiSupport } from './components/post'
 import fetchUserData from './components/api'
+import { handleAttachments } from './components/post';
 
 
 // Type definitions for reply
@@ -46,12 +47,18 @@ const getReply = (post: string): Reply | null => {
 
 
 // Revises post such as emojis, replies and images
+function addExtraNewline(text: string): string {
+  // Use regular expression to find double newline sequences
+  return text.replace(/\n/g, "\n\n");
+}
+
 function revisePost(text: any) {
   let revisedString: any
   revisedString = DiscEmojiSupport(text)
     revisedString = EmojiImage(revisedString)
     var wholeReply = getReply(revisedString)?.replyText
     revisedString = revisedString.replace(wholeReply, "");
+    revisedString = addExtraNewline(revisedString)
     return revisedString;
 }
 
@@ -60,7 +67,7 @@ function revisePost(text: any) {
 export function PostComponent ({...postProps}) {
   const {
 //    id,
-//    attachments,
+    attachments,
 //    isDeleted,
     post,
 //    pinned,
@@ -144,10 +151,34 @@ var replyPFP = (fetchUserData(replyUser, 'avatar'))?.toString();
 }
 
 // Renders the post images
-const ImageRenderer = ({ src, alt }:any) => {
-  return <img src={src} alt={alt} style={{ height: '3%', width: 'auto' }} />;
+const ImageRenderer = ({ src, alt }: any) => {
+  const fileExtension = src.split('.').pop()?.toLowerCase(); // Get file extension
+  switch (fileExtension) {
+    case 'wav':
+    case 'mp3':
+      return <audio src={src} controls />;
+    case 'mp4':
+    case 'webm':
+    case 'ogg':
+      return <video src={src} controls style={{ maxWidth: '425px' }} />;
+    case 'pdf':
+      return <embed src={src} type="application/pdf" width="100%" height="600px" />;
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'bmp':
+      return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
+    default:
+      return <p>Unsupported file format: {fileExtension}</p>;
+  }
 };
 
+var attachment = handleAttachments(attachments)
+console.log(attachment)
+realPost = realPost + "\n" + "\n" + attachment
+
+wholeReply = wholeReply?.substring(0, wholeReply?.lastIndexOf(" "));
 
 // Renders the post
 return (
@@ -161,26 +192,28 @@ return (
         <div className="postmessage">
         {shouldRender ? (
           <div className="effect"><i>
-          <img src={replyPFP} alt="default pfp" width="16" height="16" />
-          {wholeReply}</i></div>
+          <img src={replyPFP} alt="default pfp" width="16" height="16" style={{ paddingRight: 5 }}/>
+          {wholeReply} {attachments}</i></div>
         ) : null}   <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
         components={{
           img: ImageRenderer // Tell ReactMarkdown to use ImageRenderer for img tags
         }}
       >
-        {revisePost(post)} 
+        {revisePost(realPost)}
       </ReactMarkdown>
-        
         </div>
+        <div className="social"></div>
           </div>
       </div>
   );
 }
 
+/*Received message: {"cmd": "direct", "val": {"mode": 1, "_id": "097b1719-5d1a-4632-84e0-f062dcb66c68", "type": 1, "post_origin": "home", "u": "EngineerRunner", "t": {"mo": "07", "d": "03", "y": "2024", "h": "18", "mi": "10", "s": "49", "e": 1720030249}, "p": "and", "attachments": [{"id": "54ngzu2rA0zbUj5aj4KxbHFv", "mime": "image/png", "filename": "image.png", "size": 18041, "width": 489, "height": 405}], "post_id": "097b1719-5d1a-4632-84e0-f062dcb66c68", "isDeleted": false, "pinned": false}}
+*/
 
 
-// Fetches from the server and passes the approriate data as props
+// Fetches from the websocket and passes the approriate data as props
 const ws = new WebSocket('wss://server.meower.org');
 
 const MyComponent = () => {
@@ -271,4 +304,3 @@ const MyComponent = () => {
 
 
 export default MyComponent;
-
