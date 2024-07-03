@@ -94,4 +94,4 @@ const emojiData: EmojiMap = {
     '/furrchat/assets/default_pfps/icon_0-ab82a5ad.svg',
   ];
   
-export default defaultPFPS; emojiData;
+export { defaultPFPS, emojiData }

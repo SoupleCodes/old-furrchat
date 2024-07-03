@@ -1,4 +1,4 @@
-import emojiData from './data'
+import { emojiData } from './data.tsx'
 
 const EmojiImage = (text: string): string => {
     const emojiRegex = /:\b(.+?)\b:/g;
@@ -13,6 +13,11 @@ const EmojiImage = (text: string): string => {
     });
   };
 
+  
+const extractInfo = (text: string): { name: string; number: string; isAnimated: boolean } | null => {
+    const match = text.match(/<(a)?:(\w+):(\d+)>/);
+    return match ? { name: match[2], number: match[3], isAnimated: !!match[1] } : null;
+};
 
 const DiscEmojiSupport = (text: string): string => {
     const regex = /<(a)?:(\w+):(\d+)>/gi;
@@ -29,10 +34,5 @@ const DiscEmojiSupport = (text: string): string => {
     });
   };
 
-  const extractInfo = (text: string): { name: string; number: string; isAnimated: boolean } | null => {
-    const match = text.match(/<(a)?:(\w+):(\d+)>/);
-    return match ? { name: match[2], number: match[3], isAnimated: !!match[1] } : null;
-  };
 
-
-  export default EmojiImage; DiscEmojiSupport;
+  export {EmojiImage, DiscEmojiSupport}

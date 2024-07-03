@@ -2,10 +2,10 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import defaultPFPS from './data'
-import EmojiImage from './post'
-import DiscEmojiSupport from './post'
-import fetchUserData from './api'
+import { defaultPFPS } from './components/data'
+import { EmojiImage } from './components/post'
+import { DiscEmojiSupport } from './components/post'
+import fetchUserData from './components/api'
 
 
 // Type definitions for reply
