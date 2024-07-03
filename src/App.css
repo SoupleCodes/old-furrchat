@@ -8,25 +8,6 @@ body {
   background: linear-gradient(to right, rgba(72, 173, 148, 0.8) 0%, rgba(113, 188, 212, 0.8) 75%, rgba(232, 243, 242, 0.904) 100%); /* Add background on hover */
 }
 
-#left-bubbles, #right-bubbles {
-  position: absolute;
-  top: 0;
-  width: 100px; /* Adjust as needed */
-  height: 100%;
-}
-
-#left-bubbles { left: 0; }
-#right-bubbles { right: 0; }
-
-.bubble { /* Style for individual bubbles */
-  background-image: url('/assets/bubble.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 50px; /* Adjust as needed */
-  height: 50px;
-  position: absolute;
-}
-
 
 @layer utilities {
   .text-balance {
@@ -60,6 +41,8 @@ body {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   padding: 4px;
   color: #3c3c3c;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
 
 .effect:hover{

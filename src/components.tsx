@@ -161,7 +161,7 @@ return (
         <div className="postmessage">
         {shouldRender ? (
           <div className="effect"><i>
-          <img src={replyPFP} alt="default pfp" className="post-pfp" width="16" height="16" style={{ paddingRight: '6px', boxShadow: 'inset 0 0 1.6px rgba(0, 0, 0, 0.1)'}} />
+          <img src={replyPFP} alt="default pfp" width="16" height="16" />
           {wholeReply}</i></div>
         ) : null}   <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
