@@ -12,7 +12,7 @@ type User = {
     "permissions": number,
     "pfp_data": number,
     "quote": string,
-    "uuid": string
+    "uuid": string,
   }
 
 const userData: User[] = [];
@@ -20,7 +20,7 @@ const userData: User[] = [];
 function fetchUserData(user: string, find: keyof User) {
     const foundUser = userData.find(u => u._id === user);
     if (foundUser) {
-      console.log("User data already exists for:", user);
+      // Return the user data from local database
       return foundUser[find];
     } else {
         
@@ -38,5 +38,6 @@ function fetchUserData(user: string, find: keyof User) {
         return;
     }
   }
+  
 
   export default fetchUserData;

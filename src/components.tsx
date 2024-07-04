@@ -49,8 +49,11 @@ const getReply = (post: string): Reply | null => {
 // Revises post such as emojis, replies and images
 function addExtraNewline(text: string): string {
   // Use regular expression to find double newline sequences
-  return text.replace(/\n/g, "\n\n");
+  let t = text.replace(/\n\n/g, "\n\n\n");
+  t = t.replace(/\n/g, "\n\n");
+  return t
 }
+
 
 function revisePost(text: any) {
   let revisedString: any
@@ -59,11 +62,18 @@ function revisePost(text: any) {
     var wholeReply = getReply(revisedString)?.replyText
     revisedString = revisedString.replace(wholeReply, "");
     revisedString = addExtraNewline(revisedString)
-    return revisedString;
+  const regex = /\[\(sticker\) (.+?): (.+)\]/; 
+  const match = revisedString.match(regex);
+  if (match) {
+    const name = match[1];
+    const imageLink = match[2]; 
+    revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
+  }
+  return revisedString
 }
 
 
-// Renders the post using the data from the postProps
+// Post props!
 export function PostComponent ({...postProps}) {
   const {
 //    id,
@@ -75,7 +85,8 @@ export function PostComponent ({...postProps}) {
 //    post_origin,
     time,
 //    type,
-    user
+    user,
+    active,
   } = postProps;
 
   
@@ -109,6 +120,7 @@ wholeReply = postReply?.replyText;
 var realPost = revisePost(post)
 var realUser = user
 
+
 // Checks if the user is a discord user or not, if true, the actual user is extracted from the first part of the string
 if (realUser === "Discord") {
   realUser = post.split(':')[0]
@@ -135,7 +147,6 @@ if (!(wholeReply === undefined)) {
 let replyUser: any
 replyUser = wholeReply.split(' ')[0]
 replyUser = replyUser.replace("@", "");
-console.log(replyUser)
 var replyPFP = (fetchUserData(replyUser, 'avatar'))?.toString();
   
   if (replyPFP === "") {
@@ -160,7 +171,7 @@ const ImageRenderer = ({ src, alt }: any) => {
     case 'mp4':
     case 'webm':
     case 'ogg':
-      return <video src={src} controls style={{ maxWidth: '425px' }} />;
+      return <video src={src} controls style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
     case 'pdf':
       return <embed src={src} type="application/pdf" width="100%" height="600px" />;
     case 'jpg':
@@ -170,12 +181,11 @@ const ImageRenderer = ({ src, alt }: any) => {
     case 'bmp':
       return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
     default:
-      return <p>Unsupported file format: {fileExtension}</p>;
+      return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
   }
 };
 
 var attachment = handleAttachments(attachments)
-console.log(attachment)
 realPost = realPost + "\n" + "\n" + attachment
 
 wholeReply = wholeReply?.substring(0, wholeReply?.lastIndexOf(" "));
@@ -184,7 +194,14 @@ wholeReply = wholeReply?.substring(0, wholeReply?.lastIndexOf(" "));
 return (
     <div className="container">
       <div className="user">
+        <span className="post-pfp-container">
         <img src={pfp} alt="pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
+        { active ? (
+        <span className="online-indicator"></span> 
+        ) : (
+        <span className="offline-indicator"></span> 
+        )}
+        </span>
         <p className="post-username-text"><strong>{realUser}</strong></p>
       </div>
       <div className="post-content">
@@ -209,9 +226,6 @@ return (
   );
 }
 
-/*Received message: {"cmd": "direct", "val": {"mode": 1, "_id": "097b1719-5d1a-4632-84e0-f062dcb66c68", "type": 1, "post_origin": "home", "u": "EngineerRunner", "t": {"mo": "07", "d": "03", "y": "2024", "h": "18", "mi": "10", "s": "49", "e": 1720030249}, "p": "and", "attachments": [{"id": "54ngzu2rA0zbUj5aj4KxbHFv", "mime": "image/png", "filename": "image.png", "size": 18041, "width": 489, "height": 405}], "post_id": "097b1719-5d1a-4632-84e0-f062dcb66c68", "isDeleted": false, "pinned": false}}
-*/
-
 
 // Fetches from the websocket and passes the approriate data as props
 const ws = new WebSocket('wss://server.meower.org');
@@ -219,6 +233,8 @@ const ws = new WebSocket('wss://server.meower.org');
 const MyComponent = () => {
   // State for posts
   var [posts, setPosts] = useState<any[]>([]);
+  var [isOnline, setIsOnline] = useState<any[]>([]);
+
 
   // Connects to the server
   useEffect(() => {
@@ -226,14 +242,14 @@ const MyComponent = () => {
       console.log('Received message:', message.data);
       const data = JSON.parse(message.data);
 
-      // Checks if the message is a post or an update
-      if ("_id" in data.val) {
+      if ('_id' in data.val) {
         setPosts((prevPosts) => [data.val, ...prevPosts]);
-      } else if ("update_post" in data.val) {
-        console.log(data)
-      } else if ("delete" in data.val) {
- 
+      } else { 
+        if (data.cmd === "ulist") {
+        let users = data.val.split(';')
+        setIsOnline(users);
       }
+    }
     };
 
     // Clean up the event listener on component unmount
@@ -249,7 +265,6 @@ const MyComponent = () => {
         const response = await fetch('https://api.meower.org/home');
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
           setPosts(data.autoget || []);
         } else {
           console.error('Error fetching posts:', response.statusText);
@@ -265,9 +280,9 @@ const MyComponent = () => {
 
   return (
     <div>
-            {posts.map((post) => (
+            {posts.map((post) => (        
      <PostComponent
-          id={post._id || 'unknown'}
+          id={post._id || Math.random().toString(36).substring(7)}
           attachments={post.attachments || []} // Assuming no attachments for now
           isDeleted={post.isDeleted || false} // Set to false explicitly
           post={post.p || ''} // Set empty string for missing post
@@ -295,7 +310,8 @@ const MyComponent = () => {
             }}
           type={post.type || 0} // Set default type
           user={post.u || 'unknown'} // Set default user
-        />
+          active={isOnline.includes(post.p.includes(':') && post.u === 'Discord' ? post.p.split(':')[0] : post.u)}
+          />
       ))}
 
     </div>
