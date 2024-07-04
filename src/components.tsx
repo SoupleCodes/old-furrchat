@@ -49,7 +49,7 @@ const getReply = (post: string): Reply | null => {
 // Revises post such as emojis, replies and images
 function addExtraNewline(text: string): string {
   // Use regular expression to find double newline sequences
-  let t = text.replace(/\n\n/g, "\n\n\n");
+  let t = text
   t = t.replace(/\n/g, "\n\n");
   return t
 }
@@ -197,9 +197,9 @@ return (
         <span className="post-pfp-container">
         <img src={pfp} alt="pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
         { active ? (
-        <span className="online-indicator"></span> 
+        <span className="online-indicator" title="Online"></span> 
         ) : (
-        <span className="offline-indicator"></span> 
+        <span className="offline-indicator" title="Offline"></span> 
         )}
         </span>
         <p className="post-username-text"><strong>{realUser}</strong></p>
@@ -241,15 +241,13 @@ const MyComponent = () => {
     ws.onmessage = (message) => {
       console.log('Received message:', message.data);
       const data = JSON.parse(message.data);
-
-      if ('_id' in data.val) {
+  console.log((!(data.val._id)) === undefined)
+      if ((!(data.val._id)) === false) {
         setPosts((prevPosts) => [data.val, ...prevPosts]);
-      } else { 
-        if (data.cmd === "ulist") {
-        let users = data.val.split(';')
+      } else if (data.cmd === "ulist") {
+        const users = data.val.split(';');
         setIsOnline(users);
       }
-    }
     };
 
     // Clean up the event listener on component unmount

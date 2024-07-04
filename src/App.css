@@ -1,9 +1,3 @@
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
 html {
   background: linear-gradient(to right, rgba(72, 173, 148, 0.8) 0%, rgba(113, 188, 212, 0.8) 75%, rgba(232, 243, 242, 0.904) 100%);
 }
@@ -38,22 +32,10 @@ html {
 
 img {
   max-width: 425px;
-
-}
-
-.bubbles-1 {
-  float: left;
-  background-image: url('/furrchat/assets/Group 6.png'); 
-  background-repeat: repeat; 
-  background-size: cover;
-}
-
-.bubbles-2 {
-  float: right;
 }
 
 .posts {
-    margin-left: auto;
+  margin-left: auto;
   margin-right: auto;
   display: flex;
   flex-direction: column;
@@ -110,7 +92,8 @@ img {
   box-shadow: 
   5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
   -5px -5px 10px rgba(255, 255, 255, 0.3); /* Top-left shadow (lighter for highlight) */
-
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .post-pfp-container { 
@@ -149,7 +132,7 @@ img {
   left: 0;
   width: 100%;
   height: 50%; /* Adjust gradient height as needed */
-  background: radial-gradient(circle, #00ff00, rgba(0,0,0,0)); /* Bright green gradient */
+  background: radial-gradient(circle, #34ff34, rgba(0,0,0,0)); /* Bright green gradient */
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
@@ -194,10 +177,7 @@ img {
 }
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
