@@ -94,11 +94,28 @@ img {
   -5px -5px 10px rgba(255, 255, 255, 0.3); /* Top-left shadow (lighter for highlight) */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  
 }
 
 .post-pfp-container { 
   position: relative; /* Make the container a positioning context */
   display: inline-block; 
+	perspective: 1000px;
+}
+
+.post-pfp-container:hover {
+  animation: 3s infinite alternate rotate-animation;
+}
+
+@keyframes rotate-animation {
+  from {
+    transform: rotate3d(0, 1, 0, 0deg);
+    scale: 100% 1;
+  }
+
+  to {
+    transform: rotate3d(0, 1, 0, 360deg);
+  }
 }
 
 .online-indicator {
@@ -170,6 +187,12 @@ img {
   margin-left: 10px;
   margin-top: 12px;
   margin-bottom: 12px;
+  --mask: linear-gradient(to bottom, 
+  rgba(0,0,0, 1) 0,   rgba(0,0,0, 1) 80%, 
+  rgba(0,0,0, 0) 95%, rgba(0,0,0, 0) 0
+) 100% 50% / 100% 100% repeat-x;
+-webkit-mask: var(--mask); 
+mask: var(--mask);
 }
 
 .user {

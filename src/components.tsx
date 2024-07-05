@@ -1,12 +1,12 @@
 // Imports necessary stuff
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { defaultPFPS } from './components/data'
-import { EmojiImage } from './components/post'
-import { DiscEmojiSupport } from './components/post'
-import fetchUserData from './components/api'
-import { handleAttachments } from './components/post';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import remarkGfm from 'remark-gfm';
+import { defaultPFPS } from './components/data';
+import { EmojiImage, DiscEmojiSupport, handleAttachments } from './components/post';
+import fetchUserData from './components/api';
 
 
 // Type definitions for reply
@@ -46,7 +46,7 @@ const getReply = (post: string): Reply | null => {
 };
 
 
-// Revises post such as emojis, replies and images
+// Revises post such as adding emojis, replies and images
 function addExtraNewline(text: string): string {
   // Use regular expression to find double newline sequences
   let t = text
@@ -61,14 +61,18 @@ function revisePost(text: any) {
     revisedString = EmojiImage(revisedString)
     var wholeReply = getReply(revisedString)?.replyText
     revisedString = revisedString.replace(wholeReply, "");
-    revisedString = addExtraNewline(revisedString)
-  const regex = /\[\(sticker\) (.+?): (.+)\]/; 
-  const match = revisedString.match(regex);
-  if (match) {
-    const name = match[1];
-    const imageLink = match[2]; 
-    revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
-  }
+    
+    let regex, match
+  
+    regex = /\[\(sticker\) (.+?): (.+)\]/; 
+    match = revisedString.match(regex);
+    if (match) {
+      const name = match[1];
+      const imageLink = match[2]; 
+      revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
+    }
+
+    
   return revisedString
 }
 
@@ -76,12 +80,8 @@ function revisePost(text: any) {
 // Post props!
 export function PostComponent ({...postProps}) {
   const {
-//    id,
     attachments,
-//    isDeleted,
     post,
-//    pinned,
-//    post_id,
 //    post_origin,
     time,
 //    type,
@@ -174,12 +174,6 @@ const ImageRenderer = ({ src, alt }: any) => {
       return <video src={src} controls style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
     case 'pdf':
       return <embed src={src} type="application/pdf" width="100%" height="600px" />;
-    case 'jpg':
-    case 'jpeg':
-    case 'png':
-    case 'gif':
-    case 'bmp':
-      return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
     default:
       return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
   }
@@ -214,7 +208,23 @@ return (
         ) : null}   <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
         components={{
-          img: ImageRenderer // Tell ReactMarkdown to use ImageRenderer for img tags
+          code({node, inline, className, children, ...props}) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={dark}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            )
+          },
+          img: ImageRenderer, // Tell ReactMarkdown to use ImageRenderer for img tags
         }}
       >
         {revisePost(realPost)}
