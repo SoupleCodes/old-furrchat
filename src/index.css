@@ -14,12 +14,11 @@
 }
 
 a {
-  font-weight: 500;
-  color: #50808b;
+  color: #073742;
   text-decoration: inherit;
 }
 a:hover {
-  color: #8fa6d1;
+  color: #1a8863;
   text-decoration: underline;
 }
 

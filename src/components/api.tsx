@@ -18,24 +18,23 @@ type User = {
 const userData: User[] = [];
 
 function fetchUserData(user: string, find: keyof User) {
-    const foundUser = userData.find(u => u._id === user);
+  var foundUser = userData.find(u => u._id === user)
     if (foundUser) {
-      // Return the user data from local database
       return foundUser[find];
     } else {
-        
-      // Fetch from API only if user data is not in local database
+
       fetch(`https://api.meower.org/users/${user}`)
         .then((response) => response.json())
         .then((data: User) => {
           userData.push(data);
-          return (data as User)[find];
+          var foundUser = userData.find(u => u._id === user)!
+          return foundUser[find];
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
           return null;
         });
-        return;
+        return null;
     }
   }
   

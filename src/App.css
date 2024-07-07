@@ -1,6 +1,95 @@
+/* Website */
+
 html {
   background: linear-gradient(to right, rgba(72, 173, 148, 0.8) 0%, rgba(113, 188, 212, 0.8) 75%, rgba(232, 243, 242, 0.904) 100%);
+  display: flex;
+  justify-content: center;
 }
+
+
+/* Homepage */
+
+.app {
+  padding: 5px;
+  padding-bottom: 60px;
+  width: 1230px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
+  box-shadow: 
+  5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
+  -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 20px;
+}
+
+.banner {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) , rgba(96, 156, 140, 0.5));
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5); 
+  margin: auto;
+  margin-top: 18px;
+  width: 97%;
+  height: 120px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  flex-direction: row
+}
+
+
+
+/* Navbar CSS */
+
+.navbar {
+  margin-bottom: 8px;
+  left: 3px;
+  display: inline-block;
+  position: relative;
+  width: 1222px;
+  height: 80px;
+  background-image: url('/furrchat/assets/navbar.png');
+  background-repeat: no-repeat;
+}
+
+.navbar-items {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+	font-weight: bold;
+  font-family: 'Tahoma';
+  padding: 7px 40px;
+  text-shadow: rgb(255, 255, 255) 1px 0 10px;
+}
+
+.navbar input[type=text] {
+  float: right;
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5); 
+  height: 16px;
+}
+
+.login {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+}
+
+button {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
+  box-shadow: 
+  5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
+  -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 7px;
+  outline-width: 3;
+}
+
+textarea {
+  resize: none
+}
+
+/* Scrollbar CSS */
 
 /* width */
 ::-webkit-scrollbar {
@@ -24,6 +113,10 @@ html {
   background: rgb(182, 226, 247); 
 }
 
+
+
+/* Post CSS */
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -31,7 +124,7 @@ html {
 }
 
 img {
-  max-width: 425px;
+  max-width: 600px;
 }
 
 .posts {
@@ -45,7 +138,7 @@ img {
 .postmessage {
   border-top: 1px solid #0000001f;
   font-size: 0.6rem;
-  width: 700px;
+  width: 1080px;
   max-height: 250px;
   overflow-y: auto;
   text-align: left;
@@ -72,7 +165,7 @@ img {
   border-bottom-right-radius: 7px;
 }
 
-.effect:hover{
+.effect:hover {
   background: linear-gradient(to top, rgba(235, 235, 235, 0.582) 0%, rgba(255, 255, 255, 0.733) 100%);
 }
 
@@ -86,7 +179,7 @@ img {
   padding:5px;
   padding-bottom: 35px;
   font-family: Verdana;
-  width: 800px;
+  width: 1180px;
   max-height: 350px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
   box-shadow: 
@@ -94,7 +187,6 @@ img {
   -5px -5px 10px rgba(255, 255, 255, 0.3); /* Top-left shadow (lighter for highlight) */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  
 }
 
 .post-pfp-container { 
@@ -197,10 +289,6 @@ mask: var(--mask);
 
 .user {
   margin:7px;
-}
-
-#root {
-  padding: 2rem;
 }
 
 .logo {

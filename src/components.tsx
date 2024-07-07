@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { defaultPFPS } from './components/data';
 import { EmojiImage, DiscEmojiSupport, handleAttachments } from './components/post';
 import fetchUserData from './components/api';
+import { memo } from "react";
 
 
 // Type definitions for reply
@@ -47,13 +48,6 @@ const getReply = (post: string): Reply | null => {
 
 
 // Revises post such as adding emojis, replies and images
-function addExtraNewline(text: string): string {
-  // Use regular expression to find double newline sequences
-  let t = text
-  t = t.replace(/\n/g, "\n\n");
-  return t
-}
-
 
 function revisePost(text: any) {
   let revisedString: any
@@ -61,6 +55,7 @@ function revisePost(text: any) {
     revisedString = EmojiImage(revisedString)
     var wholeReply = getReply(revisedString)?.replyText
     revisedString = revisedString.replace(wholeReply, "");
+    
     
     let regex, match
   
@@ -73,7 +68,7 @@ function revisePost(text: any) {
     }
 
     
-  return revisedString
+  return revisedString;
 }
 
 
@@ -87,6 +82,7 @@ export function PostComponent ({...postProps}) {
 //    type,
     user,
     active,
+    edited
   } = postProps;
 
   
@@ -179,9 +175,26 @@ const ImageRenderer = ({ src, alt }: any) => {
   }
 };
 
-var attachment = handleAttachments(attachments)
-realPost = realPost + "\n" + "\n" + attachment
+var attachment = (handleAttachments as any)(attachments as any) as any;
+realPost = ((realPost as any) +
+  ("\n" as any) +
+  ("\n" as any) +
+  (attachment as any)) as any;
+let emojiThing
+if (realUser === 'Souple' || realUser === 'ij') {
+  emojiThing = "👑"
+} else if (realUser === 'noodles') {
+  emojiThing = "🧀"
+} else if (realUser === 'kiwi') {
+  emojiThing = "🥝"
+} else if (realUser === 'cat') {
+  emojiThing = "🐱"
+} else {
+  emojiThing = ""
+}
 
+
+// Extracts the whole reply
 wholeReply = wholeReply?.substring(0, wholeReply?.lastIndexOf(" "));
 
 // Renders the post
@@ -196,33 +209,35 @@ return (
         <span className="offline-indicator" title="Offline"></span> 
         )}
         </span>
-        <p className="post-username-text"><strong>{realUser}</strong></p>
+        <p className="post-username-text"><strong>{emojiThing} {realUser}</strong></p>
       </div>
       <div className="post-content">
-        <div className="timestamp"><i>{formattedDate}</i></div>
+        <div className="timestamp"><i>{formattedDate} {edited ? "(edited)" : ""}</i></div>
         <div className="postmessage">
         {shouldRender ? (
           <div className="effect"><i>
           <img src={replyPFP} alt="default pfp" width="16" height="16" style={{ paddingRight: 5 }}/>
-          {wholeReply} {attachments}</i></div>
+          {wholeReply} {attachment}</i></div>
         ) : null}   <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
         components={{
-          code({node, inline, className, children, ...props}) {
-            const match = /language-(\w+)/.exec(className || '')
+          code({ node, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            const inline = !match;
             return !inline && match ? (
               <SyntaxHighlighter
-                children={String(children).replace(/\n$/, '')}
-                style={dark}
+                children={String(children).replace(/\n$/, '')} // @ts-expect-error
+                style={dark} 
                 language={match[1]}
                 PreTag="div"
                 {...props}
+                inline={inline}
               />
             ) : (
               <code className={className} {...props}>
                 {children}
               </code>
-            )
+            );
           },
           img: ImageRenderer, // Tell ReactMarkdown to use ImageRenderer for img tags
         }}
@@ -245,21 +260,41 @@ const MyComponent = () => {
   var [posts, setPosts] = useState<any[]>([]);
   var [isOnline, setIsOnline] = useState<any[]>([]);
 
-
   // Connects to the server
   useEffect(() => {
     ws.onmessage = (message) => {
       console.log('Received message:', message.data);
       const data = JSON.parse(message.data);
-  console.log((!(data.val._id)) === undefined)
+      
       if ((!(data.val._id)) === false) {
         setPosts((prevPosts) => [data.val, ...prevPosts]);
+
       } else if (data.cmd === "ulist") {
         const users = data.val.split(';');
         setIsOnline(users);
-      }
-    };
 
+      } else if (data.cmd === "direct" && data.val.mode === "update_post") {
+        const editedPost = data.val.payload;
+        const postIndex = posts.findIndex((post) => post._id === editedPost._id);
+        if (postIndex !== -1) {
+          const updatedPosts = [...posts];
+          updatedPosts[postIndex] = editedPost;
+      
+          setPosts(updatedPosts);
+        }
+      
+      } else if (data.val.mode === "delete") {
+        const postIndex = posts.findIndex((post) => post._id === data.val.id);
+        console.log(postIndex);
+
+        if (postIndex !== -1) {
+          const updatedPosts = [...posts];
+          updatedPosts.splice(postIndex, 1);
+          console.log(updatedPosts);
+          setPosts(updatedPosts);
+        }
+      }
+    }
     // Clean up the event listener on component unmount
     return () => {
       ws.onmessage = null; 
@@ -273,6 +308,7 @@ const MyComponent = () => {
         const response = await fetch('https://api.meower.org/home');
         if (response.ok) {
           const data = await response.json();
+          console.log('Received message:', data);
           setPosts(data.autoget || []);
         } else {
           console.error('Error fetching posts:', response.statusText);
@@ -290,35 +326,24 @@ const MyComponent = () => {
     <div>
             {posts.map((post) => (        
      <PostComponent
-          id={post._id || Math.random().toString(36).substring(7)}
+          id={post._id || Math.random().toString(36).substring(2, 15)}
           attachments={post.attachments || []} // Assuming no attachments for now
           isDeleted={post.isDeleted || false} // Set to false explicitly
           post={post.p || ''} // Set empty string for missing post
           pinned={post.pinned || false} // Set to false explicitly
-          post_id={post.post_id || 'unknown'} // Set default post_id
-          post_origin={post.post_origin || 'unknown'} // Set default post_origin
+          post_id={post.post_id || null} // Set default post_id
+          post_origin={post.post_origin || null} // Set default post_origin
           time={post.t
             ? {
-              mo: parseInt(post.t.mo),
-              d: parseInt(post.t.d),
-              y: post.t.y,
-              h: post.t.h,
-              mi: parseInt(post.t.mi),
-              s: parseInt(post.t.s),
-              e: post.t.e,
+              e: post.edited_at !== undefined ? post.edited_at : post.t.e,
             }
             : {
-              mo: 0,
-              d: 0,
-              y: 0,
-              h: 0,
-              mi: 0,
-              s: 0,
               e: 0,
             }}
           type={post.type || 0} // Set default type
           user={post.u || 'unknown'} // Set default user
           active={isOnline.includes(post.p.includes(':') && post.u === 'Discord' ? post.p.split(':')[0] : post.u)}
+          edited={post.edited_at !== undefined ? true : false}
           />
       ))}
 
@@ -327,4 +352,4 @@ const MyComponent = () => {
 }
 
 
-export default MyComponent;
+export default memo(MyComponent);
