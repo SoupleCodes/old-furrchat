@@ -15,19 +15,18 @@ const handleAttachments = ((attachments: any[]): string => {
   }
 }) as any;
 
-const EmojiImage = (text: string): string => {
-    const emojiRegex = /:\b(.+?)\b:/g;
-    return text.replace(emojiRegex, (match, emojiKey) => {
-      const lowercaseEmojiKey = emojiKey.toLowerCase(); 
-      if (emojiData.hasOwnProperty(lowercaseEmojiKey)) {
-        const emojiPath = emojiData[lowercaseEmojiKey];
-        return `![${emojiKey}](${emojiPath})`; // Markdown image syntax
-      } else {
-        return match; 
-      }
-    });
-  };
 
+const EmojiImage = (sentence: string): string => {
+  let newSentence = sentence;
+  for (const key in emojiData) {
+
+    if (sentence.includes(key) && !sentence.includes('\\' + key)) { 
+      const value = emojiData[key];
+      newSentence = newSentence.replace(key, `![${key}](${value})`);
+    }
+  }
+  return newSentence;
+};
   
 const extractInfo = (text: string): { name: string; number: string; isAnimated: boolean } | null => {
     const match = text.match(/<(a)?:(\w+):(\d+)>/);
@@ -39,20 +38,82 @@ const DiscEmojiSupport = (text: string): string => {
     return ''; // Or handle the non-string case as you see fit
   }
 
-  const regex = /<(a)?:(\w+):(\d+)>/gi;
+  const regex = /\\?<(a)?:(\w+):(\d+)>/gi; // Match optional backslash
 
   return text.replace(regex, function(match) {
-    const info = extractInfo(match); // Pass the match to extractInfo
-
-    if (info) {
-      const url = `https://cdn.discordapp.com/emojis/${info.number}.${info.isAnimated ? 'gif' : 'png'}?size=16&quality=lossless`;
-      return `![${info.name}](${url})`;
+    // Check if the match starts with a backslash
+    if (match.startsWith('\\')) {
+      return match.substring(1); // Return the emoji as plain text (remove backslash)
     } else {
-      return match; // Return the original match if no info is found
+      const info = extractInfo(match); // Pass the match to extractInfo
+
+      if (info) {
+        const url = `https://cdn.discordapp.com/emojis/${info.number}.${info.isAnimated ? 'gif' : 'png'}?size=16&quality=lossless`;
+        return `![${info.name}](${url})`;
+      } else {
+        return match; // Return the original match if no info is found
+      }
     }
   });
 };
 
 
+type Reply = {
+  id: string;
+  postContent: string;
+  replyText: string;
+};
 
-  export {EmojiImage, DiscEmojiSupport, handleAttachments}
+
+// Extracts reply from post
+const getReply = (post: string): Reply | null => {
+  // Stolen from @mybearworld's meower client lol
+  const regex = /^(@[a-z_0-9-]+(?: "[^\n]*" (?:\(([a-f0-9\-]+)\))| \[([a-f0-9\-]+)\])(?:\n| )?)(.*)$/is;
+  const match = post.match(regex);
+
+  if (!match) {
+    return null;
+  }
+  const postContent = match[4];
+  if (postContent === undefined) {
+    throw new Error("Post content is not defined");
+  }
+  const replyText = match[1];
+  if (replyText === undefined) {
+    throw new Error("Reply text is not defined");
+  }
+  const id = match[2] || match[3];
+  if (id === undefined) {
+    throw new Error("ID is not defined");
+  }
+  return {
+    id,
+    postContent,
+    replyText,
+  };
+};
+
+function revisePost(text: any) {
+  let revisedString: any
+  revisedString = text
+  
+    var wholeReply = getReply(revisedString)?.replyText
+    revisedString = revisedString.replace(wholeReply, "");
+    revisedString = DiscEmojiSupport(revisedString)
+    revisedString = EmojiImage(revisedString)
+    
+    let regex, match
+  
+    regex = /\[\(sticker\) (.+?): (.+)\]/; 
+    match = revisedString.match(regex);
+    if (match) {
+      const name = match[1];
+      const imageLink = match[2]; 
+      revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
+    }
+
+    
+  return revisedString;
+}
+
+  export {EmojiImage, DiscEmojiSupport, handleAttachments, getReply, revisePost}

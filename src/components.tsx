@@ -5,71 +5,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import { defaultPFPS } from './components/data';
-import { EmojiImage, DiscEmojiSupport, handleAttachments } from './components/post';
+import { handleAttachments, getReply, revisePost } from './components/post';
 import fetchUserData from './components/api';
 import { memo } from "react";
-
-
-// Type definitions for reply
-type Reply = {
-  id: string;
-  postContent: string;
-  replyText: string;
-};
-
-
-// Extracts reply from post
-const getReply = (post: string): Reply | null => {
-  // Stolen from @mybearworld's meower client lol
-  const regex = /^(@[a-z_0-9-]+(?: "[^\n]*" (?:\(([a-f0-9\-]+)\))| \[([a-f0-9\-]+)\])(?:\n| )?)(.*)$/is;
-  const match = post.match(regex);
-
-  if (!match) {
-    return null;
-  }
-  const postContent = match[4];
-  if (postContent === undefined) {
-    throw new Error("Post content is not defined");
-  }
-  const replyText = match[1];
-  if (replyText === undefined) {
-    throw new Error("Reply text is not defined");
-  }
-  const id = match[2] || match[3];
-  if (id === undefined) {
-    throw new Error("ID is not defined");
-  }
-  return {
-    id,
-    postContent,
-    replyText,
-  };
-};
-
-
-// Revises post such as adding emojis, replies and images
-
-function revisePost(text: any) {
-  let revisedString: any
-  revisedString = DiscEmojiSupport(text)
-    revisedString = EmojiImage(revisedString)
-    var wholeReply = getReply(revisedString)?.replyText
-    revisedString = revisedString.replace(wholeReply, "");
-    
-    
-    let regex, match
-  
-    regex = /\[\(sticker\) (.+?): (.+)\]/; 
-    match = revisedString.match(regex);
-    if (match) {
-      const name = match[1];
-      const imageLink = match[2]; 
-      revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
-    }
-
-    
-  return revisedString;
-}
 
 
 // Post props!
@@ -126,6 +64,8 @@ if (realUser === "Discord") {
 
 // Extracts the pfp of the user
 var pfp = (fetchUserData(realUser, 'avatar'))?.toString();
+var avatarColor = (fetchUserData(realUser, 'avatar_color'))?.toString();
+avatarColor = `#${avatarColor}`
 
 if (pfp === "") {
   var pfp_data:any = fetchUserData(realUser, 'pfp_data')
@@ -169,7 +109,7 @@ const ImageRenderer = ({ src, alt }: any) => {
     case 'ogg':
       return <video src={src} controls style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
     case 'pdf':
-      return <embed src={src} type="application/pdf" width="100%" height="600px" />;
+      return <embed src={src} type="application/pdf" width="100%" height="800px" />;
     default:
       return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
   }
@@ -202,7 +142,7 @@ return (
     <div className="container">
       <div className="user">
         <span className="post-pfp-container">
-        <img src={pfp} alt="pfp" className="post-pfp" width="48" height="48" style={{ padding: 5 }} />
+        <img src={pfp} alt="pfp" className="post-pfp" width="48" height="48" style={{ padding: 5, boxShadow: `inset 0 0 3px ${avatarColor}`, border: `1.5px solid ${avatarColor}`,   borderRadius: '10%'}} />
         { active ? (
         <span className="online-indicator" title="Online"></span> 
         ) : (

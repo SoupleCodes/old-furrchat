@@ -14,29 +14,30 @@ type User = {
     "quote": string,
     "uuid": string,
   }
-
-const userData: User[] = [];
-
-function fetchUserData(user: string, find: keyof User) {
-  var foundUser = userData.find(u => u._id === user)
-    if (foundUser) {
-      return foundUser[find];
-    } else {
-
-      fetch(`https://api.meower.org/users/${user}`)
-        .then((response) => response.json())
-        .then((data: User) => {
-          userData.push(data);
-          var foundUser = userData.find(u => u._id === user)!
-          return foundUser[find];
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          return null;
-        });
-        return null;
-    }
-  }
   
 
-  export default fetchUserData;
+// Cache for user data
+const userDataCache = new Map();
+
+// Optimized fetchUserData with caching
+function fetchUserData(user: string, find: keyof User) {
+  if (userDataCache.has(user)) {
+    const cachedUser = userDataCache.get(user);
+    return cachedUser[find];
+  } else {
+    return fetch(`https://api.meower.org/users/${user}`)
+      .then((response) => response.json())
+      .then((data: User) => {
+        userDataCache.set(user, data);
+        return data[find];
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        return null;
+      });
+  }
+}
+
+  
+
+export default fetchUserData;
