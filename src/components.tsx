@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { defaultPFPS } from './components/data';
 import { handleAttachments, getReply, revisePost } from './components/post';
 import fetchUserData from './components/api';
-import { memo } from "react";
+import { memo } from 'react';
 
 
 // Post props!
@@ -100,6 +100,7 @@ var replyPFP = (fetchUserData(replyUser, 'avatar'))?.toString();
 // Renders the post images
 const ImageRenderer = ({ src, alt }: any) => {
   const fileExtension = src.split('.').pop()?.toLowerCase(); // Get file extension
+
   switch (fileExtension) {
     case 'wav':
     case 'mp3':
@@ -107,11 +108,21 @@ const ImageRenderer = ({ src, alt }: any) => {
     case 'mp4':
     case 'webm':
     case 'ogg':
-      return <video src={src} controls style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
+    case 'mov':
+      return <video src={src} 
+      controls 
+      style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
     case 'pdf':
-      return <embed src={src} type="application/pdf" width="100%" height="800px" />;
+      return <embed 
+      src={src} 
+      type="application/pdf" 
+      width="100%" 
+      height="800px" />;
     default:
-      return <img src={src} alt={alt} style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
+      return <img 
+      src={src} 
+      alt={alt} 
+      style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
   }
 };
 
@@ -265,7 +276,7 @@ const MyComponent = () => {
   return (
     <div>
             {posts.map((post) => (        
-     <PostComponent
+      <PostComponent
           id={post._id || Math.random().toString(36).substring(2, 15)}
           attachments={post.attachments || []} // Assuming no attachments for now
           isDeleted={post.isDeleted || false} // Set to false explicitly

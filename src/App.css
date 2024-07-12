@@ -123,6 +123,61 @@ textarea {
   }
 }
 
+/* Markdown CSS */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+  box-shadow: 4px .5px 4px rgba(0, 0, 0, 0.5); 
+}
+
+
+
+blockquote {
+  font: 14px/20px italic Times, serif;
+  background-color: #faebbc;
+  border-top: 1px solid #e1cc89;
+  border-bottom: 1px solid #e1cc89;
+  margin: 15px; /* Increased margin for better spacing */
+  padding: 2px 35px; /* Added padding for content comfort */
+  position: relative; /* For positioning the quotation marks */
+  box-shadow:  0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+blockquote::before {
+  content: '“'; /* Opening quotation mark */
+  font-size: 40px;
+  line-height: 0; /* To vertically align it properly */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #887a4c;
+}
+
+blockquote::after {
+  content: '”'; /* Closing quotation mark */
+  font-size: 40px;
+  line-height: 0;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #887a4c;
+}
+
+.dropdown-menu {
+  position: fixed;
+
+}
+
+
+
 img {
   max-width: 600px;
 }
@@ -221,6 +276,8 @@ img {
 .emoji-container {
   position: relative;
   display: inline-block; 
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 
@@ -229,13 +286,14 @@ img {
   width: 200px; /* Adjust width as needed */
   padding: 8px 12px;
   border: 1px solid #ccc;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   font-size: 16px;
-  position: fixed;  /* Take the grid out of the document flow */  
-  left: 985px; /* Calculate the position relative to the button */
-  top: 633px;
+  position: absolute;  /* Take the grid out of the document flow */  
+  right: -210px; /* Calculate the position relative to the button */
+  bottom:-490px;
   z-index: 1001; /* Ensure it's above other elements */
-  background-color:#ffffff9d
+  background-color:#ffffff
 }
 
 /* Focus State */
@@ -246,66 +304,66 @@ img {
 }
 
 
-.emoji-grid {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.707) 0%, rgba(230, 230, 230, 0.7) 100%); /* Add background on hover */
-
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-
-  position: fixed;  /* Take the grid out of the document flow */
-  left: 955px; /* Calculate the position relative to the button */
-  z-index: 1000; /* Ensure it's above other elements */
-  width: 270px;
-  height: 300px; /* Add max height here */
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); /* Adjust 30px to control emoji size */
-  gap: 5px; /* Adjust spacing between emojis */
-  padding: 10px;
-  border: 1px solid lightgray; /* Optional border */
-
-  overflow-y: auto; /* Add vertical scroll if content exceeds max height */
+.emoticon-item {
+  word-break: break-word; 
+  margin-right: 5px;
+  display: inline-block;
 }
 
 
+
+.emoji-grid {
+  background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(230, 230, 230) 100%); 
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  border: 1px solid lightgray; 
+  padding: 10px;
+
+  position: fixed; 
+  top: 380px;
+  left: 24px;
+  z-index: 1000; 
+  width: 270px;
+  height: 300px; 
+  overflow-y: auto; 
+  
+
+
+}
+
 .emoji-item {
-  cursor: pointer; /* Make emojis clickable */
+  cursor: pointer; 
   text-align: center;
-  height: 16px;
 }
 
 .emoji-item img {
-  width: 16px; /* Make emojis fill the grid cell */
-  height: auto;
+  max-width: 100%; /* Ensures the emoji doesn't exceed the container width */
+  max-height: 100%; /* Ensures the emoji doesn't exceed the container height */
+  object-fit: cover; /* Crops the emoji to fit within the container while maintaining aspect ratio */
 }
+
 
 
 /* Markdown Container CSS*/
 .markdown-container {
-  margin: 5px auto;
+  margin: 4px 20px;
   display: flex;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
   padding-bottom: 35px;
-  font-family: Verdana;
   width: 1180px;
   height: 10px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
-  box-shadow: 
-  5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
-  -5px -5px 10px rgba(255, 255, 255, 0.3); /* Top-left shadow (lighter for highlight) */
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
 }
 
+.markdown-button :active {
+  filter: brightness(0.7); /* Adjust the value (0-1) for desired darkness */
+}
 
 
 .online-indicator {
   position: absolute; /* Position relative to .post-pfp-container */
   bottom: 9px; /* Adjust position as needed */
   right: 2px; /* Adjust position as needed */
-  width: 10px; 
-  height: 10px; 
+  width: 15px; 
+  height: 15px; 
   background: linear-gradient(to bottom, #008000 34%, #00ff00 100%); /* Add background on hover */
   border-radius:25%;
   border: 1.5px solid #008000;
@@ -316,8 +374,8 @@ img {
   position: absolute; /* Position relative to .post-pfp-container */
   bottom: 9px; /* Adjust position as needed */
   right: 2px; /* Adjust position as needed */
-  width: 10px; 
-  height: 10px; 
+  width: 15px; 
+  height: 15px; 
   background: linear-gradient(to bottom, #800000 34%, #ff0000 100%); /* Add background on hover */
   border-radius:25%;
   border: 1.5px solid #800000; /* Use CSS variable for color */

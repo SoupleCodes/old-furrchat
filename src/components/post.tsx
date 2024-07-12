@@ -1,4 +1,5 @@
 import { emojiData } from './data.tsx'
+import { discordEmojis } from './data.tsx'
 
 const handleAttachments = ((attachments: any[]): string => {
   // Loop through attachments and build markdown image elements
@@ -32,6 +33,19 @@ const extractInfo = (text: string): { name: string; number: string; isAnimated: 
     const match = text.match(/<(a)?:(\w+):(\d+)>/);
     return match ? { name: match[2], number: match[3], isAnimated: !!match[1] } : null;
 };
+
+function replaceKeysWithValues(sentence: string, keyValuePairs: { [key: string]: string }): string {
+  let newSentence = sentence;
+  for (const key in keyValuePairs) {
+
+    if (newSentence.includes(key) && !newSentence.includes('\\' + key)) { 
+      const value = keyValuePairs[key];
+      newSentence = newSentence.replace(key, value);
+    }
+  }
+  return newSentence;
+}
+
 
 const DiscEmojiSupport = (text: string): string => {
   if (typeof text !== 'string') {
@@ -112,8 +126,11 @@ function revisePost(text: any) {
       revisedString = revisedString.replace(regex, `![${name}](${imageLink})`);
     }
 
-    
+    revisedString = replaceKeysWithValues(revisedString, discordEmojis);
+    {/* const urlRegex = /(https?:\/\/[^\s]+?\.(?:png|jpg|jpeg|gif|webp))/g;
+  revisedString = revisedString.replace(urlRegex, `![]($1)`); */}
+
   return revisedString;
 }
 
-  export {EmojiImage, DiscEmojiSupport, handleAttachments, getReply, revisePost}
+  export {EmojiImage, DiscEmojiSupport, handleAttachments, getReply, revisePost, extractInfo}
