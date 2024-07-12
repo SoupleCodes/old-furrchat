@@ -12,21 +12,6 @@ import remarkGfm from 'remark-gfm';
 import ImageRenderer from './components.tsx'
 import Dropdown from './components/dropdown.tsx';
 
-var username = "Souple"
-var password = "souple100"
-
-const opts = {
-  username: username,
-  password: password,
-  api_url: "https://api.meower.org",
-  socket_url: "wss://server.meower.org",
-  uploads_url: "https://uploads.meower.org"
-}
-
-const c = await client.login(opts)
- // @ts-ignore
-c.socket.on('create_message', console.log)
-
 var userToken: string // State variable for userToken
 
 export default function App() {
