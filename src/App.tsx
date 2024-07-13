@@ -1,4 +1,7 @@
 import './App.css'
+import './css/markdown.css'
+import './css/ui/textboxui.css'
+import './css/post.css'
 import React from 'react';
 import MyComponent from './components.tsx';
 import { useState } from 'react';
@@ -82,9 +85,12 @@ export default function App() {
                  post.substring(selectionEnd);
       newCursorPosition += selectedText.length + markdown.length; 
     } else {
-      newPost = markdown + selectedText;
+      newPost = post.substring(0, selectionStart) + 
+                 markdown + selectedText + 
+                 post.substring(selectionEnd);
       newCursorPosition += markdown.length;
-  }
+    }
+
   
   
     setPost(newPost); 
@@ -166,7 +172,7 @@ return (
 </div>
 
 <div className="markdown-button" onClick={() => handleMarkdownClick('- [] ', false)}>
-  <img src="/furrchat/assets/markdown/Checklist.png" alt="checklist" height="48" title="Quote"/>
+  <img src="/furrchat/assets/markdown/Checklist.png" alt="checklist" height="48" title="Checkbox"/>
 </div>
 
 <div className="markdown-button" onClick={() => handleMarkdownClick('> ', false)}>
@@ -178,7 +184,7 @@ return (
 </div>
 
 <div className="markdown-button" onClick={() => handleMarkdownClick('\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |', false)}>
-  <img src="/furrchat/assets/markdown/Table.png" alt="table" height="48" title="Link"/>
+  <img src="/furrchat/assets/markdown/Table.png" alt="table" height="48" title="Table"/>
 </div>
 
 <div className="markdown-button" onClick={() => handleMarkdownClick('[link description](link)', false)}>
@@ -195,7 +201,7 @@ return (
 
   </div>
 
-      <span className="userpost" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <span className="userpost" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', resize: 'none' }}>
       
   {showPreview? (
     <div style={{ flex: 1, 
@@ -220,7 +226,7 @@ return (
             const inline = !match;
             return !inline && match ? (
               <SyntaxHighlighter
-                children={String(children).replace(/\n$/, '')} // @ts-expect-error
+                children={String(children)} // @ts-expect-error
                 style={dark} 
                 language={match[1]}
                 PreTag="div"
@@ -258,7 +264,7 @@ return (
           setSelectionEnd(e.target.selectionEnd);
         }}      
     />
-    <button type="submit" style={{ whiteSpace: 'nowrap' }}>Post</button>
+      <input type="image" src="/furrchat/assets/Post.png" alt="Post" style={{height: '95px'}} />
   <div>
       </div>
   </form>

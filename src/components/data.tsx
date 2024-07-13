@@ -179,6 +179,7 @@ const emojiData: EmojiMap = {
     ":loveit:": "/furrchat/assets/smilies/loveit.gif",
     ":lurk:": "/furrchat/assets/smilies/lurk.gif",
     ":marry:": "/furrchat/assets/smilies/marrysmile.gif",
+    ":nerd:": "/furrchat/assets/smilies/nerd.png",
     ":noo:": "/furrchat/assets/smilies/nooo.gif",
     ":nothumbs:": "/furrchat/assets/smilies/nosthumbs.gif",
     ":offtopic:": "/furrchat/assets/smilies/offtopic.gif",

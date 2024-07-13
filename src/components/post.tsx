@@ -23,7 +23,7 @@ const EmojiImage = (sentence: string): string => {
 
     if (sentence.includes(key) && !sentence.includes('\\' + key)) { 
       const value = emojiData[key];
-      newSentence = newSentence.replace(key, `![${key}](${value})`);
+      newSentence = newSentence.replaceAll(key, `![${key}](${value})`);
     }
   }
   return newSentence;
@@ -40,7 +40,7 @@ function replaceKeysWithValues(sentence: string, keyValuePairs: { [key: string]:
 
     if (newSentence.includes(key) && !newSentence.includes('\\' + key)) { 
       const value = keyValuePairs[key];
-      newSentence = newSentence.replace(key, value);
+      newSentence = newSentence.replaceAll(key, value);
     }
   }
   return newSentence;
@@ -129,6 +129,7 @@ function revisePost(text: any) {
     revisedString = replaceKeysWithValues(revisedString, discordEmojis);
     {/* const urlRegex = /(https?:\/\/[^\s]+?\.(?:png|jpg|jpeg|gif|webp))/g;
   revisedString = revisedString.replace(urlRegex, `![]($1)`); */}
+  revisedString = revisedString.replace(/\n/g, "\n\n")
 
   return revisedString;
 }

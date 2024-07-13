@@ -1,0 +1,88 @@
+/* Markdown Container CSS*/
+
+.markdown-container {
+    margin: 4px 20px;
+    display: flex;
+    padding-bottom: 35px;
+    width: 1180px;
+    height: 10px;
+}
+
+.markdown-button :active {
+    filter: brightness(0.7); /* Adjust the value (0-1) for desired darkness */
+}
+
+
+
+/* Emoji Picker */
+
+.emoji-picker-wrapper {
+    position: relative; /* To position the picker relative to this wrapper */
+    display: inline-block; 
+}
+  
+.emoji-container {
+    position: relative;
+    display: inline-block; 
+    flex-direction: column;
+    justify-content: flex-end;
+}
+    
+.emoticon-item {
+    word-break: break-word; 
+    margin-right: 5px;
+    display: inline-block;
+}
+  
+.emoji-grid {
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(230, 230, 230) 100%); 
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border: 1px solid lightgray; 
+    padding: 10px;
+  
+    position: fixed; 
+    top: 380px;
+    left: 24px;
+    z-index: 1000; 
+    width: 270px;
+    height: 300px; 
+    overflow-y: auto; 
+}
+  
+.emoji-item {
+    cursor: pointer; 
+    text-align: center;
+}
+  
+.emoji-item img {
+    max-width: 100%; /* Ensures the emoji doesn't exceed the container width */
+    max-height: 100%; /* Ensures the emoji doesn't exceed the container height */
+    object-fit: cover; /* Crops the emoji to fit within the container while maintaining aspect ratio */
+}
+
+
+
+/* Searchbar CSS */
+#search-bar {
+    width: 200px; /* Adjust width as needed */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    font-size: 16px;
+    position: absolute;  /* Take the grid out of the document flow */  
+    right: -210px; /* Calculate the position relative to the button */
+    bottom:-490px;
+    z-index: 1001; /* Ensure it's above other elements */
+    background-color:#ffffff
+}
+  
+  /* Focus State */
+#search-bar:focus {
+    outline: none;
+    border-color: #007bff; /* Or your preferred focus color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional focus shadow */
+}

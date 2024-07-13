@@ -111,7 +111,7 @@ const ImageRenderer = ({ src, alt }: any) => {
     case 'mov':
       return <video src={src} 
       controls 
-      style={{ maxWidth: '425px', objectPosition: '50% 50%'}} />;
+      style={{ maxWidth: '950px', objectPosition: '50% 50%'}} />;
     case 'pdf':
       return <embed 
       src={src} 
@@ -122,7 +122,7 @@ const ImageRenderer = ({ src, alt }: any) => {
       return <img 
       src={src} 
       alt={alt} 
-      style={{ height: 'auto', width: 'auto', maxWidth: '425px' }} />;
+      style={{ height: 'auto', width: 'auto', maxWidth: '950px' }} />;
   }
 };
 

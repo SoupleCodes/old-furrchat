@@ -11,6 +11,15 @@ const EmojiPicker = ({ onEmojiSelect }: { onEmojiSelect: (emoji:string) => void}
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Smilies')
 
+  // Convert data objects into an array of [key, value] pairs
+    const emojiDataArray = Object.entries(emojiData);
+    const discordEmojisArray = Object.entries(discordEmojis);
+    const gifsArray = Object.entries(GIFS);
+
+  // Convert emoticons array into an array of [emoticon, emoticon] pairs (for consistency with other arrays)
+    const emoticonsArray = emoticons.map((emoticon: any) => [emoticon, emoticon]); // Emoticons don't have image URLs
+
+
   const togglePicker = () => {
     setIsOpen(!isOpen);
   };
@@ -23,11 +32,6 @@ const EmojiPicker = ({ onEmojiSelect }: { onEmojiSelect: (emoji:string) => void}
     setSearchQuery(event.target.value);
   };
 
-  const emojiDataArray = Object.entries(emojiData);
-  const discordEmojisArray = Object.entries(discordEmojis);
-  const emoticonsArray = emoticons.map((emoticon: any) => [emoticon, emoticon]); // Emoticons don't have image URLs
-  const gifsArray = Object.entries(GIFS);
-
   const categories: { [category: string]: any[] } = {
     "GIFS": gifsArray, 
     'Smilies': emojiDataArray,
@@ -35,13 +39,13 @@ const EmojiPicker = ({ onEmojiSelect }: { onEmojiSelect: (emoji:string) => void}
     'Emoticons': emoticonsArray, 
   };
 
-
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
     setSearchQuery(''); // Clear search when switching categories
   }
 
-  return (
+
+return (
     <div className="emoji-container">
      <div className="markdown-button" onClick={togglePicker}>
           <img src="/furrchat/assets/markdown/Emoji.png" alt="Smilies" className="emoji-icon" height="48" title="Emojis"/>
@@ -66,7 +70,7 @@ const EmojiPicker = ({ onEmojiSelect }: { onEmojiSelect: (emoji:string) => void}
     key={category}
     onClick={() => handleCategoryClick(category)} 
     className={selectedCategory === category ? 'active' : ''}
-    style={{boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.3)', padding: '7.5px', margin: 0}} 
+    style={{padding: '9.3px', margin: 0, borderBottomLeftRadius: '0px', borderBottomRightRadius: '0px', boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.3)', background: selectedCategory === category ? 'rgba(236, 236, 236)' : 'rgba(255, 255, 255)', border: 'none'}} 
   >
     {category}
   </button>
