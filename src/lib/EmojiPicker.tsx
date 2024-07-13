@@ -1,9 +1,9 @@
 // src/components/EmojiPicker.tsx
 import { memo, useState } from 'react';
-import { emojiData } from './data';
-import { discordEmojis } from './data';
-import { emoticons } from './data'
-import { GIFS } from './data'
+import { emojiData } from './Data';
+import { discordEmojis } from './Data';
+import { emoticons } from './Data'
+import { GIFS } from './Data'
 
 
 const EmojiPicker = ({ onEmojiSelect }: { onEmojiSelect: (emoji:string) => void}) => {

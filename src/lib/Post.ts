@@ -1,5 +1,5 @@
-import { emojiData } from './data.tsx'
-import { discordEmojis } from './data.tsx'
+import { emojiData } from './Data.ts'
+import { discordEmojis } from './Data.ts'
 
 const handleAttachments = ((attachments: any[]): string => {
   // Loop through attachments and build markdown image elements

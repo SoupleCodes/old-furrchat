@@ -4,15 +4,15 @@ import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
-import { defaultPFPS } from './components/data';
-import { handleAttachments, getReply, revisePost } from './components/post';
-import fetchUserData from './components/api';
+import { defaultPFPS } from './lib/Data.ts';
+import { handleAttachments, getReply, revisePost } from './lib/Post.ts';
+import fetchUserData from './lib/Api.ts';
 import { memo } from 'react';
 
 
 // Post props!
 export function PostComponent ({...postProps}) {
-  const {
+  var {
     attachments,
     post,
 //    post_origin,

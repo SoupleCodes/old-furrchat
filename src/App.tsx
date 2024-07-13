@@ -1,11 +1,11 @@
 import './App.css'
-import './css/markdown.css'
-import './css/ui/textboxui.css'
-import './css/post.css'
+import './css/Markdown.css'
+import './css/ui/TextboxUI.css'
+import './css/Post.css'
 import React from 'react';
 import MyComponent from './components.tsx';
 import { useState } from 'react';
-import EmojiPicker from './components/emojipicker.tsx'; 
+import EmojiPicker from './lib/EmojiPicker.tsx'; 
 // @ts-ignore
 import { client } from "https://esm.sh/jsr/@meower/api-client@1.0.0-rc.4"
 import ReactMarkdown from 'react-markdown'
@@ -13,7 +13,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import ImageRenderer from './components.tsx'
-import Dropdown from './components/dropdown.tsx';
+import Dropdown from './lib/Dropdown.tsx';
 
 var userToken: string // State variable for userToken
 
