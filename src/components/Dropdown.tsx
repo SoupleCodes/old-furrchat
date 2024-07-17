@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 function Dropdown({ options, onSelect }: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,4 +35,4 @@ function Dropdown({ options, onSelect }: any) {
   );
 }
 
-export default Dropdown;
+export default memo(Dropdown);

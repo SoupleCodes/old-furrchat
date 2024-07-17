@@ -369,10 +369,12 @@ const GIFS: EmojiMap = {
     "lasercat": "https://media1.tenor.com/m/MzjQEZ1tPZ4AAAAC/cat-lasers.gif",
     "nocommen": "https://media1.tenor.com/m/719_X3doMAoAAAAd/black-cat.gif",
     "hirecattostareatu": "https://media1.tenor.com/m/PmpiSvg8bDAAAAAC/i-hired-this-cat-to-stare-at-you-hired.gif",
-    "willsmith-slap":"https://gifdb.com/images/high/will-smith-slaps-chris-rock-9tdpd79yfmrq5p39.gif"
+    "willsmith-slap":"https://gifdb.com/images/high/will-smith-slaps-chris-rock-9tdpd79yfmrq5p39.gif",
+    "took-a-chunk":"https://uploads.meower.org/attachments/GrjtUveRiUr7mCARZIR4EGEf/mower.png",
+    "bunger":"https://uploads.meower.org/attachments/qA8nsPQ0ifB3is13YTD7WQxV/bunger.gif"
 }
 
-let defaultPFPS: string[] = [
+const defaultPFPS: string[] = [
     '/furrchat/assets/default_pfps/icon_33-aa0b2afc.svg',
     '/furrchat/assets/default_pfps/icon_32-b04ea763.svg',
     '/furrchat/assets/default_pfps/icon_31-69ab1d48.svg',
@@ -408,5 +410,13 @@ let defaultPFPS: string[] = [
     '/furrchat/assets/default_pfps/icon_1-3649891f.svg',
     '/furrchat/assets/default_pfps/icon_0-ab82a5ad.svg',
 ];
+
+const userEmojis: EmojiMap = {
+  'Souple': "👑",
+  'ij': "👑",
+  'noodles': "🧀",
+  'kiwi': "🥝",
+  'cat': "🐱"
+};
   
-export { defaultPFPS, emojiData, discordEmojis, emoticons, GIFS }
+export { defaultPFPS, emojiData, discordEmojis, emoticons, GIFS, userEmojis }

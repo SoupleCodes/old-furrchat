@@ -26,8 +26,10 @@
     display: inline-block; 
     flex-direction: column;
     justify-content: flex-end;
+    z-index: 4000;
 }
-    
+
+
 .emoticon-item {
     word-break: break-word; 
     margin-right: 5px;
@@ -85,4 +87,26 @@
     outline: none;
     border-color: #007bff; /* Or your preferred focus color */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional focus shadow */
+}
+
+textarea {
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+/* Preview CSS */
+
+.markdown-preview {
+    margin-right: 5px;
+    width: 1160px;
+    padding-bottom: 35px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(72, 173, 148, 0.3) 100%);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
 }

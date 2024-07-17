@@ -1,0 +1,19 @@
+.post-transition-enter {
+    opacity: 0;
+    transform: translateY(-20px); /* Start with a slight upward offset */
+  }
+  .post-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0); /* End at the normal position */
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+  .post-transition-exit {
+    opacity: 1;
+    transform: translateY(0);
+    }
+  .post-transition-exit-active {
+    opacity: 0;
+    transform: translateY(20px); /* Slide down when exiting */
+    transition: opacity 300ms ease-in, transform 300ms ease-in;
+  }
+  
