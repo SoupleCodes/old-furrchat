@@ -4,27 +4,33 @@
   padding: 5px;
   padding-bottom: 60px;
   width: 1230px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
-  box-shadow: 
-  5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
-  -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.507) 0%,
+    rgba(230, 230, 230, 0.5) 100%
+  ); /* Add background on hover */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border-radius: 20px;
 }
 
 .banner {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) , rgba(96, 156, 140, 0.5));
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5); 
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4),
+    rgba(96, 156, 140, 0.5)
+  );
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
   margin: auto;
   margin-top: 18px;
   width: 97%;
   height: 120px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  flex-direction: row
+  flex-direction: row;
 }
-
 
 /* Navbar CSS */
 
@@ -34,8 +40,8 @@
   display: inline-block;
   position: relative;
   width: 1222px;
-  height: 80px;
-  background-image: url('/furrchat/assets/navbar.png');
+  height: 60px;
+  background-image: url("/furrchat/assets/navbar.png");
   background-repeat: no-repeat;
 }
 
@@ -43,18 +49,18 @@
   justify-content: space-between;
   display: flex;
   flex-direction: row;
-	font-weight: bold;
-  font-family: 'Tahoma';
+  font-weight: bold;
+  font-family: "Tahoma";
   padding: 7px 40px;
   text-shadow: rgb(255, 255, 255) 1px 0 10px;
 }
 
-.navbar input[type=text] {
+.navbar input[type="text"] {
   float: right;
   border: none;
   border-radius: 7px;
   font-size: 12px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5); 
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
   height: 16px;
 }
 
@@ -65,19 +71,20 @@
 }
 
 button {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 0.5) 100%); /* Add background on hover */
-  box-shadow: 
-  5px 5px 10px rgba(0, 0, 0, 0.5), /* Bottom-right shadow */
-  -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.507) 0%,
+    rgba(230, 230, 230, 0.5) 100%
+  ); /* Add background on hover */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ -5px -5px 10px rgba(206, 206, 206, 0.3); /* Top-left shadow (lighter for highlight) */
   border-radius: 7px;
   margin-right: 5px;
 }
 
 .dropdown-menu {
   position: fixed;
-
 }
-
 
 img {
   max-width: 600px;
@@ -92,8 +99,12 @@ img {
 }
 
 .container:hover {
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.507) 0%, rgba(230, 230, 230, 1) 100%); /* Add background on hover */
- }
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.507) 0%,
+    rgba(230, 230, 230, 1) 100%
+  ); /* Add background on hover */
+}
 
 .logo {
   height: 6em;

@@ -1,20 +1,19 @@
 type User = {
-    "_id": string,
-    "avatar": string,
-    "avatar_color": string,
-    "banned": boolean,
-    "created": number,
-    "error": boolean,
-    "flags": number,
-    "last_seen": number,
-    "lower_username": string,
-    "lvl": number,
-    "permissions": number,
-    "pfp_data": number,
-    "quote": string,
-    "uuid": string,
-  }
-  
+  _id: string;
+  avatar: string;
+  avatar_color: string;
+  banned: boolean;
+  created: number;
+  error: boolean;
+  flags: number;
+  last_seen: number;
+  lower_username: string;
+  lvl: number;
+  permissions: number;
+  pfp_data: number;
+  quote: string;
+  uuid: string;
+};
 
 // Cache for user data
 const userDataCache = new Map();
@@ -37,7 +36,5 @@ function fetchUserData(user: string, find: keyof User) {
       });
   }
 }
-
-  
 
 export default fetchUserData;

@@ -1,0 +1,6 @@
+.emoji-container {
+  position: absolute;
+  top: 50px; /* Adjust as per your layout needs */
+  display: flex;
+  padding: 10px;
+}

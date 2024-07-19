@@ -1,5 +1,6 @@
 import { memo, useState } from 'react';
 import { emojiData, discordEmojis, emoticons, GIFS } from '../lib/Data';
+import '/src/styles/EmojiPicker.css'
 
 // Interface for the props of EmojiPicker component
 interface EmojiPickerProps {
@@ -45,16 +46,112 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
     setSelectedCategory(category);
     setSearchQuery(''); // Clear search when switching categories
   };
-
+  
   return (
-    <div className="emoji-container">
+    <>
       <div className="markdown-button" onClick={togglePicker}>
-        <img src="/furrchat/assets/markdown/Emoji.png" alt="Smilies" className="emoji-icon" height="48" title="Emojis"/>
+        <img
+          src="/furrchat/assets/markdown/Emoji.png"
+          alt="Smilies"
+          className="emoji-icon"
+          height="48"
+          title="Emojis"
+        />
       </div>
-
+      
       {isOpen && (
-        <div>
+        <div className="emoji-container">
+          {/* Emoji category buttons */}
+          <div className="emoji-categories">
+            {Object.keys(categories).map((category) => (
+              <button
+                key={category}
+                onClick={() => handleCategoryClick(category)}
+                className={selectedCategory === category ? "active" : ""}
+                style={{
+                  padding: "9.3px",
+                  margin: 0,
+                  borderBottomLeftRadius: "0px",
+                  borderBottomRightRadius: "0px",
+                  boxShadow: "inset 0 0 5px rgba(0, 0, 0, 0.3)",
+                  background: selectedCategory === category ? "rgba(236, 236, 236)" : "rgba(255, 255, 255)",
+                  border: "none",
+                }}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+  
+          {/* Emoji grid */}
+          <div
+            className="emoji-grid"
+            key={selectedCategory}
+            style={
+              selectedCategory !== "Emoticons"
+                ? {
+                    display: "grid",
+                    gridTemplateColumns:
+                      selectedCategory !== "GIFS"
+                        ? "repeat(auto-fit, minmax(30px, 1fr))"
+                        : "repeat(auto-fit, minmax(60px, 1fr))",
+                    gap: "5px",
+                  }
+                : { padding: "10px" }
+            }
+          >
+            {Array.from(new Set(categories[selectedCategory]))
+              .filter(([key]: [string, string]) =>
+                key.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map(([key, emoji]: [string, string]) => (
+                <span
+                  key={emoji}
+                  onClick={() =>
+                    handleEmojiClick(
+                      selectedCategory !== "GIFS"
+                        ? key
+                        : `![${key}](${emoji})`
+                    )
+                  }
+                  className={
+                    selectedCategory === "Emoticons"
+                      ? "emoticon-item"
+                      : "emoji-item"
+                  }
+                  style={
+                    selectedCategory !== "GIFS"
+                      ? { height: "24px" }
+                      : { height: "64px" }
+                  }
+                >
+                  {emoji ? (
+                    selectedCategory === "Discord" ? (
+                      // Handle potential errors in Discord emoji format
+                      emoji.split(":").length >= 3 ? (
+                        <img
+                          src={`https://cdn.discordapp.com/emojis/${emoji.split(":")[2].slice(0, -1)}.${
+                            emoji.startsWith("<a:") ? "gif" : "webp"
+                          }?size=128&quality=lossless`}
+                          alt={key}
+                          title={key}
+                        />
+                      ) : (
+                        <span>Invalid Discord emoji format</span>
+                      )
+                    ) : selectedCategory === "Emoticons" ? (
+                      <>{key}</>
+                    ) : (
+                      <img src={emoji} alt={key} title={key} />
+                    )
+                  ) : null}
+                </span>
+              ))}
+          </div>
+  
           {/* Search bar for filtering emojis */}
+          
+          <div className="emoji-searchbar">
           <input
             type="text"
             id="search-bar"
@@ -62,73 +159,13 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
             value={searchQuery}
             onChange={handleSearchChange}
           />
-
-          {/* Emoji category buttons */}
-          <div className="emoji-categories" style={{ display: 'flex', position: 'fixed', top: '342px' }}>
-            {Object.keys(categories).map(category => (
-              <button
-                key={category}
-                onClick={() => handleCategoryClick(category)}
-                className={selectedCategory === category ? 'active' : ''}
-                style={{
-                  padding: '9.3px',
-                  margin: 0,
-                  borderBottomLeftRadius: '0px',
-                  borderBottomRightRadius: '0px',
-                  boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.3)',
-                  background: selectedCategory === category ? 'rgba(236, 236, 236)' : 'rgba(255, 255, 255)',
-                  border: 'none'
-                }}
-              >
-                {category}
-              </button>
-            ))}
           </div>
-
-          {/* Emoji grid */}
-          <div 
-            className="emoji-grid" 
-            key={selectedCategory}
-            style={selectedCategory !== 'Emoticons' ? {
-              display: 'grid',
-              gridTemplateColumns: selectedCategory !== 'GIFS' ? 'repeat(auto-fit, minmax(30px, 1fr))' : 'repeat(auto-fit, minmax(60px, 1fr))',
-              gap: '5px'
-            } : { padding: '10px' }}
-          >
-            {Array.from(new Set(categories[selectedCategory]))
-              .filter(([key]: [string, string]) => key.toLowerCase().includes(searchQuery.toLowerCase()))
-              .map(([key, emoji]: [string, string]) => (
-                <span 
-                  key={emoji} 
-                  onClick={() => handleEmojiClick(selectedCategory !== 'GIFS' ? key : `![${key}](${emoji})`)} 
-                  className={selectedCategory === 'Emoticons' ? 'emoticon-item' : 'emoji-item'}
-                  style={selectedCategory !== 'GIFS' ? { height: '24px' } : { height: '64px' }}
-                >
-                  {emoji ? (
-                    selectedCategory === 'Discord' ? (
-                      // Handle potential errors in Discord emoji format
-                      emoji.split(':').length >= 3 ? (
-                        <img 
-                          src={`https://cdn.discordapp.com/emojis/${emoji.split(':')[2].slice(0, -1)}.${emoji.startsWith('<a:') ? 'gif' : 'webp'}?size=128&quality=lossless`} 
-                          alt={key} 
-                          title={key} 
-                        />
-                      ) : (
-                        <span>Invalid Discord emoji format</span>
-                      )
-                    ) : selectedCategory === 'Emoticons' ? (
-                      <>{key}</> 
-                    ) : (
-                      <img src={emoji} alt={key} title={key} /> 
-                    )
-                  ) : null}
-                </span>
-              ))}
-          </div> 
         </div>
       )}
-    </div>
+    </>
   );
+  
+  
 }
 
 export default memo(EmojiPicker);

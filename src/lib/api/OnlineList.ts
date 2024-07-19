@@ -1,21 +1,35 @@
-const GetUlist = () => {
-    const ws = new WebSocket('wss://server.meower.org');
-    let onlineUsers: string[] = [];
-  
-    ws.onmessage = (message) => {
-      const data = JSON.parse(message.data);
-  
-      // Handle online user list updates
-      if (data.cmd === 'ulist') {
-        onlineUsers = data.val.split(';').filter((user: string) => user !== ''); // Assuming users are separated by ';'
-        console.log('Updated online users:', onlineUsers);
+import { useEffect, useState } from "react";
+
+const useUserList = () => {
+  const [userList, setUserList] = useState<string[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://api.meower.org/ulist");
+      if (!response.ok) {
+        throw new Error("Failed to fetch user list");
       }
-    };
-  
-    const getIsOnline = () => onlineUsers;
-  
-    return { getIsOnline };
+      const data = await response.json();
+      const usernames = data.autoget.map((user: any) => user);
+      setUserList(usernames);
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+      setUserList([]);
+    }
   };
-  
-  export default GetUlist;
-  
+
+  useEffect(() => {
+    fetchData(); // Initial fetch
+
+    const intervalId = setInterval(() => {
+      fetchData(); // Fetch data periodically
+    }, 2500);
+
+    // Cleanup function to clear interval on unmount or changes
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return userList;
+};
+
+export default useUserList;
