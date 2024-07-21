@@ -18,15 +18,15 @@ const UListBody = () => {
           padding: "12px",
           margin: "20px",
           marginBottom: "0px",
+          border: "1px solid #83838396",
           background:
             "linear-gradient(to bottom, rgba(255, 255, 255, 0.4) , rgba(96, 156, 140, 0.5))",
-          border: "2px solid rgba(0, 0, 0, 0.2)",
           boxShadow:
-            "inset 2px 2px 4px rgba(0, 0, 0, 0.1), 4px 4px 8px rgba(0, 0, 0, 0.2)",
+            "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
         }}
       >
-        <span style={{ fontWeight: "bold" }}>
-          <img height="20" src={`furrchat/assets/PeopleIcon.png`} />
+        <span style={{ fontWeight: 600 }}>
+          <img height="20" src={`/furrchat/assets/PeopleIcon.png`} />
           {` There are currently ${userList.length} users online.`}
         </span>
         <br />

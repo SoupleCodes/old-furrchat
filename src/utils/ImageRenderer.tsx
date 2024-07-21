@@ -17,7 +17,6 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
     case "mp3":
     case "aac":
     case "flac":
-    case "ogg":
       return <audio src={src} controls />;
 
     // Video formats
@@ -78,7 +77,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
 
     // Default fallback for unknown file types
     default:
-      // Renders as an image for all other file types (assuming they are images)
+      
       return (
         <img
           src={src}

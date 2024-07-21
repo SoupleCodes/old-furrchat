@@ -114,7 +114,6 @@ function getReplies(repliesData: any[]) {
             </div>
           );
         } catch (error) {
-
           console.error("Error rendering reply:", error);
           return null; // Render nothing :)
         }
@@ -133,9 +132,10 @@ function getReactions(reactionsData: any[]) {
               style={{
                 padding: "5px",
                 fontSize: "8px",
+                fontWeight: "bold",
                 boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
                 background:
-                  "linear-gradient(to bottom, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.3))",
+                  "linear-gradient(to bottom,rgba(255, 255, 255, 0.3), rgba(153, 153, 133, 0.3))",
                 border: "1px solid rgba(0, 0, 0, 0.2)",
               }}
             >
@@ -143,7 +143,6 @@ function getReactions(reactionsData: any[]) {
             </button>
           );
         } catch (error) {
-
           console.error("Error rendering reactions:", error);
           return null; // Render nothing of course :)
         }

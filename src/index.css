@@ -3,17 +3,13 @@
 }
 
 :root {
-  -webkit-font-smoothing: none;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color: rgba(0, 0, 0, 0.911);
 
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   background: linear-gradient(
     to right,
@@ -25,9 +21,32 @@
   justify-content: center;
 }
 
+hr {
+  border-top: 1px solid #0000001f;
+}
+
+audio {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 26px;
+}
+
+audio::-webkit-media-controls-panel {
+  font-size: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 26px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+  font-size: 0.6rem;
+}
+
 a {
   color: #073742;
   text-decoration: inherit;
+  font-weight: bold;
 }
 a:hover {
   color: #1a8863;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -10,6 +10,7 @@ import {
   getReactions,
   revisePost,
 } from "../lib/RevisePost.tsx";
+import "/src/styles/SocialButtons.css";
 
 // import fetchUserData from '../lib/api/UserData.ts';
 import { formatTimestamp } from "../utils/FormatTimestamp.ts";
@@ -60,7 +61,7 @@ export function PostComponent({
   //  isDeleted,
   post,
   //  pinned,
-  //  post_id,
+  post_id,
   //  post_origin,
   reactions,
   reply_to,
@@ -71,7 +72,13 @@ export function PostComponent({
   active,
   edited,
 }: PostComponentProps) {
-  
+  const [replyIds, setReplyIds] = useState<string[]>([]);
+
+  const addReply = (postId: string) => {
+    setReplyIds((prevReplyIds) => [...prevReplyIds, postId]);
+    console.log(replyIds);
+  };
+
   // Format the timestamp into a readable date string
   const realDate = formatTimestamp(time.e);
 
@@ -148,7 +155,7 @@ export function PostComponent({
                 const inline = !match;
                 return !inline && match ? (
                   <SyntaxHighlighter
-                    children={String(children).replace(/\n$/, "")}
+                    children={String(children).replace(/\n\n$/, "")}
                     // @ts-ignore
                     style={dark}
                     language={match[1]}
@@ -170,8 +177,22 @@ export function PostComponent({
             {revisePost(realPost)}
           </ReactMarkdown>
         </div>
-        <br />
-        <div className="social">{getReactions(reactions)}</div>
+        <hr />
+        <div className="social" style={{ display: "flex" }}>
+          <div className="reactions">{getReactions(reactions)}</div>
+          <div style={{ marginLeft: "auto" }}>
+            <button
+              className="social-buttons"
+              id="ReplyButton"
+              onClick={() => addReply(post_id || "")}
+            >
+              <img src={`furrchat/assets/Reply.png`} height={9} /> Reply
+            </button>
+            <button className="social-buttons" id="QuoteButton">
+              <img src={`furrchat/assets/Quote.png`} height={9} /> Quote
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

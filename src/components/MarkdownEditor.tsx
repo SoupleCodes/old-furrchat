@@ -298,8 +298,9 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                   "linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(72, 173, 148, 0.3) 100%)",
                 borderColor: "4px solid rgba(0, 0, 0, 0.2)",
                 borderRadius: "10px",
+                border: "1px solid #83838396",
                 boxShadow:
-                  "inset 3px 3px 5px rgba(0, 0, 0, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.2)",
+                  "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
                 padding: "10px",
               }}
               onSelect={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -314,10 +315,9 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 background:
                   "linear-gradient(to bottom, #ffffff 0%, #e6e6e6 50%, #cccccc 100%)",
                 boxShadow:
-                  "inset 3px 3px 5px rgba(0, 0, 0, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.2)",
-                borderColor: "solid rgba(0, 0, 0, 0.1)",
-                borderWidth: "1px",
+                  "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
                 borderRadius: "5px",
+                border: "1px solid #83838396",
                 padding: "10px",
               }}
             >

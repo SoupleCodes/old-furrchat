@@ -55,7 +55,7 @@ const DisplayPosts = () => {
 
           // Update or add the reaction count for the emoji
           let found = false;
-          updatedPost.reactions = updatedPost.reactions.map((reaction: any) => {
+          updatedPost.reactions = updatedPost.reactions.map((reaction) => {
             if (reaction.emoji === emoji) {
               found = true;
               return {
@@ -74,6 +74,42 @@ const DisplayPosts = () => {
               user_reacted: false,
             });
           }
+
+          // Update the state with the modified post
+          updatedPosts[postIndex] = updatedPost;
+          setPosts(updatedPosts);
+        }
+      } else if (
+        data.cmd === "direct" &&
+        data.val.mode === "post_reaction_remove"
+      ) {
+        const { payload } = data.val;
+        const { post_id, emoji } = payload;
+
+        // Find the post in the posts state
+        const postIndex = posts.findIndex((post) => post.post_id === post_id);
+        if (postIndex !== -1) {
+          const updatedPosts = [...posts];
+          const updatedPost = { ...updatedPosts[postIndex] };
+
+          // Update or remove the reaction count for the emoji
+          updatedPost.reactions = updatedPost.reactions
+            .map((reaction) => {
+              if (reaction.emoji === emoji) {
+                const updatedReaction = {
+                  ...reaction,
+                  count: reaction.count - 1,
+                };
+                // Remove the reaction if count goes to 0
+                if (updatedReaction.count <= 0) {
+                  return null; // returning null will remove this reaction from the array
+                } else {
+                  return updatedReaction;
+                }
+              }
+              return reaction;
+            })
+            .filter(Boolean); // Filter out null reactions
 
           // Update the state with the modified post
           updatedPosts[postIndex] = updatedPost;
