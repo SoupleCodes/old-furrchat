@@ -186,10 +186,10 @@ export function PostComponent({
               id="ReplyButton"
               onClick={() => addReply(post_id || "")}
             >
-              <img src={`furrchat/assets/Reply.png`} height={9} /> Reply
+              <img src={`/furrchat/assets/Reply.png`} height={9} /> Reply
             </button>
             <button className="social-buttons" id="QuoteButton">
-              <img src={`furrchat/assets/Quote.png`} height={9} /> Quote
+              <img src={`/furrchat/assets/Quote.png`} height={9} /> Quote
             </button>
           </div>
         </div>
