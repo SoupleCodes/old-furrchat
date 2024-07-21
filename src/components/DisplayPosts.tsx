@@ -55,7 +55,7 @@ const DisplayPosts = () => {
 
           // Update or add the reaction count for the emoji
           let found = false;
-          updatedPost.reactions = updatedPost.reactions.map((reaction) => {
+          updatedPost.reactions = updatedPost.reactions.map((reaction:any) => {
             if (reaction.emoji === emoji) {
               found = true;
               return {
@@ -94,7 +94,7 @@ const DisplayPosts = () => {
 
           // Update or remove the reaction count for the emoji
           updatedPost.reactions = updatedPost.reactions
-            .map((reaction) => {
+            .map((reaction:any) => {
               if (reaction.emoji === emoji) {
                 const updatedReaction = {
                   ...reaction,
