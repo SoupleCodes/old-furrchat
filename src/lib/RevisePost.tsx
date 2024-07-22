@@ -127,8 +127,21 @@ function getReactions(reactionsData: any[]) {
     <div style={{ maxWidth: "750px" }}>
       {reactionsData.map((reactions) => {
         try {
+          let emojiContent;
+          if (isValidEmoji(reactions.emoji)) {
+            emojiContent = reactions.emoji; // Render standard emoji directly
+          } else {
+            emojiContent = (
+              <img
+                src={`https://uploads.meower.org/emojis/${reactions.emoji}`}
+                alt="Custom Emoji"
+                style={{ height: "10px" }}
+              />
+            );
+          }
           return (
             <button
+              key={reactions.emoji} // Ensure each button has a unique key
               style={{
                 padding: "5px",
                 fontSize: "8px",
@@ -137,19 +150,26 @@ function getReactions(reactionsData: any[]) {
                 background:
                   "linear-gradient(to bottom,rgba(255, 255, 255, 0.3), rgba(153, 153, 133, 0.3))",
                 border: "1px solid rgba(0, 0, 0, 0.2)",
+
               }}
             >
-              {reactions.emoji} {reactions.count}
+              {emojiContent} {reactions.count}
             </button>
           );
         } catch (error) {
           console.error("Error rendering reactions:", error);
-          return null; // Render nothing of course :)
+          return null; // Render nothing in case of error
         }
       })}
     </div>
   );
 }
+
+// Function to check if emoji is valid
+function isValidEmoji(emoji: string) {
+  return emoji.match(/\p{Extended_Pictographic}/ug) !== null;
+}
+
 
 // Function to revise a post by applying various transformations
 function revisePost(text: any): string {
