@@ -1,4 +1,4 @@
-import { emojiData, discordEmojis, PBJTime } from "./Data.ts";
+import { emojiData, discordEmojis, PBJTime, defaultPFPS } from "./Data.ts";
 
 // Function to handle attachments and return markdown image elements
 const handleAttachments = (attachments: any[]): string => {
@@ -102,8 +102,13 @@ function getReplies(repliesData: any[]) {
                 reply.author.avatar !== null &&
                 reply.author.avatar !== undefined ? (
                   <img
-                    src={`https://uploads.meower.org/icons/${reply.author.avatar}`}
-                    alt="reply pfp"
+                  src={
+                    reply.author.avatar === ""
+                      ? reply.author.pfp_data === -3
+                        ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                        : `${defaultPFPS[34 - reply.author.pfp_data]}`
+                      : `https://uploads.meower.org/icons/${reply.author.avatar}`
+                  }                    alt="reply pfp"
                     width="16"
                     height="16"
                     style={{ paddingRight: 5 }}
@@ -167,7 +172,7 @@ function getReactions(reactionsData: any[]) {
 
 // Function to check if emoji is valid
 function isValidEmoji(emoji: string) {
-  return emoji.match(/\p{Extended_Pictographic}/ug) !== null;
+  return emoji.match(/\p{Emoji_Presentation}/ug) !== null;
 }
 
 

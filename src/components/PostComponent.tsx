@@ -104,6 +104,10 @@ export function PostComponent({
   let attachment = handleAttachments(attachments);
   realPost = `${realPost}\n\n${attachment}`;
 
+  // Check if post only has emojis with optional spaces
+  const emojiRegex = /^[\p{Emoji_Presentation}\s]*$/gu;
+  const isValidEmojiOnly = emojiRegex.test(realPost);
+
   return (
     <div className="container">
       <div className="user">
@@ -143,9 +147,10 @@ export function PostComponent({
             {realDate} {edited ? "(edited)" : ""}
           </i>
         </div>
-        <div className="postmessage">
+        <div className="postmessage" style={{ fontSize: isValidEmojiOnly ? '20px' : '10px' }}>
+          <span style={{ fontSize: '10px' }}>
           {getReplies(reply_to)}
-
+          </span>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{

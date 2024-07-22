@@ -67,7 +67,7 @@ textarea:focus {
   margin-right: 5px;
   width: 1160px;
   padding-bottom: 35px;
-  height: 50px;
+  min-height: 50px;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.8) 0%,

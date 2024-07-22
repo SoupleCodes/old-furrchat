@@ -303,7 +303,8 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 marginRight: "5px",
                 width: "1090px",
                 paddingBottom: "25px",
-                height: "50px",
+                minHeight: "50px",
+                maxHeight: "500px",
                 background:
                   "linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(72, 173, 148, 0.3) 100%)",
                 borderColor: "4px solid rgba(0, 0, 0, 0.2)",
