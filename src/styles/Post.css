@@ -118,10 +118,10 @@ p {
 
 .online-indicator {
   position: absolute; /* Position relative to .post-pfp-container */
-  bottom: 9px;
-  right: 2px;
-  width: 15px;
-  height: 15px;
+  bottom: 6px;
+  left: 44px;
+  width: 12px;
+  height: 12px;
   background: linear-gradient(
     to bottom,
     #008000 34%,
@@ -134,15 +134,11 @@ p {
 
 .offline-indicator {
   position: absolute; /* Position relative to .post-pfp-container */
-  bottom: 9px;
-  right: 2px;
-  width: 15px;
-  height: 15px;
-  background: linear-gradient(
-    to bottom,
-    #800000 34%,
-    #ff0000 100%
-  );
+  bottom: 6px;
+  left: 44px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(to bottom, #800000 34%, #ff0000 100%);
   border-radius: 25%;
   border: 1.5px solid #800000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

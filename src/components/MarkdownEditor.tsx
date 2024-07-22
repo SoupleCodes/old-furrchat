@@ -288,6 +288,16 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
               value={post}
               onChange={(e) => setPost(e.target.value)}
               placeholder="What's on your mind?"
+              onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                if (e.key === "Enter" && e.shiftKey) {
+                  e.preventDefault();
+                  setPost(post + "\n");
+                } else if (e.key === "Enter") {
+                  //@ts-ignore
+                  sendPost(e);
+                }
+              }}
+              required
               style={{
                 flex: 1,
                 marginRight: "5px",
@@ -319,6 +329,8 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 borderRadius: "5px",
                 border: "1px solid #83838396",
                 padding: "10px",
+                fontWeight: 800,
+                color: "grey",
               }}
             >
               Post

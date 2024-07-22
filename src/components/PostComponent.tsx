@@ -107,7 +107,7 @@ export function PostComponent({
   return (
     <div className="container">
       <div className="user">
-        <span className="post-pfp-container">
+        <span className="post-pfp-container" style={{ padding: "4px" }}>
           {/* User's profile picture with styling */}
           <img
             src={pfp}
@@ -116,10 +116,10 @@ export function PostComponent({
             width="48"
             height="48"
             style={{
-              padding: 5,
-              boxShadow: `inset 0 0 3px ${avatarColor}`,
-              border: `1.5px solid ${avatarColor}`,
-              borderRadius: "10%",
+              borderRadius: "5px",
+              border: `1px solid ${avatarColor}`,
+              boxShadow:
+                "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
             }}
           />
           {/* Indicator showing if the user is online or offline */}

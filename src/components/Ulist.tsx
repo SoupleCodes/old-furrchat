@@ -5,6 +5,7 @@ import {
   ReactPortal,
 } from "react";
 import useUserList from "../lib/api/OnlineList";
+import { defaultPFPS } from "../lib/Data";
 
 const UListBody = () => {
   const userList: any = useUserList();
@@ -25,7 +26,7 @@ const UListBody = () => {
             "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
         }}
       >
-        <span style={{ fontWeight: 600 }}>
+        <span style={{ fontWeight: 600, color: "#333" }}>
           <img height="20" src={`/furrchat/assets/PeopleIcon.png`} />
           {` There are currently ${userList.length} users online.`}
         </span>
@@ -33,6 +34,7 @@ const UListBody = () => {
         <hr />
         {userList.map(
           (user: {
+            pfp_data: number;
             avatar: any;
             _id:
               | string
@@ -56,7 +58,13 @@ const UListBody = () => {
               <img
                 height={18}
                 width={18}
-                src={`https://uploads.meower.org/icons/${user.avatar}`}
+                src={
+                  user.avatar === ""
+                    ? user.pfp_data === -3
+                      ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                      : `${defaultPFPS[34 - user.pfp_data]}`
+                    : `https://uploads.meower.org/icons/${user.avatar}`
+                }
               />{" "}
               {user._id}
             </button>

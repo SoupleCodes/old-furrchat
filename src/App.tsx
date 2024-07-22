@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles/MarkdownEditor.css";
 import "./styles/Markdown.css";
 import "./styles/Post.css";
@@ -18,6 +18,34 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
+
+  // Effect to check localStorage for userToken on component mount
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      setLoginSuccess(true); // If token exists, consider user as logged in
+
+      // Establish WebSocket connection using the token
+      const ws = new WebSocket(
+        `wss://server.meower.org/?v=1&token=${userToken}`
+      );
+
+      ws.onmessage = (message) => {
+        const data = JSON.parse(message.data);
+        if (data.cmd === "auth") {
+          const userData = data.val;
+          const updatedToken = userData.token;
+          console.log(updatedToken);
+          localStorage.setItem("userToken", updatedToken);
+        }
+      };
+
+      // Clean up WebSocket connection on component unmount
+      return () => {
+        ws.close();
+      };
+    }
+  }, []); // Empty dependency array ensures this effect runs only on mount
 
   return (
     <div className="app">
@@ -40,25 +68,29 @@ export default function App() {
               setLoginError
             )}
           >
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="username">Username: </label>
             <input
               type="text"
               id="username"
               name="username"
+              placeholder="Enter your username."
               value={username} // Controlled input for username
               onChange={(event) => setUsername(event.target.value)} // Update state on change
               required
             />
-            <label htmlFor="password">Password:</label>
+            {"   |   "}
+            <label htmlFor="password">Password: </label>
             <input
               type="password"
               id="password"
               name="password"
+              placeholder="Enter your password."
               value={password} // Controlled input for password
               onChange={(event) => setPassword(event.target.value)} // Update state on change
               required
             />
-            <input type="submit" value="Submit" /> {/* Submit button */}
+            <input type="submit" value="Submit" className="password-submit" />{" "}
+            {/* Submit button */}
           </form>
           {/* Conditional rendering of login messages */}
           {loginError && <p>Login failed. Please try again.</p>}

@@ -1,4 +1,4 @@
-import { emojiData, discordEmojis } from "./Data.ts";
+import { emojiData, discordEmojis, PBJTime } from "./Data.ts";
 
 // Function to handle attachments and return markdown image elements
 const handleAttachments = (attachments: any[]): string => {
@@ -16,10 +16,10 @@ const handleAttachments = (attachments: any[]): string => {
 };
 
 // Function to replace emoji keys in a sentence with corresponding markdown image syntax
-const EmojiImage = (sentence: string): string => {
-  for (const key in emojiData) {
+const EmojiImage = (sentence: string, list: { [x: string]: any }): string => {
+  for (const key in list) {
     if (sentence.includes(key) && !sentence.includes("\\" + key)) {
-      const value = emojiData[key];
+      const value = list[key];
       sentence = sentence.replaceAll(key, `![${key}](${value})`);
     }
   }
@@ -156,7 +156,8 @@ function revisePost(text: any): string {
   let revisedString = text;
 
   revisedString = DiscEmojiSupport(revisedString);
-  revisedString = EmojiImage(revisedString);
+  revisedString = EmojiImage(revisedString, emojiData);
+  revisedString = EmojiImage(revisedString, PBJTime);
   revisedString = DataImageToURL(revisedString);
 
   const regex = /\[\(sticker\) (.+?): (.+)\]/;
@@ -169,6 +170,7 @@ function revisePost(text: any): string {
   }
 
   revisedString = replaceKeysWithValues(revisedString, discordEmojis);
+  revisedString = replaceKeysWithValues(revisedString, PBJTime);
   revisedString = revisedString.replace(/\n/g, "\n\n");
 
   return revisedString;

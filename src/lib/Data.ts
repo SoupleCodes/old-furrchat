@@ -432,119 +432,222 @@ const userEmojis: EmojiMap = {
 const PBJTime: EmojiMap = {
   ":banana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time.gif",
   ":redbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-1.gif",
-  ":superbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-2.gif",
+  ":superbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-2.gif",
   ":babybanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-3.gif",
   ":banana2:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-4.gif",
-  ":legstretchbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-6.gif",
+  ":legstretchbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-6.gif",
   ":hulabanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-7.gif",
-  ":manybananas:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-8.gif",
-  ":grandpabanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-9.gif",
+  ":manybananas:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-8.gif",
+  ":grandpabanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-9.gif",
   ":banana3:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-10.gif",
-  ":guitarbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-11.gif",
-  ":explodbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-12.gif",
+  ":elvisbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-11.gif",
+  ":explodbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-12.gif",
   ":banana4:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-13.gif",
-  ":santabanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-14.gif",
-  ":bananaSMASH:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-15.gif",
-  ":alienbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-16.gif",
-  ":firebanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-17.gif",
-  ":derpybanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-18.gif",
-  ":bananadance4:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-19.gif",
-  ":bananadance5:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-20.gif",
-  ":bananadance6:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-21.gif",
-  ":bananadance7:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-22.gif",
-  ":bananadance8:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-23.gif",
-  ":bananadance9:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-24.gif",
-  ":carrotbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-25.gif",
-  ":bananadance11:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-26.gif",
-  ":bananadance12:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-27.gif",
-  ":bananaoncow:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-28.gif",
-  ":bananadance14:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-30.gif",
-  ":bananadance15:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-32.gif",
-  ":bananadevil:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-33.gif",
-  ":bananadance17:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-36.gif",
-  ":bananadance18:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-37.gif",
-  ":bananadance19:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-38.gif",
-  ":bananadance20:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-39.gif",
-  ":bananadance21:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-40.gif",
-  ":bananadance26:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-41.gif",
-  ":bananaoncomputer:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-42.gif",
-  ":bananadance28:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-43.gif",
-  ":bananadance29:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-44.gif",
-  ":bananadance30:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-45.gif",
-  ":bananadance31:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-46.gif",
-  ":justbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-47.gif",
-  ":bananamailslot:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-48.gif",
-  ":bananadance34:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-49.gif",
-  ":bananadance35:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-50.gif",
-  ":bananadance36:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-51.gif",
-  ":bananadance38:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-53.gif",
-  ":bananadance39:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-54.gif",
-  ":bananadance40:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-55.gif",
-  ":bananadance41:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-56.gif",
-  ":bananadance42:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-57.gif",
-  ":bananadance43:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-58.gif",
-  ":bananadance44:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-59.gif",
-  ":bananadance45:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-60.gif",
+  ":santabanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-14.gif",
+  ":bananaSMASH:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-15.gif",
+  ":alienbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-16.gif",
+  ":firebanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-17.gif",
+  ":derpybanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-18.gif",
+  ":bananadance4:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-19.gif",
+  ":bananadance5:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-20.gif",
+  ":bananadance6:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-21.gif",
+  ":bananadance7:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-22.gif",
+  ":bananadance8:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-23.gif",
+  ":bananadance9:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-24.gif",
+  ":carrotbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-25.gif",
+  ":bananadance11:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-26.gif",
+  ":bananadance12:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-27.gif",
+  ":bananaoncow:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-28.gif",
+  ":bananadance14:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-30.gif",
+  ":bananadance15:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-32.gif",
+  ":bananadevil:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-33.gif",
+  ":bananadance17:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-36.gif",
+  ":bananadance18:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-37.gif",
+  ":bananadance19:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-38.gif",
+  ":bananadance20:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-39.gif",
+  ":bananadance21:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-40.gif",
+  ":bananadance26:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-41.gif",
+  ":bananaoncomputer:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-42.gif",
+  ":bananadance28:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-43.gif",
+  ":jumpinjackbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-44.gif",
+  ":bananadance30:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-45.gif",
+  ":bananadance31:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-46.gif",
+  ":justbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-47.gif",
+  ":bananamailslot:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-48.gif",
+  ":bananadance34:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-49.gif",
+  ":bananadance35:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-50.gif",
+  ":bananadance36:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-51.gif",
+  ":bananadance38:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-53.gif",
+  ":bananadance39:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-54.gif",
+  ":bananadance40:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-55.gif",
+  ":bananadance41:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-56.gif",
+  ":bananadance42:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-57.gif",
+  ":bananadance43:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-58.gif",
+  ":bananadance44:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-59.gif",
+  ":bananadance45:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-60.gif",
   ":LAME:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-62.gif",
-  ":bananadance48:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-63.gif",
-  ":bananadance51:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-66.gif",
-  ":bananadance52:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-67.gif",
-  ":bananadance53:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-68.gif",
-  ":militarybanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-69.gif",
-  ":bananadance55:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-70.gif",
-  ":bananadance56:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-71.gif",
-  ":bananawaving:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-72.gif",
-  ":bananadance58:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-73.gif",
-  ":bananawithwhip:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-74.gif",
-  ":bananaonllama:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-75.gif",
-  ":bananadance61:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-76.gif",
+  ":bananadance48:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-63.gif",
+  ":bananadance51:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-66.gif",
+  ":bananadance52:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-67.gif",
+  ":bananadance53:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-68.gif",
+  ":militarybanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-69.gif",
+  ":bananadance55:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-70.gif",
+  ":wavingbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-71.gif",
+  ":bananawaving:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-72.gif",
+  ":bananadance58:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-73.gif",
+  ":bananawithwhip:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-74.gif",
+  ":bananaonllama:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-75.gif",
+  ":bananadance61:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-76.gif",
   ":tusors:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-77.gif",
-  ":bananadance63:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-78.gif",
-  ":bananadance65:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-80.gif",
-  ":bananadance68:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-83.gif",
-  ":broccolibanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-85.gif",
-  ":bananadance71:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-86.gif",
-  ":bananadance73:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-88.gif",
-  ":smooshedbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-89.gif",
-  ":bananadance75:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-90.gif",
-  ":bananadance76:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-91.gif",
-  ":bananadance78:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-93.gif",
+  ":bananadance63:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-78.gif",
+  ":bananadance65:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-80.gif",
+  ":bananadance68:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-83.gif",
+  ":broccolinana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-85.gif",
+  ":bananadance71:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-86.gif",
+  ":batnana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-88.gif",
+  ":smooshedbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-89.gif",
+  ":bananadance75:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-90.gif",
+  ":bananadance76:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-91.gif",
+  ":bananadance78:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-93.gif",
   ":nobanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-94.gif",
-  ":jumpingbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-95.gif",
-  ":bananadance82:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-97.gif",
-  ":bananadance83:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-98.gif",
-  ":bananadance85:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-100.gif",
-  ":bananadance86:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-101.gif",
-  ":bananadance87:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-102.gif",
-  ":bananainelevator:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-103.gif",
-  ":bananadance90:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-105.gif",
-  ":upsidedownbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-106.gif",
-  ":bananadance92:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-107.gif",
-  ":jetpackbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-108.gif",
-  ":bananadance96:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-111.gif",
-  ":bananadance97:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-112.gif",
-  ":bananadance99:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-114.gif",
-  ":bananadance100:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-115.gif",
-  ":bananadance105:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-120.gif",
-  ":bananadance107:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-122.gif",
-  ":goblinbanana:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-124.gif",
-  ":bananadance110:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-125.gif",
-  ":bananadance111:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-126.gif",
-  ":bananadance112:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-127.gif",
-  ":bananadance113:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-128.gif",
-  ":bananadance115:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-130.gif",
-  ":bananadance116:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-131.gif",
-  ":bananadance117:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-132.gif",
-  ":bananadance118:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-133.gif",
-  ":bananadance120:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-135.gif",
-  ":bananadance121:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-136.gif",
-  ":bananadance122:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-137.gif",
-  ":bananadance123:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-138.gif",
-  ":bananadance124:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-139.gif",
-  ":bananadance125:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-140.gif",
-  ":bananadissappearing:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-141.gif",
-  ":bananadance127:": "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-142.gif",
-}
+  ":jumpingbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-95.gif",
+  ":bananadance82:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-97.gif",
+  ":bananadance83:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-98.gif",
+  ":bananadance85:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-100.gif",
+  ":bananadance86:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-101.gif",
+  ":bananadance87:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-102.gif",
+  ":bananainelevator:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-103.gif",
+  ":bananadance90:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-105.gif",
+  ":upsidedownbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-106.gif",
+  ":bananadance92:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-107.gif",
+  ":jetpackbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-108.gif",
+  ":bananadance96:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-111.gif",
+  ":bananadance97:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-112.gif",
+  ":bananadance99:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-114.gif",
+  ":bananadance100:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-115.gif",
+  ":bananadance105:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-120.gif",
+  ":bananadance107:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-122.gif",
+  ":goblinbanana:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-124.gif",
+  ":bananadance110:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-125.gif",
+  ":bananadance111:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-126.gif",
+  ":bananadance112:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-127.gif",
+  ":bananadance113:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-128.gif",
+  ":bananadance115:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-130.gif",
+  ":bananadance116:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-131.gif",
+  ":bananadance117:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-132.gif",
+  ":bananadance118:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-133.gif",
+  ":bananadance120:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-135.gif",
+  ":bananadance121:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-136.gif",
+  ":bananadance122:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-137.gif",
+  ":bananadance123:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-138.gif",
+  ":bananadance124:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-139.gif",
+  ":bananadance125:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-140.gif",
+  ":bananadissappearing:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-141.gif",
+  ":bananadance127:":
+    "/furrchat/assets/smilies-pbj/peanut-butter-jelly-time-142.gif",
+};
 
 const headingOptions = [
   { label: "Heading 1", value: "#" },
@@ -563,5 +666,5 @@ export {
   GIFS,
   userEmojis,
   headingOptions,
-  PBJTime
+  PBJTime,
 };

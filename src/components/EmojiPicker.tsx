@@ -73,7 +73,7 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
               ? `![${key}](${value})`
               : selectedCategory === "Emoticons"
               ? key
-              : value
+              : key
           )
         }
         className={
@@ -138,8 +138,8 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
                       "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
                     background:
                       selectedCategory === category
-                        ? "rgba(236, 236, 236)"
-                        : "rgba(255, 255, 255)",
+                        ? "linear-gradient(to bottom, rgb(230, 230, 230) 0%, rgb(205, 205, 205) 100%)"
+                        : "linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(230, 230, 230) 100%)",
                     border: "none",
                   }}
                   onClick={() => handleCategoryClick(category)}
@@ -160,7 +160,7 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
                           : "repeat(auto-fit, minmax(60px, 1fr))",
                       gap: "5px",
                     }
-                  : { padding: "10px" }
+                  : { padding: "10px", maxWidth: "353px" }
               }
             >
               {emojiList}
