@@ -11,6 +11,16 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
   const fileExtension = src.split(".").pop()?.toLowerCase();
 
   // Render different components based on the file extension
+  if (src.includes("emoji" || "smilies")) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        style={{ width: "auto", maxHeight: "20px" }}
+      />
+    );
+  } else {
+
   switch (fileExtension) {
     // Audio formats
     case "wav":
@@ -74,20 +84,9 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
         />
       );
 
-    // Archive formats (like .zip)
-    case "zip":
-      case "rar":
-      case "7z":
-      case "tar":
-      case "gz":
-      case "gzip":
-      case "bz2":
-      case "xz":
-      case "lzma":
-      case "cab":
-      case "iso":
-      case "dmg":
-      case "bin":
+    // Default fallback for unknown file types
+
+    default:
       return (
         <div className="attachment-container" style={{ textAlign: "center", width: 'fit-content' }}>
           <p>Cannot display archive files directly.</p>
@@ -96,15 +95,6 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
           </a>
         </div>
       );
-
-    // Default fallback for unknown file types
-    default:
-      return (
-        <img
-          src={src}
-          alt={alt}
-          style={{ height: "auto", width: "auto", maxHeight: "375px" }}
-        />
-      );
   }
+}
 };

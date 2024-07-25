@@ -337,7 +337,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         ) : (
           <form
             onSubmit={sendPost}
-            style={{ display: "flex", maxHeight: "500px" }}
+            style={{ display: "flex" }}
           >
             <textarea
               value={post}
@@ -357,7 +357,6 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 flex: 1,
                 marginRight: "5px",
                 width: "1090px",
-                paddingBottom: "25px",
                 minHeight: "50px",
                 maxHeight: "500px",
                 background:
@@ -385,7 +384,6 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 borderRadius: "5px",
                 border: "1px solid #83838396",
                 padding: "10px",
-                fontWeight: 800,
                 color: "grey",
               }}
             >

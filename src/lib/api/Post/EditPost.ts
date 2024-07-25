@@ -15,9 +15,9 @@ export const editPost = async (postId: string | null, userToken: string, editedP
         throw new Error(`Failed to edit post with ID ${postId}`);
       }
   
-      console.log(`Post with ID ${postId} deleted successfully.`);
+      console.log(`Post with ID ${postId} edited successfully.`);
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error("Error edited post:", error);
     }
   };
   
