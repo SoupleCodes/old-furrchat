@@ -1,4 +1,4 @@
-export const deletePost = async (postId: string, userToken: string) => {
+export const deletePost = async (postId: string | null, userToken: string) => {
   try {
     const response = await fetch(`https://api.meower.org/posts?id=${postId}`, {
       method: "DELETE",
