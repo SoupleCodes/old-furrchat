@@ -3,6 +3,10 @@
   z-index: 1000;
 }
 
+.emoji-picker {
+  opacity: 0.95;
+}
+
 .emoji-list {
   background: linear-gradient(
     to bottom,

@@ -11,6 +11,8 @@ import {
   revisePost,
 } from "../lib/RevisePost.tsx";
 import "/src/styles/SocialButtons.css";
+import { deletePost } from "../lib/api/Post/DeletePost.ts";
+// import EmojiPicker from "./EmojiPicker.tsx";
 
 // import fetchUserData from '../lib/api/UserData.ts';
 import { formatTimestamp } from "../utils/FormatTimestamp.ts";
@@ -78,6 +80,8 @@ export function PostComponent({
     setReplyIds((prevReplyIds) => [...prevReplyIds, postId]);
     console.log(replyIds);
   };
+
+  const userToken = localStorage.getItem('userToken')
 
   // Format the timestamp into a readable date string
   const realDate = formatTimestamp(time.e);
@@ -186,15 +190,23 @@ export function PostComponent({
         <div className="social" style={{ display: "flex" }}>
           <div className="reactions">{getReactions(reactions)}</div>
           <div style={{ marginLeft: "auto" }}>
+           {/* <EmojiPicker onEmojiSelect={appendToPost} src="/furrchat/assets/markdown/Emoji.png"/>
+             <button className="social-buttons" id="ReactButton">
+              <img src={`/furrchat/assets/icons/React.png`} height={9} /> React
+            </button> */}
             <button
               className="social-buttons"
               id="ReplyButton"
               onClick={() => addReply(post_id || "")}
             >
-              <img src={`/furrchat/assets/Reply.png`} height={9} /> Reply
+              <img src={`/furrchat/assets/icons/Reply.png`} height={9} /> Reply
             </button>
+            { userToken ? (
+            <button className="social-buttons" id="DeleteButton" onClick={() => deletePost(post_id, userToken)}>
+              <img src={`/furrchat/assets/icons/Delete.png`} height={9} /> Delete
+            </button> ) : ("")}
             <button className="social-buttons" id="QuoteButton">
-              <img src={`/furrchat/assets/Quote.png`} height={9} /> Quote
+              <img src={`/furrchat/assets/icons/Quote.png`} height={9} /> Quote
             </button>
           </div>
         </div>

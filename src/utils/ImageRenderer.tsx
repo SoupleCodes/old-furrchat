@@ -75,9 +75,31 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
         />
       );
 
+    // Archive formats (like .zip)
+    case "zip":
+      case "rar":
+      case "7z":
+      case "tar":
+      case "gz":
+      case "gzip":
+      case "bz2":
+      case "xz":
+      case "lzma":
+      case "cab":
+      case "iso":
+      case "dmg":
+      case "bin":
+      return (
+        <div className="attachment-container" style={{ textAlign: "center", width: 'fit-content' }}>
+          <p>Cannot display archive files directly.</p>
+          <a href={src} download>
+            Download {src.split("/").pop()}
+          </a>
+        </div>
+      );
+
     // Default fallback for unknown file types
     default:
-      
       return (
         <img
           src={src}

@@ -17,30 +17,46 @@ import EmojiPicker from "./EmojiPicker.tsx";
 import ImageRenderer from "./DisplayPosts.tsx";
 import Dropdown from "./Dropdown.tsx";
 import { headingOptions } from "../lib/Data.ts";
+import { uploadFileAndGetId } from "../lib/api/Post/SendPost.ts";
 
 // import { client } from "@meower-media/api-client"
 
 const PostEditor = ({ userToken }: { userToken: string }) => {
   const [post, setPost] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [selectionStart, setSelectionStart] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
 
-  const sendPost = (event: React.FormEvent<HTMLFormElement>) => {
+  const sendPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const attachmentIds = await Promise.all(attachments.map((file) => uploadFileAndGetId({ file, userToken })));
+  
+    const requestBody = {
+      content: post,
+      attachments: attachmentIds
+    };
+    
     fetch("https://api.meower.org/home", {
       method: "POST",
-      body: JSON.stringify({ attachments: [], content: post }),
+      body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
         Token: userToken,
       },
-    }).then((response) => response.json()).then;
-    {
-      setPost("");
-    }
-  };
-
+    })
+    .then(response => response.json() )
+    .then(data => {
+      console.log(data)
+      setPost(""); // Clear post content
+      setAttachments([]); // Clear attachments
+    })
+    .catch(error => {
+      console.error("Error sending post:", error);
+      // ERROR ERROR ERROR ERROR ERROR ERROR 
+    });
+  }    
+  
   const appendToPost = (string: string) => {
     const selectedText = post.substring(selectionStart, selectionEnd);
     const newPost =
@@ -78,10 +94,20 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
     setSelectionEnd(newCursorPosition);
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const files = event.target.files;
+  if (files) {
+    // Convert FileList to array and update attachments state
+    const newAttachments = Array.from(files);
+    setAttachments([...attachments, ...newAttachments]);
+  }
+};
+
+
   return (
     <div>
       <div className="markdown-container">
-        <EmojiPicker onEmojiSelect={appendToPost} />
+        <EmojiPicker onEmojiSelect={appendToPost} src="/furrchat/assets/markdown/Emoji.png"/>
 
         <div
           className="markdown-button"
@@ -224,11 +250,29 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         >
           <img
             src="/furrchat/assets/markdown/Image.png"
-            alt="link"
+            alt="image"
             height="48"
-            title="Image"
+            title="Image Markdown"
           />
         </div>
+
+        <div className="markdown-button">
+  <label htmlFor="file-upload">
+    <img 
+      src="/furrchat/assets/markdown/Upload.png" 
+      alt="Upload Image" 
+      height="48" 
+      title="Upload Image" 
+    />
+  </label>
+  <input 
+    id="file-upload" 
+    type="file" 
+    multiple 
+    onChange={handleFileUpload} 
+    style={{ display: 'none' }} 
+  />
+</div>
 
         <div
           className="markdown-button"
@@ -240,7 +284,8 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             height="48"
             title="Preview (Alpha)"
           />
-        </div>
+        </div>  
+
       </div>
 
       <span
@@ -250,6 +295,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           justifyContent: "center",
           alignItems: "center",
           resize: "none",
+          marginBottom: '14px'
         }}
       >
         {showPreview ? (
@@ -283,7 +329,8 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             </ReactMarkdown>
           </div>
         ) : (
-          <form onSubmit={sendPost} style={{ display: "flex" }}>
+          
+          <form onSubmit={sendPost} style={{ display: "flex", maxHeight: "500px" }}>
             <textarea
               value={post}
               onChange={(e) => setPost(e.target.value)}
@@ -336,10 +383,46 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             >
               Post
             </button>
+            
             <div></div>
           </form>
         )}
       </span>
+      <div>
+
+  <div className="attachments">
+{attachments.map((file, index) => (
+  <div className="attachment-container" key={index}>
+    {file.type.startsWith('image/') && ( 
+      <img 
+        src={URL.createObjectURL(file)} 
+        alt={file.name} 
+        style={{
+          height: '40px'
+        }}
+      />
+    )}
+    <button
+      onClick={() => {
+        const newAttachments = [...attachments];
+        newAttachments.splice(index, 1);
+        setAttachments(newAttachments);
+      }}
+      style={{
+      width:'20px',
+      height:'25px',
+      float: 'right'
+      }}
+    >{"X"}
+    </button>
+    <br />
+    {file.name}
+  </div>
+))}
+</div>
+
+</div>
+
     </div>
   );
 };

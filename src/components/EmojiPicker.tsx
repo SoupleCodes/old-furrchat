@@ -11,9 +11,10 @@ import "../styles/EmojiPicker.css";
 // Interface for the props of EmojiPicker component
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void; // Function to handle the selection of an emoji
+  src: string; // URL of the emoji image
 }
 
-const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
+const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
   const [isOpen, setIsOpen] = useState(false); // State to manage visibility of the emoji picker
   const [searchQuery, setSearchQuery] = useState(""); // State to manage the search input
   const [selectedCategory, setSelectedCategory] = useState("Smilies"); // State to manage the selected category
@@ -47,7 +48,6 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
   // Handle the selection of an emoji
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
-    setIsOpen(false); // Close picker after selection
   };
 
   // Handle the change in the search input
@@ -55,10 +55,9 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
     setSearchQuery(event.target.value);
   };
 
-  // Handles the category selection and clears search query
+  // Handles the category selection
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
-    setSearchQuery("");
   };
 
   // Rendering emojis based on selected category and filtered by search query
@@ -73,6 +72,8 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
               ? `![${key}](${value})`
               : selectedCategory === "Emoticons"
               ? key
+              : selectedCategory === "Discord"
+              ? value
               : key
           )
         }
@@ -112,7 +113,7 @@ const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
     <div className="emoji-picker-container">
       <div className="markdown-button" onClick={togglePicker}>
         <img
-          src="/furrchat/assets/markdown/Emoji.png"
+          src={src}
           alt="Smilies"
           className="emoji-icon"
           height="48"

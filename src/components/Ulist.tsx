@@ -27,7 +27,7 @@ const UListBody = () => {
         }}
       >
         <span style={{ fontWeight: 600, color: "#333" }}>
-          <img height="20" src={`/furrchat/assets/PeopleIcon.png`} />
+          <img height="20" src={`/furrchat/assets/icons/PeopleIcon.png`} />
           {` There are currently ${userList.length} users online.`}
         </span>
         <br />

@@ -36,3 +36,27 @@
     rgba(59, 83, 150, 0.678)
   );
 }
+
+#DeleteButton {
+  background: linear-gradient(
+    to bottom,
+    rgba(228, 127, 127, 0.507),
+    rgba(150, 59, 59, 0.678)
+  );
+}
+
+#DeleteButton:hover {
+  background: linear-gradient(
+    to top,
+    rgba(228, 127, 127, 0.507),
+    rgba(150, 59, 59, 0.678)
+  );
+}
+
+#ReactButton {
+  background: linear-gradient(in hsl longer hue 45deg, rgba(255, 0, 0, 0.308) 0 0);
+  color: #ffffff;
+}
+
+/* rgba(127, 228, 139, 0.507)
+ rgba(59, 150, 115, 0.678)

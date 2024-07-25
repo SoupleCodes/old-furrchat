@@ -13,6 +13,10 @@ import UListBody from "./components/Ulist.tsx";
 import { client } from "https://esm.sh/jsr/@meower/api-client@1.0.0-rc.4";
 
 export default function App() {
+setTimeout(() => {
+  if (import.meta.env.DEV) alert("remember to commit btw")
+}, 18000000)
+
   // State hooks to manage username, password, login success, and login error
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +50,7 @@ export default function App() {
       };
     }
   }, []); // Empty dependency array ensures this effect runs only on mount
-
+  
   return (
     <div className="app">
       <div className="banner">
