@@ -89,6 +89,30 @@ const DiscEmojiSupport = (text: string): string => {
   });
 };
 
+const MeowerEmojiSupport = (text: string): string => {
+  if (typeof text !== "string") {
+    return "";
+  }
+
+  // i.e. <:0idbmJ1EDIuLcK7gRsDqse8y>
+  const regex = /\\<:([a-z0-9]+)>/gi; // backslash support
+  
+  return text.replace(regex, (match) => {
+    if (match.startsWith("\\")) {
+      return match.substring(1); // plain text
+    } else {
+      const id = match.substring(2, match.length - 1);
+
+      if (info) {
+        const url = `https://uploads.meower.org/emojis/${id}`
+        return `![${id}](${url})`;
+      } else {
+        return match; // Return the original match if no info is found
+      }
+    }
+  });
+} 
+
 // Function to render replies
 function getReplies(repliesData: any[]) {
   return (
@@ -181,6 +205,7 @@ function revisePost(text: any): string {
   let revisedString = text;
 
   revisedString = DiscEmojiSupport(revisedString);
+  revisedString = MeowerEmojiSupport(revisedString);
   revisedString = EmojiImage(revisedString, emojiData);
   revisedString = EmojiImage(revisedString, PBJTime);
   revisedString = DataImageToURL(revisedString);
@@ -204,6 +229,7 @@ function revisePost(text: any): string {
 export {
   EmojiImage,
   DiscEmojiSupport,
+  MeowerEmojiSupport,
   handleAttachments,
   getReplies,
   revisePost,
