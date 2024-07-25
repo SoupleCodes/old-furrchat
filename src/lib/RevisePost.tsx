@@ -95,20 +95,15 @@ const MeowerEmojiSupport = (text: string): string => {
   }
 
   // i.e. <:0idbmJ1EDIuLcK7gRsDqse8y>
-  const regex = /\\<:([a-z0-9]+)>/gi; // backslash support
+  const regex = /\\?<:([a-z0-9]+)>/gi; // backslash support
   
   return text.replace(regex, (match) => {
     if (match.startsWith("\\")) {
       return match.substring(1); // plain text
     } else {
       const id = match.substring(2, match.length - 1);
-
-      if (info) {
-        const url = `https://uploads.meower.org/emojis/${id}`
-        return `![${id}](${url})`;
-      } else {
-        return match; // Return the original match if no info is found
-      }
+      const url = `https://uploads.meower.org/emojis/${id}`
+      return `![${id}](${url})`;
     }
   });
 } 
