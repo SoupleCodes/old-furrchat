@@ -58,7 +58,6 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
         />
       );
 
-    // Image formats
     case "jpg":
     case "jpeg":
     case "png":
@@ -71,7 +70,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
         <img
           src={src}
           alt={alt}
-          style={{ height: "auto", width: "auto", maxHeight: "380px" }}
+          style={{ height: "auto", width: "auto", maxHeight: "375px" }}
         />
       );
 
@@ -104,7 +103,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
         <img
           src={src}
           alt={alt}
-          style={{ height: "auto", width: "auto", maxHeight: "380px" }}
+          style={{ height: "auto", width: "auto", maxHeight: "375px" }}
         />
       );
   }

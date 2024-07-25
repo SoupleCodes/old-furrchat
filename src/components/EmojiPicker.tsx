@@ -11,7 +11,7 @@ import "../styles/EmojiPicker.css";
 // Interface for the props of EmojiPicker component
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void; // Function to handle the selection of an emoji
-  src: string; // URL of the emoji image
+  src: string; // SRC of the emoji image
 }
 
 const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
@@ -63,9 +63,19 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
   // Rendering emojis based on selected category and filtered by search query
   const emojiList = categories[selectedCategory]
     .filter(([key]) => key.toLowerCase().includes(searchQuery.toLowerCase()))
-    .map(([key, value]) => (
+    .reduce((acc, [key, value]) => {
+      const found = acc.find(
+        (item: { key: any; value: any }) => item.value === value
+      );
+      if (!found) {
+        acc.push({ key, value });
+      }
+      return acc;
+    }, [])
+    .sort((a: { key: string }, b: { key: any }) => a.key.localeCompare(b.key))
+    .map(({ key, value }: any) => (
       <span
-        key={Math.random()}
+        key={key}
         onClick={() =>
           handleEmojiClick(
             selectedCategory === "GIFS"

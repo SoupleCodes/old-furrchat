@@ -16,28 +16,38 @@ const handleAttachments = (attachments: any[]): string => {
 };
 
 // Function to replace emoji keys in a sentence with corresponding markdown image syntax
-const EmojiImage = (sentence: string, list: { [x: string]: any }): string => {
+const EmojiImage = (sentence: string, list: { [x: string]: any }, replace: boolean = true): string => {
   for (const key in list) {
     if (sentence.includes(key) && !sentence.includes("\\" + key)) {
       const value = list[key];
-      sentence = sentence.replaceAll(key, `![${key}](${value})`);
+      if (replace) {
+        sentence = sentence.replaceAll(key, `![${key}](${value})`);
+      } else {
+        sentence = sentence.replaceAll(key, '');
+      }
     }
   }
   return sentence;
 };
 
-const DataImageToURL = (sentence: string): string => {
+
+const DataImageToURL = (sentence: string, replace: boolean = true): string => {
   // Regular expression to match URLs
   const urlRegex = /(data:image\/[^\s]+;base64,[^\s]+)/g;
 
   // Replace URLs in the sentence with markdown image syntax
   sentence = sentence.replace(urlRegex, (url) => {
-    return `![image](${url})`;
+    if (replace) {
+      return `![image](${url})`;
+    } else {
+      return ''; // Remove the URL if replace is false
+    }
   });
 
   // Return the modified sentence
   return sentence;
 };
+
 
 // Extracts information from a text that matches a Discord emoji pattern
 const extractInfo = (
@@ -64,7 +74,7 @@ const replaceKeysWithValues = (
 };
 
 // Function to support Discord emojis in text, replacing them with markdown image syntax
-const DiscEmojiSupport = (text: string): string => {
+const DiscEmojiSupport = (text: string, replace: boolean = true): string => {
   if (typeof text !== "string") {
     return "";
   }
@@ -74,7 +84,7 @@ const DiscEmojiSupport = (text: string): string => {
   return text.replace(regex, (match) => {
     if (match.startsWith("\\")) {
       return match.substring(1); // Return the emoji as plain text (remove backslash)
-    } else {
+    } else if (replace) {
       const info = extractInfo(match);
 
       if (info) {
@@ -85,9 +95,12 @@ const DiscEmojiSupport = (text: string): string => {
       } else {
         return match; // Return the original match if no info is found
       }
+    } else {
+      return ''; // Remove the Discord emoji if replace is false
     }
   });
 };
+
 
 // Function to render replies
 function getReplies(repliesData: any[]) {
@@ -102,13 +115,14 @@ function getReplies(repliesData: any[]) {
                 reply.author.avatar !== null &&
                 reply.author.avatar !== undefined ? (
                   <img
-                  src={
-                    reply.author.avatar === ""
-                      ? reply.author.pfp_data === -3
-                        ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                        : `${defaultPFPS[34 - reply.author.pfp_data]}`
-                      : `https://uploads.meower.org/icons/${reply.author.avatar}`
-                  }                    alt="reply pfp"
+                    src={
+                      reply.author.avatar === ""
+                        ? reply.author.pfp_data === -3
+                          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                          : `${defaultPFPS[34 - reply.author.pfp_data]}`
+                        : `https://uploads.meower.org/icons/${reply.author.avatar}`
+                    }
+                    alt="reply pfp"
                     width="16"
                     height="16"
                     style={{ paddingRight: 5 }}
@@ -139,7 +153,7 @@ function getReactions(reactionsData: any[]) {
             emojiContent = (
               <img
                 src={`https://uploads.meower.org/emojis/${reactions.emoji}`}
-                alt="Custom Emoji"
+                alt="Reaction!"
                 style={{ height: "10px" }}
               />
             );
@@ -155,7 +169,6 @@ function getReactions(reactionsData: any[]) {
                 background:
                   "linear-gradient(to bottom,rgba(255, 255, 255, 0.3), rgba(153, 153, 133, 0.3))",
                 border: "1px solid rgba(0, 0, 0, 0.2)",
-
               }}
             >
               {emojiContent} {reactions.count}
@@ -172,9 +185,8 @@ function getReactions(reactionsData: any[]) {
 
 // Function to check if emoji is valid
 function isValidEmoji(emoji: string) {
-  return emoji.match(/\p{Emoji_Presentation}/ug) !== null;
+  return emoji.match(/\p{Emoji_Presentation}/gu) !== null;
 }
-
 
 // Function to revise a post by applying various transformations
 function revisePost(text: any): string {

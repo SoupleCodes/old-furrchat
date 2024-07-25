@@ -9,9 +9,12 @@ import {
   getReplies,
   getReactions,
   revisePost,
+  DiscEmojiSupport
 } from "../lib/RevisePost.tsx";
 import "/src/styles/SocialButtons.css";
 import { deletePost } from "../lib/api/Post/DeletePost.ts";
+import { editPost } from "../lib/api/Post/EditPost.ts";
+import { usePostContext } from '../Context.tsx';
 // import EmojiPicker from "./EmojiPicker.tsx";
 
 // import fetchUserData from '../lib/api/UserData.ts';
@@ -74,11 +77,18 @@ export function PostComponent({
   active,
   edited,
 }: PostComponentProps) {
+  const { setPost } = usePostContext();
   const [replyIds, setReplyIds] = useState<string[]>([]);
 
   const addReply = (postId: string) => {
     setReplyIds((prevReplyIds) => [...prevReplyIds, postId]);
     console.log(replyIds);
+  };
+
+  const insertQuotedText = () => {
+    setPost((prevPost) => {
+      return `> @${user} ${post} \n ${prevPost}`;
+    });
   };
 
   const userToken = localStorage.getItem('userToken')
@@ -110,7 +120,7 @@ export function PostComponent({
 
   // Check if post only has emojis with optional spaces
   const emojiRegex = /^[\p{Emoji_Presentation}\s]*$/gu;
-  const isValidEmojiOnly = emojiRegex.test(realPost);
+  const isValidEmojiOnly = emojiRegex.test(DiscEmojiSupport(realPost, false));
 
   return (
     <div className="container">
@@ -199,13 +209,21 @@ export function PostComponent({
               id="ReplyButton"
               onClick={() => addReply(post_id || "")}
             >
-              <img src={`/furrchat/assets/icons/Reply.png`} height={9} /> Reply
+              <img src={`/furrchat/assets/icons/Reply.png`} height={9} onClick={insertQuotedText}/> Reply
             </button>
             { userToken ? (
+              <>
             <button className="social-buttons" id="DeleteButton" onClick={() => deletePost(post_id, userToken)}>
               <img src={`/furrchat/assets/icons/Delete.png`} height={9} /> Delete
-            </button> ) : ("")}
-            <button className="social-buttons" id="QuoteButton">
+            </button>
+            <button className="social-buttons" id="EditButton" onClick={() => {
+              setPost(post);
+            }}>
+              <img src={`/furrchat/assets/icons/Delete.png`} height={9} /> Edit
+            </button>
+            </>
+          ) : ("")}
+            <button className="social-buttons" id="QuoteButton" onClick={insertQuotedText}>
               <img src={`/furrchat/assets/icons/Quote.png`} height={9} /> Quote
             </button>
           </div>

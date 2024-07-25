@@ -155,7 +155,9 @@ const emojiData: EmojiMap = {
   ":beer:": "/furrchat/assets/smilies/bier.gif",
   ":chubby:": "/furrchat/assets/smilies/chubby.gif",
   ":clown:": "/furrchat/assets/smilies/clown.gif",
+  " =O) ": "/furrchat/assets/smilies/clown.gif",
   ":confused:": "/furrchat/assets/smilies/confused.gif",
+  ":S": "/furrchat/assets/smilies/confused.gif",
   ":cool:": "/furrchat/assets/smilies/coool.gif",
   " B) ": "/furrchat/assets/smilies/coool.gif",
   " B-) ": "/furrchat/assets/smilies/coool.gif",
@@ -175,6 +177,7 @@ const emojiData: EmojiMap = {
   ":king:": "/furrchat/assets/smilies/koning.gif",
   ":skorea:": "/furrchat/assets/smilies/kr.png",
   ":drool:": "/furrchat/assets/smilies/kwijl.gif",
+  " =P~ ": "/furrchat/assets/smilies/kwijl.gif",
   ":list:": "/furrchat/assets/smilies/lijstje.gif",
   ":loveit:": "/furrchat/assets/smilies/loveit.gif",
   ":lurk:": "/furrchat/assets/smilies/lurk.gif",
@@ -188,11 +191,13 @@ const emojiData: EmojiMap = {
   ":die:": "/furrchat/assets/smilies/plzdie.gif",
   ":puh:": "/furrchat/assets/smilies/puh.gif",
   ":puh2:": "/furrchat/assets/smilies/puh2.gif",
+  " :P ": "/furrchat/assets/smilies/puh2.gif",
   ":puhbye:": "/furrchat/assets/smilies/puhbye.gif",
   ":puke:": "/furrchat/assets/smilies/pukey.gif",
   ":cow:": "/furrchat/assets/smilies/rc5.gif",
   ":redcard:": "/furrchat/assets/smilies/redcard.gif",
   ":bored:": "/furrchat/assets/smilies/saai.gif",
+  " :/ ": "/furrchat/assets/smilies/saai.gif",
   ":shiny:": "/furrchat/assets/smilies/shiny.gif",
   ":sleeping:": "/furrchat/assets/smilies/slapen.gif",
   ":zzz:": "/furrchat/assets/smilies/sleepey.gif",
@@ -350,6 +355,13 @@ const discordEmojis: EmojiMap = {
   ":snooga6:": "<:snooga6:1258860432719085638>",
   ":snooga7:": "<:snooga7:1258860434497343590>",
   ":snooga8:": "<:snooga8:1258860443468824616>",
+  ":doinkus:": "<:doinkus:1266027105452560444>",
+  ":green:": "<:green:1266027100905803776>",
+  ":garf:": "<:garf:1266027104273825863>",
+  ":proton:": "<:proton:1266027095042166864>",
+  ":shocc:": "<:shocc:1266027587704983593>",
+  ":mikehmm:": "<:mikehmm:1266027099433472061>",
+  ":hidingcar:": "<:hidingcar:1266027448869322793>"
 };
 
 const GIFS: EmojiMap = {
@@ -382,6 +394,8 @@ const GIFS: EmojiMap = {
     "https://uploads.meower.org/attachments/GrjtUveRiUr7mCARZIR4EGEf/mower.png",
   bunger:
     "https://uploads.meower.org/attachments/qA8nsPQ0ifB3is13YTD7WQxV/bunger.gif",
+  garfknows:
+    "https://uploads.meower.org/attachments/IG7l9YA8pUcc06dgTMXT5Hys/garf_knows.mp4"
 };
 
 const defaultPFPS: string[] = [

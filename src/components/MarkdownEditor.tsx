@@ -18,11 +18,12 @@ import ImageRenderer from "./DisplayPosts.tsx";
 import Dropdown from "./Dropdown.tsx";
 import { headingOptions } from "../lib/Data.ts";
 import { uploadFileAndGetId } from "../lib/api/Post/SendPost.ts";
+import { usePostContext } from "../Context.tsx";
 
 // import { client } from "@meower-media/api-client"
 
 const PostEditor = ({ userToken }: { userToken: string }) => {
-  const [post, setPost] = useState("");
+  const { post, setPost } = usePostContext();
   const [attachments, setAttachments] = useState<File[]>([]);
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [selectionStart, setSelectionStart] = useState(0);
@@ -30,13 +31,15 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
 
   const sendPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const attachmentIds = await Promise.all(attachments.map((file) => uploadFileAndGetId({ file, userToken })));
-  
+    const attachmentIds = await Promise.all(
+      attachments.map((file) => uploadFileAndGetId({ file, userToken }))
+    );
+
     const requestBody = {
       content: post,
-      attachments: attachmentIds
+      attachments: attachmentIds,
     };
-    
+
     fetch("https://api.meower.org/home", {
       method: "POST",
       body: JSON.stringify(requestBody),
@@ -45,25 +48,27 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         Token: userToken,
       },
     })
-    .then(response => response.json() )
-    .then(data => {
-      console.log(data)
-      setPost(""); // Clear post content
-      setAttachments([]); // Clear attachments
-    })
-    .catch(error => {
-      console.error("Error sending post:", error);
-      // ERROR ERROR ERROR ERROR ERROR ERROR 
-    });
-  }    
-  
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setPost(""); // Clear post content
+        setAttachments([]); // Clear attachments
+      })
+      .catch((error) => {
+        console.error("Error sending post:", error);
+        // ERROR ERROR ERROR ERROR ERROR ERROR
+      });
+  };
+
   const appendToPost = (string: string) => {
+    let newCursorPosition = selectionStart + string.length;
     const selectedText = post.substring(selectionStart, selectionEnd);
     const newPost =
       post.substring(0, selectionStart) +
       string +
       selectedText +
       post.substring(selectionEnd);
+    newCursorPosition += selectedText.length + string.length;
     setPost(newPost);
   };
 
@@ -95,19 +100,21 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const files = event.target.files;
-  if (files) {
-    // Convert FileList to array and update attachments state
-    const newAttachments = Array.from(files);
-    setAttachments([...attachments, ...newAttachments]);
-  }
-};
-
+    const files = event.target.files;
+    if (files) {
+      // Convert FileList to array and update attachments state
+      const newAttachments = Array.from(files);
+      setAttachments([...attachments, ...newAttachments]);
+    }
+  };
 
   return (
     <div>
       <div className="markdown-container">
-        <EmojiPicker onEmojiSelect={appendToPost} src="/furrchat/assets/markdown/Emoji.png"/>
+        <EmojiPicker
+          onEmojiSelect={appendToPost}
+          src="/furrchat/assets/markdown/Emoji.png"
+        />
 
         <div
           className="markdown-button"
@@ -257,22 +264,22 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         </div>
 
         <div className="markdown-button">
-  <label htmlFor="file-upload">
-    <img 
-      src="/furrchat/assets/markdown/Upload.png" 
-      alt="Upload Image" 
-      height="48" 
-      title="Upload Image" 
-    />
-  </label>
-  <input 
-    id="file-upload" 
-    type="file" 
-    multiple 
-    onChange={handleFileUpload} 
-    style={{ display: 'none' }} 
-  />
-</div>
+          <label htmlFor="file-upload">
+            <img
+              src="/furrchat/assets/markdown/Upload.png"
+              alt="Upload Image"
+              height="48"
+              title="Upload Image"
+            />
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            multiple
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
+          />
+        </div>
 
         <div
           className="markdown-button"
@@ -284,8 +291,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             height="48"
             title="Preview (Alpha)"
           />
-        </div>  
-
+        </div>
       </div>
 
       <span
@@ -295,7 +301,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           justifyContent: "center",
           alignItems: "center",
           resize: "none",
-          marginBottom: '14px'
+          marginBottom: "14px",
         }}
       >
         {showPreview ? (
@@ -329,8 +335,10 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             </ReactMarkdown>
           </div>
         ) : (
-          
-          <form onSubmit={sendPost} style={{ display: "flex", maxHeight: "500px" }}>
+          <form
+            onSubmit={sendPost}
+            style={{ display: "flex", maxHeight: "500px" }}
+          >
             <textarea
               value={post}
               onChange={(e) => setPost(e.target.value)}
@@ -383,46 +391,44 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             >
               Post
             </button>
-            
+
             <div></div>
           </form>
         )}
       </span>
       <div>
-
-  <div className="attachments">
-{attachments.map((file, index) => (
-  <div className="attachment-container" key={index}>
-    {file.type.startsWith('image/') && ( 
-      <img 
-        src={URL.createObjectURL(file)} 
-        alt={file.name} 
-        style={{
-          height: '40px'
-        }}
-      />
-    )}
-    <button
-      onClick={() => {
-        const newAttachments = [...attachments];
-        newAttachments.splice(index, 1);
-        setAttachments(newAttachments);
-      }}
-      style={{
-      width:'20px',
-      height:'25px',
-      float: 'right'
-      }}
-    >{"X"}
-    </button>
-    <br />
-    {file.name}
-  </div>
-))}
-</div>
-
-</div>
-
+        <div className="attachments">
+          {attachments.map((file, index) => (
+            <div className="attachment-container" key={index}>
+              {file.type.startsWith("image/") && (
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  style={{
+                    height: "40px",
+                  }}
+                />
+              )}
+              <button
+                onClick={() => {
+                  const newAttachments = [...attachments];
+                  newAttachments.splice(index, 1);
+                  setAttachments(newAttachments);
+                }}
+                style={{
+                  width: "20px",
+                  height: "25px",
+                  float: "right",
+                }}
+              >
+                {"X"}
+              </button>
+              <br />
+              {file.name}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

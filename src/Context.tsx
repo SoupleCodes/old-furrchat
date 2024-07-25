@@ -1,4 +1,3 @@
-// Context.tsx
 import React, { createContext, useContext, useState } from 'react';
 
 type PostContextType = {
