@@ -13,7 +13,7 @@ import {
 } from "../lib/RevisePost.tsx";
 import "/src/styles/SocialButtons.css";
 import { deletePost } from "../lib/api/Post/DeletePost.ts";
-import { editPost } from "../lib/api/Post/EditPost.ts";
+// import { editPost } from "../lib/api/Post/EditPost.ts";
 import { usePostContext } from '../Context.tsx';
 // import EmojiPicker from "./EmojiPicker.tsx";
 
