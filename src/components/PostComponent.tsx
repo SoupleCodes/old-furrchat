@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+import emojiRegex from "emoji-regex";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
@@ -18,7 +19,7 @@ import { usePostContext } from "../Context.tsx";
 import { formatTimestamp } from "../utils/FormatTimestamp.ts";
 import { ImageRenderer } from "../utils/ImageRenderer.tsx";
 
-// Define the props type for the PostComponent
+// Defines the props type for the PostComponent
 interface PostComponentProps {
   attachments: any[];
   author: any;
@@ -38,7 +39,7 @@ interface PostComponentProps {
 }
 
 // The functional component for rendering a post
-export function PostComponent({
+export const PostComponent: React.FC<PostComponentProps> = ({
   attachments,
   author,
   post,
@@ -49,64 +50,56 @@ export function PostComponent({
   user,
   active,
   edited,
-}: PostComponentProps) {
+}) => {
   const { setPost } = usePostContext();
-  const [, setReplyIds] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
-  const addReply = useCallback((postId: string) => {
-    setReplyIds(prevReplyIds => [...prevReplyIds, postId]);
-  }, []);
-
   const insertQuotedText = useCallback(() => {
-    setPost(prevPost => `> @${user} ${post} \n ${prevPost}`);
+    setPost((prevPost) => `> @${user} ${post} \n ${prevPost}`);
   }, [setPost, user, post]);
 
   const userToken = localStorage.getItem("userToken");
 
   // Memoize profile picture and avatar color
   const { pfp, avatarColor } = useMemo(() => {
-    let pfp = author.avatar || "";
-    let avatarColor = `#${author.avatar_color}`;
-
-    if (!pfp) {
-      let pfp_data = author.pfp_data;
-      pfp =
-        pfp_data === -3
-          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-          : defaultPFPS[34 - pfp_data];
-    } else {
-      pfp = `https://uploads.meower.org/icons/${pfp}`;
-    }
-
+    const pfp = author.avatar
+      ? `https://uploads.meower.org/icons/${author.avatar}`
+      : defaultPFPS[34 - (author.pfp_data || 0)];
+    const avatarColor = `#${author.avatar_color}`;
     return { pfp, avatarColor };
   }, [author]);
 
   const realDate = useMemo(() => formatTimestamp(time.e), [time.e]);
 
   // Handle and format attachments, then append to the post content
-  const attachment = useMemo(() => handleAttachments(attachments), [attachments]);
+  const attachment = useMemo(
+    () => handleAttachments(attachments),
+    [attachments]
+  );
   const realPost = useMemo(() => {
     let postContent = revisePost(post);
     return `${postContent}\n\n${attachment}`;
   }, [post, attachment]);
 
   const isValidEmojiOnly = useMemo(() => {
-    const emojiRegex = /^[\p{Emoji_Presentation}\s]*$/gu;
-    return emojiRegex.test(DiscEmojiSupport(realPost, false));
+    const regex = emojiRegex();
+    const emojis = DiscEmojiSupport(realPost, false)
+      .split("")
+      .filter((char) => regex.test(char));
+    return emojis.join("") === realPost;
   }, [realPost]);
 
-  const handleEditChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setEditContent(e.target.value);
-  }, []);
+  const handleEditChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setEditContent(e.target.value);
+    },
+    []
+  );
 
   const handleSaveEdit = useCallback(async () => {
-    if (!post_id || !userToken) {
-      console.error("Post ID or user token is missing.");
-      return;
-    }
-
+    if (!post_id || !userToken)
+      return console.error("Post ID or user token is missing.");
     try {
       await editPost(post_id, userToken, editContent);
       setIsEditing(false);
@@ -115,10 +108,26 @@ export function PostComponent({
     }
   }, [post_id, userToken, editContent]);
 
+  const { replyIds, setReplyIds } = usePostContext();
+
+  const handleReplyClick = () => {
+    const reply = JSON.stringify({
+      author: author._id,
+      post: post,
+      post_id: post_id,
+      avatar: author.avatar,
+      pfp_data: author.pfp_data,
+    });
+
+    if (reply && !replyIds.includes(reply)) {
+      setReplyIds((prevIds) => [...prevIds, reply]);
+    }
+  };
+
   return (
     <div className="container">
       <div className="user">
-        <span className="post-pfp-container" style={{ padding: "4px" }}>
+        <span className="post-pfp-container">
           <img
             src={pfp}
             alt="pfp"
@@ -128,7 +137,8 @@ export function PostComponent({
             style={{
               borderRadius: "5px",
               border: `1px solid ${avatarColor}`,
-              boxShadow: "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
+              boxShadow:
+                "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
             }}
           />
           {active ? (
@@ -150,75 +160,63 @@ export function PostComponent({
           </i>
         </div>
         {isEditing ? (
-          <div style={{ display: "flex" }}>
-            <textarea
+          <>
+            <div
               className="postmessage"
-              value={editContent}
-              onChange={handleEditChange}
-              style={{
-                flex: 1,
-                paddingBottom: "25px",
-                marginRight: "5px",
-                height: "50px",
-                maxHeight: "500px",
-                width: "995px",
-                background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(200, 200, 200, 0.3) 100%)",
-                borderColor: "4px solid rgba(0, 0, 0, 0.2)",
-                borderRadius: "10px",
-                border: "1px solid #83838396",
-                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
-              }}
-            />
-            <button
-              style={{
-                width: "70px",
-                background: "linear-gradient(to bottom, #ffffff 0%, #e6e6e6 50%, #cccccc 100%)",
-                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
-                borderRadius: "5px",
-                border: "1px solid #83838396",
-                padding: "10px",
-                fontWeight: 800,
-                color: "grey",
-              }}
-              onClick={handleSaveEdit}
+              style={{ fontSize: isValidEmojiOnly ? "20px" : "10px" }}
             >
-              Save
-            </button>
-          </div>
+              {" "}
+              <span style={{ fontSize: "10px" }}>{getReplies(reply_to)}</span>
+            </div>{" "}
+            <hr />
+            <div style={{ display: "flex" }}>
+              <textarea
+                value={editContent}
+                onChange={handleEditChange}
+                className="edit-box"
+              />
+              <button className="edit-button" onClick={handleSaveEdit}>
+                Save
+              </button>
+            </div>
+          </>
         ) : (
-          <div className="postmessage" style={{ fontSize: isValidEmojiOnly ? "20px" : "10px" }}>
+          <div
+            className="postmessage"
+            style={{ fontSize: isValidEmojiOnly ? "20px" : "10px" }}
+          >
             <span style={{ fontSize: "10px" }}>{getReplies(reply_to)}</span>
             <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  // Custom rendering for code blocks with syntax highlighting
-                  code({ node, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    const inline = !match;
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        children={String(children).replace(/\n\n$/, "")}
-                        // @ts-ignore
-                        style={dark}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                        inline={inline}
-                      />
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                  // Custom rendering for images using ImageRenderer
-                  // @ts-ignore
-                  img: ImageRenderer,
-                }}
-              >
-                {revisePost(realPost)}
-              </ReactMarkdown>
-            </div>
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Custom rendering for code blocks with syntax highlighting
+                code({ node, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || "");
+                  const inline = !match;
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      children={String(children).replace(/\n\n$/, "")}
+                      // @ts-ignore
+                      style={dark}
+                      language={match[1]}
+                      PreTag="div"
+                      {...props}
+                      inline={inline}
+                    />
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+                // Custom rendering for images using ImageRenderer
+                // @ts-ignore
+                img: ImageRenderer,
+              }}
+            >
+              {revisePost(realPost)}
+            </ReactMarkdown>
+          </div>
         )}
         <hr />
         <div className="social" style={{ display: "flex" }}>
@@ -231,7 +229,8 @@ export function PostComponent({
             <button
               className="social-buttons"
               id="ReplyButton"
-              onClick={() => addReply(post_id || "")}
+              onClick={() => handleReplyClick()}
+              data-reply-id={post_id}
             >
               <img
                 src={`/furrchat/assets/icons/Reply.png`}
@@ -274,7 +273,7 @@ export function PostComponent({
       </div>
     </div>
   );
-}
+};
 
 // Export the component wrapped with React.memo for performance optimization
 export default React.memo(PostComponent);

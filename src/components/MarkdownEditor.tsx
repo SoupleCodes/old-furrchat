@@ -16,7 +16,7 @@ import "/src/styles/Post.css";
 import EmojiPicker from "./EmojiPicker.tsx";
 import ImageRenderer from "./DisplayPosts.tsx";
 import Dropdown from "./Dropdown.tsx";
-import { headingOptions } from "../lib/Data.ts";
+import { headingOptions, defaultPFPS } from "../lib/Data.ts";
 import { uploadFileAndGetId } from "../lib/api/Post/SendPost.ts";
 import { usePostContext } from "../Context.tsx";
 
@@ -24,10 +24,18 @@ import { usePostContext } from "../Context.tsx";
 
 const PostEditor = ({ userToken }: { userToken: string }) => {
   const { post, setPost } = usePostContext();
+  const { replyIds, setReplyIds } = usePostContext();
   const [attachments, setAttachments] = useState<File[]>([]);
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [selectionStart, setSelectionStart] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
+  interface Reply {
+    author: string;
+    post: string;
+    post_id: string;
+    avatar: string;
+    pfp_data: number;
+  }
 
   const sendPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,9 +43,19 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
       attachments.map((file) => uploadFileAndGetId({ file, userToken }))
     );
 
+    console.log(replyIds);
+
+    const reply_to = Array.isArray(replyIds)
+      ? replyIds
+          .map((reply) => JSON.parse(reply) as Reply)
+          .map((reply) => reply.post_id)
+          .filter((id) => id)
+      : [];
+
     const requestBody = {
       content: post,
       attachments: attachmentIds,
+      reply_to: reply_to,
     };
 
     fetch("https://api.meower.org/home", {
@@ -53,6 +71,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         console.log(data);
         setPost(""); // Clear post content
         setAttachments([]); // Clear attachments
+        setReplyIds([]); // Clear reply IDs
       })
       .catch((error) => {
         console.error("Error sending post:", error);
@@ -115,44 +134,6 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           onEmojiSelect={appendToPost}
           src="/furrchat/assets/markdown/Emoji.png"
         />
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("**")}
-        >
-          <img
-            src="/furrchat/assets/markdown/Bold.png"
-            alt="Bold"
-            className="emoji-icon"
-            height="48"
-            title="Bold"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("~~")}
-        >
-          <img
-            src="/furrchat/assets/markdown/Strikethrough.png"
-            alt="strikethrough"
-            height="48"
-            title="Strikethrough"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("*")}
-        >
-          <img
-            src="/furrchat/assets/markdown/Italic.png"
-            alt="italic"
-            height="48"
-            title="Italic"
-          />
-        </div>
-
         <Dropdown
           options={headingOptions}
           onSelect={(option: any) =>
@@ -160,108 +141,59 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           }
         />
 
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("\n - ", false)}
-        >
-          <img
-            src="/furrchat/assets/markdown/UnorderedList.png"
-            alt="unorderedlist"
-            height="48"
-            title="Unordered List"
-          />
-        </div>
+        {[
+          { icon: "Bold.png", action: () => handleMarkdownClick("**") },
+          {
+            icon: "Strikethrough.png",
+            action: () => handleMarkdownClick("~~"),
+          },
+          { icon: "Italic.png", action: () => handleMarkdownClick("*") },
 
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("\n1. - ", false)}
-        >
-          <img
-            src="/furrchat/assets/markdown/OrderedList.png"
-            alt="orderedlist"
-            height="48"
-            title="Ordered List"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("- [] ", false)}
-        >
-          <img
-            src="/furrchat/assets/markdown/Checklist.png"
-            alt="checklist"
-            height="48"
-            title="Checkbox"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("> ", false)}
-        >
-          <img
-            src="/furrchat/assets/markdown/Quote.png"
-            alt="quote"
-            height="48"
-            title="Quote"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("\n``` \n")}
-        >
-          <img
-            src="/furrchat/assets/markdown/Code.png"
-            alt="code"
-            height="48"
-            title="Code"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() =>
-            handleMarkdownClick(
-              "\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |",
-              false
-            )
-          }
-        >
-          <img
-            src="/furrchat/assets/markdown/Table.png"
-            alt="table"
-            height="48"
-            title="Table"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => handleMarkdownClick("[link description](link)", false)}
-        >
-          <img
-            src="/furrchat/assets/markdown/Link.png"
-            alt="link"
-            height="48"
-            title="Link"
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() =>
-            handleMarkdownClick("![image description](image link)", false)
-          }
-        >
-          <img
-            src="/furrchat/assets/markdown/Image.png"
-            alt="image"
-            height="48"
-            title="Image Markdown"
-          />
-        </div>
+          {
+            icon: "UnorderedList.png",
+            action: () => handleMarkdownClick("\n - ", false),
+          },
+          {
+            icon: "OrderedList.png",
+            action: () => handleMarkdownClick("\n1. - ", false),
+          },
+          {
+            icon: "Checklist.png",
+            action: () => handleMarkdownClick("- [] ", false),
+          },
+          { icon: "Quote.png", action: () => handleMarkdownClick("> ", false) },
+          { icon: "Code.png", action: () => handleMarkdownClick("\n``` \n") },
+          {
+            icon: "Table.png",
+            action: () =>
+              handleMarkdownClick(
+                "\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |",
+                false
+              ),
+          },
+          {
+            icon: "Link.png",
+            action: () =>
+              handleMarkdownClick("[link description](link)", false),
+          },
+          {
+            icon: "Image.png",
+            action: () =>
+              handleMarkdownClick("![image description](image link)", false),
+          },
+        ].map(({ icon, action }) => (
+          <div className="markdown-button" onClick={action} key={icon}>
+            <img
+              src={`/furrchat/assets/markdown/${icon}`}
+              alt={icon.replace(".png", "")}
+              height="48"
+              title={icon
+                .replace(".png", "")
+                .replace(/([A-Z])/g, " $1")
+                .trim()}
+            />
+          </div>
+        ))}
 
         <div className="markdown-button">
           <label htmlFor="file-upload">
@@ -293,7 +225,52 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           />
         </div>
       </div>
-
+      <div className="attachments">
+        {replyIds.map((reply, index) => (
+          <div
+            className="attachment-container"
+            key={index}
+            style={{ display: "flex" }}
+          >
+            <div className="reply">
+              <i>
+                {JSON.parse(reply).avatar ? (
+                  <img
+                    src={
+                      JSON.parse(reply).avatar === ""
+                        ? JSON.parse(reply).pfp_data === -3
+                          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                          : `${defaultPFPS[34 - JSON.parse(reply).pfp_data]}`
+                        : `https://uploads.meower.org/icons/${
+                            JSON.parse(reply).avatar
+                          }`
+                    }
+                    alt="reply pfp"
+                    width="16"
+                    height="16"
+                    style={{ paddingRight: 5 }}
+                  />
+                ) : null}
+                <b>{JSON.parse(reply).author}</b>: {JSON.parse(reply).post}
+              </i>
+            </div>
+            <button
+              onClick={() => {
+                const newReplies = [...replyIds];
+                newReplies.splice(index, 1);
+                setReplyIds(newReplies);
+              }}
+              style={{
+                width: "20px",
+                height: "25px",
+                float: "right",
+              }}
+            >
+              {"X"}
+            </button>
+          </div>
+        ))}
+      </div>
       <span
         className="userpost"
         style={{
@@ -335,10 +312,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             </ReactMarkdown>
           </div>
         ) : (
-          <form
-            onSubmit={sendPost}
-            style={{ display: "flex" }}
-          >
+          <form onSubmit={sendPost} style={{ display: "flex" }}>
             <textarea
               value={post}
               onChange={(e) => setPost(e.target.value)}
@@ -372,7 +346,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                 setSelectionStart(e.target.selectionStart);
                 setSelectionEnd(e.target.selectionEnd);
               }}
-            />
+            ></textarea>
             <button
               type="submit"
               style={{

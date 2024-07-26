@@ -146,7 +146,7 @@ function getReplies(repliesData: any[]) {
                     style={{ paddingRight: 5 }}
                   />
                 ) : null}
-                {reply.u}: {reply.p}
+                <b>{reply.u}</b>: {reply.p}
               </i>
             </div>
           );

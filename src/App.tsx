@@ -14,7 +14,7 @@ import { client } from "https://esm.sh/jsr/@meower/api-client@1.0.0-rc.4";
 
 export default function App() {
   setTimeout(() => {
-    if (import.meta.env.DEV) alert("remember to commit btw");
+    if (import.meta.env.DEV) alert("remember to commit btw \n  - great words from @mybearworld");
   }, 18000000);
 
   // State hooks to manage username, password, login success, and login error

@@ -38,6 +38,7 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
     "PBJ Time!": pbjArray,
     Discord: discordEmojisArray,
     GIFS: gifsArray,
+    Cats: [],
   };
 
   // Toggles the visibility of the emoji picker

@@ -15,7 +15,7 @@ function Dropdown({ options, onSelect }: any) {
   };
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" style={{ zIndex: 4000 }}>
       <img
         src="/furrchat/assets/markdown/Heading.png"
         alt="heading"

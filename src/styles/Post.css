@@ -89,6 +89,7 @@ p {
   position: relative; /* Make the container a positioning context */
   display: inline-block;
   perspective: 1000px;
+  padding: 4px;
 }
 
 .post-pfp-container:hover {
@@ -176,8 +177,6 @@ p {
   border-top-right-radius: inherit;
 }
 
-
-
 .attachments {
   display: flex;
   flex-wrap: wrap;
@@ -205,4 +204,36 @@ p {
 
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.edit-button {
+  width: 70px;
+  background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 50%, #cccccc 100%);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  border-radius: 5px;
+  border: 1px solid #83838396;
+  padding: 10px;
+  font-weight: 800;
+  color: grey;
+}
+
+.edit-box {
+  flex: 1;
+  padding-bottom: 25px;
+  margin-right: 5px;
+  min-height: 50px;
+  max-height: 500px;
+  width: 995px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(200, 200, 200, 0.3) 100%
+  );
+  border-color: 4px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid #83838396;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
 }

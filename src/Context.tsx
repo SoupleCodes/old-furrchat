@@ -7,6 +7,8 @@ type PostContextType = {
   setSelectionStart: React.Dispatch<React.SetStateAction<number>>;
   selectionEnd: number;
   setSelectionEnd: React.Dispatch<React.SetStateAction<number>>;
+  replyIds: string[];
+  setReplyIds: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const PostContext = createContext<PostContextType | undefined>(undefined);
@@ -23,6 +25,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [post, setPost] = useState('');
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(0);
+  const [replyIds, setReplyIds] = useState<string[]>([]);
 
   const value = {
     post,
@@ -31,6 +34,8 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectionStart,
     selectionEnd,
     setSelectionEnd,
+    replyIds,
+    setReplyIds
   };
 
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
