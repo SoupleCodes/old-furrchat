@@ -56,7 +56,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
   const insertQuotedText = useCallback(() => {
-    setPost((prevPost) => `> @${user} ${post} \n ${prevPost}`);
+    setPost((prevPost) => `@${user} ${prevPost}`);
   }, [setPost, user, post]);
 
   const userToken = localStorage.getItem("userToken");
@@ -235,7 +235,6 @@ export const PostComponent: React.FC<PostComponentProps> = ({
               <img
                 src={`/furrchat/assets/icons/Reply.png`}
                 height={9}
-                onClick={insertQuotedText}
               />{" "}
               Reply
             </button>
