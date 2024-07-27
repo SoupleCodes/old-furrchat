@@ -19,17 +19,16 @@ const useUserList = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Initial fetch
+    fetchData()
 
     const intervalId = setInterval(() => {
-      fetchData(); // Fetch data periodically
+      fetchData()
     }, 2500);
 
-    // Cleanup function to clear interval on unmount or changes
     return () => clearInterval(intervalId);
   }, []);
 
   return userList;
 };
 
-export default useUserList;
+export default useUserList

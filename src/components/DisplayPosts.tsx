@@ -1,11 +1,8 @@
 import { useState, useEffect, memo } from "react";
 import PostComponent from "./PostComponent";
-
-// CSS for Transitions
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../styles/PostTransitions.css";
 
-// Create a WebSocket connection to the server
 const ws = new WebSocket("wss://server.meower.org");
 
 const DisplayPosts = () => {
@@ -14,117 +11,72 @@ const DisplayPosts = () => {
 
   useEffect(() => {
     ws.onmessage = (message) => {
-      console.log("Received message:", message.data);
       const data = JSON.parse(message.data);
+      console.log(data)
+      const { cmd, val } = data;
 
-      if (data.val?._id) {
-        setPosts((prevPosts) => [data.val, ...prevPosts]);
-      } else if (data.cmd === "ulist") {
-        var users = data.val.split(";");
-        users.pop();
-        setIsOnline(users);
-      } else if (data.cmd === "direct" && data.val.mode === "update_post") {
-        const editedPost = data.val.payload;
-        const postIndex = posts.findIndex(
-          (post) => post._id === editedPost._id
-        );
-        if (postIndex !== -1) {
-          const updatedPosts = [...posts];
-          updatedPosts[postIndex] = editedPost;
-          setPosts(updatedPosts);
-        }
-      } else if (data.val.mode === "delete") {
-        const postIndex = posts.findIndex((post) => post._id === data.val.id);
-        if (postIndex !== -1) {
-          const updatedPosts = [...posts];
-          updatedPosts.splice(postIndex, 1);
-          setPosts(updatedPosts);
-        }
-      } else if (
-        data.cmd === "direct" &&
-        data.val.mode === "post_reaction_add"
-      ) {
-        const { payload } = data.val;
-        const { post_id, emoji } = payload;
-
-        // Find the post in the posts state
-        const postIndex = posts.findIndex((post) => post.post_id === post_id);
-        if (postIndex !== -1) {
-          const updatedPosts = [...posts];
-          const updatedPost = { ...updatedPosts[postIndex] };
-
-          // Update or add the reaction count for the emoji
-          let found = false;
-          updatedPost.reactions = updatedPost.reactions.map((reaction: any) => {
-            if (reaction.emoji === emoji) {
-              found = true;
-              return {
-                ...reaction,
-                count: reaction.count + 1,
-              };
-            }
-            return reaction;
-          });
-
-          // If emoji not found, add it as a new reaction
-          if (!found) {
-            updatedPost.reactions.push({
-              emoji,
-              count: 1,
-              user_reacted: false,
-            });
-          }
-
-          // Update the state with the modified post
-          updatedPosts[postIndex] = updatedPost;
-          setPosts(updatedPosts);
-        }
-      } else if (
-        data.cmd === "direct" &&
-        data.val.mode === "post_reaction_remove"
-      ) {
-        const { payload } = data.val;
-        const { post_id, emoji } = payload;
-
-        // Find the post in the posts state
-        const postIndex = posts.findIndex((post) => post.post_id === post_id);
-        if (postIndex !== -1) {
-          const updatedPosts = [...posts];
-          const updatedPost = { ...updatedPosts[postIndex] };
-
-          // Update or remove the reaction count for the emoji
-          updatedPost.reactions = updatedPost.reactions
-            .map((reaction: any) => {
-              if (reaction.emoji === emoji) {
-                const updatedReaction = {
-                  ...reaction,
-                  count: reaction.count - 1,
-                };
-                // Remove the reaction if count goes to 0
-                if (updatedReaction.count <= 0) {
-                  return null; // returning null will remove this reaction from the array
-                } else {
-                  return updatedReaction;
-                }
-              }
-              return reaction;
-            })
-            .filter(Boolean); // Filter out null reactions
-
-          // Update the state with the modified post
-          updatedPosts[postIndex] = updatedPost;
-          setPosts(updatedPosts);
-        }
+      if (val?._id) {
+        setPosts(prevPosts => [val, ...prevPosts]);
+      } else if (cmd === "ulist") {
+        setIsOnline(val.split(";").slice(0, -1));
+      } else if (cmd === "direct") {
+        handleDirectCommand(val);
       }
     };
 
-    return () => {
-      ws.onmessage = null;
-    };
+    return () => { ws.onmessage = null; };
   }, [posts]);
 
+
+  const handleDirectCommand = (val: { id?: any; mode?: any; payload?: any; }) => {
+    const { mode, payload } = val;
+    const updatePost = (post: { _id: any; }) => {
+      const updatedPosts = posts.map(p => p._id === post._id ? post : p);
+      setPosts(updatedPosts);
+    };
+
+    switch (mode) {
+      case "update_post":
+        updatePost(payload);
+        break;
+      case "delete":
+        setPosts(posts.filter(post => post._id !== val.id));
+        break;
+      case "post_reaction_add":
+      case "post_reaction_remove":
+        const updateReaction = (operation: string) => {
+          const postIndex = posts.findIndex(p => p.post_id === payload.post_id);
+          if (postIndex === -1) return;
+
+          const updatedPosts = [...posts];
+          const post = { ...updatedPosts[postIndex] };
+          let reactionUpdated = false;
+
+          post.reactions = post.reactions.map((reaction: { emoji: any; count: number; }) => {
+            if (reaction.emoji === payload.emoji) {
+              reactionUpdated = true;
+              reaction.count = operation === "add" ? reaction.count + 1 : reaction.count - 1;
+              return reaction.count <= 0 ? null : reaction;
+            }
+            return reaction;
+          }).filter(Boolean);
+
+          if (!reactionUpdated && operation === "add") {
+            post.reactions.push({ emoji: payload.emoji, count: 1, user_reacted: false });
+          }
+
+          updatedPosts[postIndex] = post;
+          setPosts(updatedPosts);
+        };
+
+        updateReaction(mode === "post_reaction_add" ? "add" : "remove");
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    // Function to fetch initial posts from the server
     const fetchPosts = async () => {
       try {
         const response = await fetch("https://api.meower.org/home");
@@ -140,13 +92,13 @@ const DisplayPosts = () => {
     };
 
     fetchPosts();
-  }, []); // Empty dependency array ensures effect runs once on mount
+  }, []);
 
   return (
     <TransitionGroup>
-      {posts.map((post) => (
+      {posts.map(post => (
         <CSSTransition
-          key={post._id || Math.random().toString(36).substring(2, 15)}
+          key={post._id || Math.random()}
           timeout={500}
           classNames="post-transition"
         >
@@ -158,13 +110,7 @@ const DisplayPosts = () => {
             pinned={post.pinned || false}
             post_id={post.post_id || null}
             post_origin={post.post_origin || null}
-            time={
-              post.t
-                ? {
-                    e: post.edited_at !== undefined ? post.edited_at : post.t.e,
-                  }
-                : { e: 0 }
-            }
+            time={{ e: post.edited_at !== undefined ? post.edited_at : post.t?.e || 0 }}
             type={post.type || 0}
             user={post.u || "unknown"}
             active={isOnline.includes(
@@ -183,5 +129,4 @@ const DisplayPosts = () => {
   );
 };
 
-// Memoize the DisplayPosts component to prevent unnecessary re-renders
 export default memo(DisplayPosts);

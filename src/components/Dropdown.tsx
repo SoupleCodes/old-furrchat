@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 
 function Dropdown({ options, onSelect }: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [, setSelectedOption] = useState(options[0]);
+  const [setSelectedOption] = useState(options[0]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

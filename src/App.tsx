@@ -7,6 +7,7 @@ import MyComponent from "./components/DisplayPosts.tsx";
 import PostEditor from "./components/MarkdownEditor.tsx";
 import { handleSubmit } from "./utils/AuthUtils"; // Import the handleSubmit function
 import UListBody from "./components/Ulist.tsx";
+import { TypingIndicator } from "./components/TypingIndicators.tsx";
 
 // Import the client from a remote URL
 // @ts-ignore
@@ -17,19 +18,16 @@ export default function App() {
     if (import.meta.env.DEV) alert("remember to commit btw \n  - great words from @mybearworld");
   }, 18000000);
 
-  // State hooks to manage username, password, login success, and login error
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
 
-  // Effect to check localStorage for userToken on component mount
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     if (userToken) {
       setLoginSuccess(true); // If token exists, consider user as logged in
 
-      // Establish WebSocket connection using the token
       const ws = new WebSocket(
         `wss://server.meower.org/?v=1&token=${userToken}`
       );
@@ -44,17 +42,15 @@ export default function App() {
         }
       };
 
-      // Clean up WebSocket connection on component unmount
       return () => {
         ws.close();
       };
     }
-  }, []); // Empty dependency array ensures this effect runs only on mount
+  }, []);
 
   return (
     <div className="app">
       <div className="banner">
-        {/* Display logo */}
         <img
           src={"/furrchat/assets/Logo.png"}
           alt="logo"
@@ -63,7 +59,6 @@ export default function App() {
           style={{ padding: 5 }}
         />
         <div className="login">
-          {/* Login form */}
           <form
             onSubmit={handleSubmit(
               username,
@@ -94,9 +89,7 @@ export default function App() {
               required
             />
             <input type="submit" value="Submit" className="password-submit" />{" "}
-            {/* Submit button */}
           </form>
-          {/* Conditional rendering of login messages */}
           {loginError && <p>Login failed. Please try again.</p>}
           {loginSuccess && <p>Login successful!</p>}
         </div>
@@ -126,15 +119,14 @@ export default function App() {
       </div>
       <UListBody />
       <PostEditor userToken={localStorage.getItem("userToken") || ""} />{" "}
-      {/* Post editor component */}
+      <TypingIndicator />
       {!loginSuccess && (
         <p style={{ display: "flex", justifyContent: "left", paddingLeft: 20 }}>
           You're not logged in yet!
         </p>
       )}{" "}
-      {/* Message when not logged in */}
       <div className="posts">
-        <MyComponent /> {/* Component to display posts */}
+        <MyComponent />
       </div>
     </div>
   );

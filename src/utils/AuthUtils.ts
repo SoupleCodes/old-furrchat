@@ -1,8 +1,3 @@
-// Import the client from a remote URL
-// @ts-ignore
-import { client } from "https://esm.sh/jsr/@meower/api-client@1.0.0-rc.4";
-
-// Function to handle form submission for login
 export const handleSubmit = (
   username: string,
   password: string,
@@ -10,7 +5,7 @@ export const handleSubmit = (
   setLoginError: (error: boolean) => void
 ) => {
   return (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     // Send a POST request to authenticate the user
     fetch("https://api.meower.org/auth/login", {
@@ -25,7 +20,6 @@ export const handleSubmit = (
           setLoginError(false);
           const userToken = json.token;
 
-          // Establish WebSocket connection using the token
           const ws = new WebSocket(
             `wss://server.meower.org/?v=1&token=${userToken}`
           );
@@ -40,14 +34,14 @@ export const handleSubmit = (
             }
           };
         } else {
-          setLoginSuccess(false);
-          setLoginError(true); // Set error state if login fails
+          setLoginSuccess(false)
+          setLoginError(true)
         }
       })
       .catch((error) => {
         console.error("Error during login:", error);
-        setLoginSuccess(false);
-        setLoginError(true); // Set error state if fetch or parsing fails
+        setLoginSuccess(false)
+        setLoginError(true)
       });
   };
 };

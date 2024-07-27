@@ -1,5 +1,5 @@
 // React!
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 // Imports markdown thingies
 import ReactMarkdown from "react-markdown";
@@ -20,8 +20,6 @@ import { headingOptions, defaultPFPS } from "../lib/Data.ts";
 import { uploadFileAndGetId } from "../lib/api/Post/SendPost.ts";
 import { usePostContext } from "../Context.tsx";
 
-// import { client } from "@meower-media/api-client"
-
 const PostEditor = ({ userToken }: { userToken: string }) => {
   const { post, setPost } = usePostContext();
   const { replyIds, setReplyIds } = usePostContext();
@@ -29,21 +27,14 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [selectionStart, setSelectionStart] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
-  interface Reply {
-    author: string;
-    post: string;
-    post_id: string;
-    avatar: string;
-    pfp_data: number;
-  }
+  
+  interface Reply { author: string; post: string; post_id: string; avatar: string; pfp_data: number;}
 
   const sendPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const attachmentIds = await Promise.all(
       attachments.map((file) => uploadFileAndGetId({ file, userToken }))
     );
-
-    console.log(replyIds);
 
     const reply_to = Array.isArray(replyIds)
       ? replyIds
@@ -52,11 +43,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           .filter((id) => id)
       : [];
 
-    const requestBody = {
-      content: post,
-      attachments: attachmentIds,
-      reply_to: reply_to,
-    };
+    const requestBody = { content: post, attachments: attachmentIds, reply_to: reply_to }
 
     fetch("https://api.meower.org/home", {
       method: "POST",
@@ -75,7 +62,6 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
       })
       .catch((error) => {
         console.error("Error sending post:", error);
-        // ERROR ERROR ERROR ERROR ERROR ERROR
       });
   };
 
@@ -118,14 +104,63 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
     setSelectionEnd(newCursorPosition);
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const sendTypingNotification = () => {
+    fetch("https://api.meower.org/home/typing", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: userToken,
+      },
+    })
+  }
+
+  const handleFileUpload = (
+    event: React.ChangeEvent<HTMLInputElement> | { target: { files: FileList } }
+  ) => {
     const files = event.target.files;
     if (files) {
-      // Convert FileList to array and update attachments state
       const newAttachments = Array.from(files);
-      setAttachments([...attachments, ...newAttachments]);
+      setAttachments((prevAttachments) => [
+        ...prevAttachments,
+        ...newAttachments,
+      ]);
     }
   };
+
+  function createFileList(files: File[]): FileList {
+    const dataTransfer = new DataTransfer();
+    files.forEach((file) => dataTransfer.items.add(file));
+    return dataTransfer.files;
+  }
+
+  // Handle paste event for images
+  const handlePaste = async (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items;
+    if (items) {
+      for (const item of items) {
+        if (item.kind === "file" && item.type.startsWith("image/")) {
+          const blob = item.getAsFile();
+          console.log(blob);
+          if (blob) {
+            const file = new File(
+              [blob],
+              `i-really-love-soup.${blob.type.split("/")[1]}`,
+              { type: blob.type }
+            );
+            handleFileUpload({ target: { files: createFileList([file]) } });
+          }
+        }
+      }
+    }
+  };
+
+  // Attach and clean up paste event listener
+  useEffect(() => {
+    document.addEventListener("paste", handlePaste);
+    return () => {
+      document.removeEventListener("paste", handlePaste);
+    };
+  }, []);
 
   return (
     <div>
@@ -208,7 +243,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
             id="file-upload"
             type="file"
             multiple
-            onChange={handleFileUpload}
+            onChange={ handleFileUpload }
             style={{ display: "none" }}
           />
         </div>
@@ -314,6 +349,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
         ) : (
           <form onSubmit={sendPost} style={{ display: "flex" }}>
             <textarea
+              name="post"
               value={post}
               onChange={(e) => setPost(e.target.value)}
               placeholder="What's on your mind?"
@@ -326,7 +362,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                   sendPost(e);
                 }
               }}
-              required
+              onKeyDownCapture={() => sendTypingNotification()}
               style={{
                 flex: 1,
                 marginRight: "5px",

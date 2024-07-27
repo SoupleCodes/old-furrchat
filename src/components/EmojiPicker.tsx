@@ -1,35 +1,22 @@
 import { useState, useRef } from "react";
-import {
-  emojiData,
-  discordEmojis,
-  emoticons,
-  GIFS,
-  PBJTime,
-} from "../lib/Data";
+import { emojiData, discordEmojis, emoticons, GIFS, PBJTime } from "../lib/Data";
 import "../styles/EmojiPicker.css";
 
-// Interface for the props of EmojiPicker component
-interface EmojiPickerProps {
-  onEmojiSelect: (emoji: string) => void; // Function to handle the selection of an emoji
-  src: string; // SRC of the emoji image
-}
+interface EmojiPickerProps { onEmojiSelect: (emoji: string) => void; src: string; }
 
 const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
-  const [isOpen, setIsOpen] = useState(false); // State to manage visibility of the emoji picker
-  const [searchQuery, setSearchQuery] = useState(""); // State to manage the search input
-  const [selectedCategory, setSelectedCategory] = useState("Smilies"); // State to manage the selected category
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("Smilies")
 
-  const emojiPickerRef = useRef<HTMLDivElement>(null); // Ref to store reference to emoji picker
+  const emojiPickerRef = useRef<HTMLDivElement>(null)
 
   // Convert data objects into arrays of [key, value] pairs
   const emojiDataArray = Object.entries(emojiData);
   const discordEmojisArray = Object.entries(discordEmojis);
   const gifsArray = Object.entries(GIFS);
   const pbjArray = Object.entries(PBJTime);
-  const emoticonsArray = emoticons.map((emoticon: string) => [
-    emoticon,
-    emoticon,
-  ]);
+  const emoticonsArray = emoticons.map((emoticon: string) => [emoticon, emoticon]);
 
   // Categories mapping to their corresponding data arrays
   const categories: { [category: string]: any[] } = {
@@ -41,25 +28,10 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
     Cats: [],
   };
 
-  // Toggles the visibility of the emoji picker
-  const togglePicker = () => {
-    setIsOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  // Handle the selection of an emoji
-  const handleEmojiClick = (emoji: string) => {
-    onEmojiSelect(emoji);
-  };
-
-  // Handle the change in the search input
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  // Handles the category selection
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
-  };
+  const togglePicker = () => { setIsOpen((prevIsOpen) => !prevIsOpen) };
+  const handleEmojiClick = (emoji: string) => { onEmojiSelect(emoji) }
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => { setSearchQuery(event.target.value) }
+  const handleCategoryClick = (category: string) => { setSelectedCategory(category) }
 
   // Rendering emojis based on selected category and filtered by search query
   const emojiList = categories[selectedCategory]

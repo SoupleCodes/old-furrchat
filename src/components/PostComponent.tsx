@@ -1,25 +1,22 @@
-import React, { useState, useMemo, useCallback } from "react";
-import ReactMarkdown from "react-markdown";
-import emojiRegex from "emoji-regex";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import remarkGfm from "remark-gfm";
-import { defaultPFPS, userEmojis } from "../lib/Data.ts";
-import {
-  handleAttachments,
-  getReplies,
-  getReactions,
-  revisePost,
-  DiscEmojiSupport,
-} from "../lib/RevisePost.tsx";
-import "/src/styles/SocialButtons.css";
-import { deletePost } from "../lib/api/Post/DeletePost.ts";
-import { editPost } from "../lib/api/Post/EditPost.ts";
-import { usePostContext } from "../Context.tsx";
-import { formatTimestamp } from "../utils/FormatTimestamp.ts";
-import { ImageRenderer } from "../utils/ImageRenderer.tsx";
+import React, { useState, useMemo, useCallback } from "react"
+import ReactMarkdown from "react-markdown"
+import emojiRegex from "emoji-regex"
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { dark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import remarkGfm from "remark-gfm"
 
-// Defines the props type for the PostComponent
+import { defaultPFPS, userEmojis } from "../lib/Data.ts"
+import { formatTimestamp } from "../utils/FormatTimestamp.ts"
+import { deletePost } from "../lib/api/Post/DeletePost.ts"
+import { editPost } from "../lib/api/Post/EditPost.ts"
+
+import { handleAttachments, getReplies, getReactions, revisePost, DiscEmojiSupport } from "../lib/RevisePost.tsx"
+import { ImageRenderer } from "../utils/ImageRenderer.tsx"
+import { usePostContext } from "../Context.tsx"
+
+import "/src/styles/SocialButtons.css"
+
+
 interface PostComponentProps {
   attachments: any[];
   author: any;
@@ -38,7 +35,6 @@ interface PostComponentProps {
   edited: boolean;
 }
 
-// The functional component for rendering a post
 export const PostComponent: React.FC<PostComponentProps> = ({
   attachments,
   author,
@@ -52,31 +48,25 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   edited,
 }) => {
   const { setPost } = usePostContext();
+  const { replyIds, setReplyIds } = usePostContext();
+
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
-  const insertQuotedText = useCallback(() => {
-    setPost((prevPost) => `@${user} ${prevPost}`);
-  }, [setPost, user, post]);
-
+  const insertQuotedText = useCallback(() => { setPost((prevPost) => `@${user} ${prevPost}`) }, [setPost, user, post]);
   const userToken = localStorage.getItem("userToken");
 
-  // Memoize profile picture and avatar color
   const { pfp, avatarColor } = useMemo(() => {
     const pfp = author.avatar
       ? `https://uploads.meower.org/icons/${author.avatar}`
-      : defaultPFPS[34 - (author.pfp_data || 0)];
-    const avatarColor = `#${author.avatar_color}`;
-    return { pfp, avatarColor };
+      : defaultPFPS[34 - (author.pfp_data || 0)]
+    const avatarColor = `#${author.avatar_color}`
+    return { pfp, avatarColor }
   }, [author]);
 
-  const realDate = useMemo(() => formatTimestamp(time.e), [time.e]);
+  const realDate = useMemo(() => formatTimestamp(time.e), [time.e])
 
-  // Handle and format attachments, then append to the post content
-  const attachment = useMemo(
-    () => handleAttachments(attachments),
-    [attachments]
-  );
+  const attachment = useMemo(() => handleAttachments(attachments), [attachments])
   const realPost = useMemo(() => {
     let postContent = revisePost(post);
     return `${postContent}\n\n${attachment}`;
@@ -108,7 +98,6 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     }
   }, [post_id, userToken, editContent]);
 
-  const { replyIds, setReplyIds } = usePostContext();
 
   const handleReplyClick = () => {
     const reply = JSON.stringify({
@@ -122,6 +111,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     if (reply && !replyIds.includes(reply)) {
       setReplyIds((prevIds) => [...prevIds, reply]);
     }
+    window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   return (
@@ -167,13 +157,22 @@ export const PostComponent: React.FC<PostComponentProps> = ({
             >
               {" "}
               <span style={{ fontSize: "10px" }}>{getReplies(reply_to)}</span>
-            </div>{" "}
-            <hr />
-            <div style={{ display: "flex" }}>
+            </div>
+            <div style={{ display: "flex", paddingTop: '10px' }}>
               <textarea
                 value={editContent}
                 onChange={handleEditChange}
                 className="edit-box"
+                onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                  if (e.key === "Enter" && e.shiftKey) {
+                    e.preventDefault();
+                    setPost(post + "\n");
+                  } else if (e.key === "Enter") {
+                    //@ts-ignore
+                    sendPost(e);
+                  }
+                }}
+                autoFocus={true}
               />
               <button className="edit-button" onClick={handleSaveEdit}>
                 Save
@@ -274,5 +273,4 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   );
 };
 
-// Export the component wrapped with React.memo for performance optimization
 export default React.memo(PostComponent);
