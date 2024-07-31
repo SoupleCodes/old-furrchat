@@ -1,17 +1,19 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PostProvider } from "./Context.tsx";
 import "./index.css";
 
 import Navbar from "./routes/Navbar.tsx";
 import App from "./routes/Home.tsx";
-import Messages from "./routes/Messages.tsx"
+import Messages from "./routes/Messages.tsx";
 
+// Set the basename for GitHub Pages
+const basename = "/furrchat";
 
 const router = createBrowserRouter([
   {
-    path: "/furrchat",
+    path: `${basename}`,
     element: <Navbar />,
     children: [
       {
@@ -26,12 +28,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PostProvider>
-    <div className="app">
-    <RouterProvider router={router} />
+      <div className="app">
+        <RouterProvider router={router} />
       </div>
     </PostProvider>
   </React.StrictMode>
