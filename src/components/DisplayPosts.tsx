@@ -3,9 +3,9 @@ import PostComponent from "./PostComponent";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../styles/PostTransitions.css";
 
-const DisplayPosts = () => {
-  const ws = new WebSocket("wss://server.meower.org");
+const ws = new WebSocket("wss://server.meower.org");
 
+const DisplayPosts = () => {
   const [posts, setPosts] = useState<any[]>([]);
   const [isOnline, setIsOnline] = useState<string[]>([]);
 

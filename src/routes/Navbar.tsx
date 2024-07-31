@@ -100,10 +100,10 @@ export default function Navbar() {
                 <div className="navbar-items">
                   {/* Navigation bar items */}
                   <div id="home" className="navbar-item">
-                    <Link to={`/furrchat`}>Home</Link>
+                  <Link to="/">Home</Link>
                   </div>
                   <div id="messages" className="navbar-item">
-                  <Link to={`/furrchat/messages`}>Messages</Link>
+                  <Link to="/messages">Messages</Link>
                   </div>
                   <div id="groupchats" className="navbar-item">
                     <a>Groupchats</a>

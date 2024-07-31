@@ -70,6 +70,18 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
     setSelectedCategory(category);
   };
 
+  function handleButtonClick() {
+    const fileInput = document.getElementById('file-input') as HTMLInputElement | null;
+  
+    if (fileInput) {
+      fileInput.click();
+    } else {
+      console.error('File input element not found.');
+    }
+  }
+  
+  
+
   // Function to handle file upload
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -244,21 +256,21 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
               />
               {selectedCategory === "Custom" && (
                 <>
-                  <label htmlFor="file-upload-as-emoji">
-                    <button id="file-upload-as-emoji">
-                      <img
-                        src={"/furrchat/assets/icons/emoji_upload.png"}
-                        height="32px"
-                      />
-                    </button>
-                  </label>
-                  <input
-                    id="file-upload-as-emoji"
-                    type="file"
-                    accept=".webp, .png, .jpeg, .gif"
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                  />
+<button id="file-upload-as-emoji" onClick={handleButtonClick}>
+  <img
+    src={"/furrchat/assets/icons/emoji_upload.png"}
+    height="32px"
+    alt="Upload Emoji"
+  />
+</button>
+<input
+  id="file-input"
+  type="file"
+  accept=".webp, .png, .jpeg, .gif"
+  onChange={handleFileUpload}
+  style={{ display: "none" }}
+/>
+
                 </>
               )}
             </span>
