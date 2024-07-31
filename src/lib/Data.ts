@@ -309,11 +309,13 @@ const discordEmojis: EmojiMap = {
   ":rehehehehehehe:": "<:rehehehehehehe:1123971249442406521>",
   ":robotop:": "<:robotop:1148967341409976411>",
   ":ron:": "<:ron:1251187515189104730>",
+  ":roxy:": "<:roxy:1260366574989348955>",
   ":sadmeow:": "<:sadmeow:954781179704393769>",
   ":scratch:": "<:scratch:1255200839975567483>",
   ":sd:": "<:sd:1255229890651881492>",
   ":shake:": "<a:shake:1227279789472354435>",
   ":shakespeare:": "<:shakespeare:982709311702716457>",
+  ":shark:": "<:shark:1260009179024855081>",
   ":soon:": "<:soon:932400780072349726>",
   ":sphere:": "<a:sphere:1227279796715917362>",
   ":spin:": "<a:spin:1227279798015889498>",
@@ -356,12 +358,13 @@ const discordEmojis: EmojiMap = {
   ":snooga7:": "<:snooga7:1258860434497343590>",
   ":snooga8:": "<:snooga8:1258860443468824616>",
   ":doinkus:": "<:doinkus:1266027105452560444>",
+  ":doinkus2": "<:doinkus:1267307216000782457>",
   ":green:": "<:green:1266027100905803776>",
   ":garf:": "<:garf:1266027104273825863>",
   ":proton:": "<:proton:1266027095042166864>",
   ":shocc:": "<:shocc:1266027587704983593>",
   ":mikehmm:": "<:mikehmm:1266027099433472061>",
-  ":hidingcar:": "<:hidingcar:1266027448869322793>"
+  ":hidingcar:": "<:hidingcar:1266027448869322793>",
 };
 
 const GIFS: EmojiMap = {
@@ -394,8 +397,17 @@ const GIFS: EmojiMap = {
     "https://uploads.meower.org/attachments/GrjtUveRiUr7mCARZIR4EGEf/mower.png",
   bunger:
     "https://uploads.meower.org/attachments/qA8nsPQ0ifB3is13YTD7WQxV/bunger.gif",
-  garfknows:
-    "https://uploads.meower.org/attachments/IG7l9YA8pUcc06dgTMXT5Hys/garf_knows.mp4"
+};
+
+const CATS: EmojiMap = {
+  ":picture-cat-1:": "https://uploads.meower.org/attachments/Kd6w71bLBaEaNiG4JRBxbBEG/IMG_8008.jpeg",
+  ":picture-cat-2:": "https://uploads.meower.org/attachments/sAueWwMwkIG5SzbtBVANlizp/IMG_20240728_144041_622.jpg",
+  ":picture-cat-3:": "https://uploads.meower.org/attachments/mZYMlWQLhtrawGq6xjQkJ4GW/IMG_20240718_115004_313.jpg",
+  ":picture-cat-4:": "https://uploads.meower.org/attachments/YnwfddATqANhpmTIDiZBocqJ/OFGUREWacrItZs3VWnbb0pJJ.webp",
+  ":picture-cat-5:": "https://uploads.meower.org/attachments/GJTPI5UMOnBY4yhfq4hxDRDR/IMG_20240728_214338_816.jpg",
+  ":picture-cat-6:": "https://uploads.meower.org/attachments/e3TIyWqO20UYwaxxj9sArWA0/IMG_20240619_213521_120.jpg",
+  ":picture-cat-7:": "https://uploads.meower.org/attachments/JeEpslLObLbD5p3rNzkdy6er/IMG_20240728_142901_629.jpg",
+
 };
 
 const defaultPFPS: string[] = [
@@ -681,4 +693,5 @@ export {
   userEmojis,
   headingOptions,
   PBJTime,
+  CATS
 };

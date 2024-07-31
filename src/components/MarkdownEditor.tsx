@@ -27,7 +27,8 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [selectionStart, setSelectionStart] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
-  
+  let typingTimeout: NodeJS.Timeout | null = null;
+
   interface Reply { author: string; post: string; post_id: string; avatar: string; pfp_data: number;}
 
   const sendPost = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -154,7 +155,6 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
     }
   };
 
-  // Attach and clean up paste event listener
   useEffect(() => {
     document.addEventListener("paste", handlePaste);
     return () => {
@@ -260,7 +260,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
           />
         </div>
       </div>
-      <div className="attachments">
+      <div className="attachments" style={{ borderRadius: '2px' }}>
         {replyIds.map((reply, index) => (
           <div
             className="attachment-container"
@@ -362,7 +362,16 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
                   sendPost(e);
                 }
               }}
-              onKeyDownCapture={() => sendTypingNotification()}
+              onKeyDownCapture={() => {
+                if (typingTimeout) {
+                  clearTimeout(typingTimeout)
+                }
+
+                typingTimeout = setTimeout(() => {
+                  sendTypingNotification()
+                  typingTimeout = null
+                }, 500)
+                }}
               style={{
                 flex: 1,
                 marginRight: "5px",

@@ -3,9 +3,9 @@ import PostComponent from "./PostComponent";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../styles/PostTransitions.css";
 
-const ws = new WebSocket("wss://server.meower.org");
-
 const DisplayPosts = () => {
+  const ws = new WebSocket("wss://server.meower.org");
+
   const [posts, setPosts] = useState<any[]>([]);
   const [isOnline, setIsOnline] = useState<string[]>([]);
 
@@ -25,7 +25,7 @@ const DisplayPosts = () => {
     };
 
     return () => { ws.onmessage = null; };
-  }, [posts]);
+  }, [posts, isOnline]);
 
 
   const handleDirectCommand = (val: { id?: any; mode?: any; payload?: any; }) => {
@@ -113,11 +113,7 @@ const DisplayPosts = () => {
             time={{ e: post.edited_at !== undefined ? post.edited_at : post.t?.e || 0 }}
             type={post.type || 0}
             user={post.u || "unknown"}
-            active={isOnline.includes(
-              post.p.includes(":") && post.u === "Discord"
-                ? post.p.split(":")[0]
-                : post.u
-            )}
+            active={isOnline.includes(post.u)}
             edited={post.edited_at !== undefined}
             author={post.author}
             reactions={post.reactions}

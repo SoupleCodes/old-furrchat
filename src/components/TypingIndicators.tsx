@@ -1,17 +1,20 @@
 import { useState, useEffect, useCallback } from 'react'
 import { LoaderElement } from './LoaderElement.tsx'
 import '../styles/TypingIndicator.css'
+import { usePostContext } from '../Context.tsx'
 
 export const TypingIndicator = () => {
     const [typingUsers, setTypingUsers] = useState(new Set())
     const [typingTimeouts, setTypingTimeouts] = useState({})
+    const { userData } = usePostContext();
+    const currentUser = userData?.username
 
     useEffect(() => {
         const ws = new WebSocket('wss://server.meower.org?v=1')
 
         ws.onmessage = (event) => {
             const { cmd, val: { username, chat_id } } = JSON.parse(event.data)
-            if (cmd === 'typing') handleTypingNotification(username, chat_id)
+            if (cmd === 'typing' && username !== currentUser) handleTypingNotification(username, chat_id)
         }
 
         ws.onerror = (error) => console.error('WebSocket error:', error)

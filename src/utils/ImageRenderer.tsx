@@ -11,7 +11,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
   // Render different components based on the file extension
   if (src.includes("emoji" || "smilies")) {
     return (
-      <img src={src} alt={alt} style={{ width: "auto", maxHeight: "20px" }} />
+      <img src={src} alt={alt} style={{ width: "auto", maxHeight: "20px" }} title={alt}/>
     );
   } else {
     switch (fileExtension) {
@@ -20,7 +20,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
       case "mp3":
       case "aac":
       case "flac":
-        return <audio src={src} controls />;
+        return <audio src={src} controls title={src}/>;
 
       // Video formats
       case "mp4":
@@ -35,6 +35,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
             src={src}
             controls
             style={{ maxHeight: "380px", objectPosition: "50% 50%" }}
+            title={src}
           />
         );
 
@@ -74,6 +75,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
             src={src}
             alt={alt}
             style={{ height: "auto", width: "auto", maxHeight: "375px" }}
+            title={src}
           />
         );
 

@@ -26,7 +26,7 @@
   overflow-y: auto;
 }
 
-.search-input-container input[type="text" i] {
+#emoji-search {
   width: 200px;
   padding: 8px 12px;
   border: 1px solid #ccc;
@@ -38,7 +38,7 @@
   background-color: #ffffff;
 }
 
-.search-input-container input[type="text" i]:focus {
+#emoji-search:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus shadow */
@@ -47,4 +47,16 @@
 .search-input-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+#file-upload-as-emoji {
+  padding: 0px 2px;
+  border: 1px solid #ccc;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: #ffffff;
 }

@@ -16,7 +16,6 @@ import { usePostContext } from "../Context.tsx"
 
 import "/src/styles/SocialButtons.css"
 
-
 interface PostComponentProps {
   attachments: any[];
   author: any;
@@ -47,24 +46,26 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   active,
   edited,
 }) => {
-  const { setPost } = usePostContext();
+  const { setPost, userToken } = usePostContext();
   const { replyIds, setReplyIds } = usePostContext();
+  const { userData } = usePostContext();
+  const currentUser = userData?.username
 
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
   const insertQuotedText = useCallback(() => { setPost((prevPost) => `@${user} ${prevPost}`) }, [setPost, user, post]);
-  const userToken = localStorage.getItem("userToken");
 
   const { pfp, avatarColor } = useMemo(() => {
     const pfp = author.avatar
       ? `https://uploads.meower.org/icons/${author.avatar}`
+      : user === 'Server'? `https://app.meower.org/assets/icon_100-026e1a7d.svg`
       : defaultPFPS[34 - (author.pfp_data || 0)]
     const avatarColor = `#${author.avatar_color}`
     return { pfp, avatarColor }
   }, [author]);
 
-  const realDate = useMemo(() => formatTimestamp(time.e), [time.e])
+  const realDate = formatTimestamp(time.e)
 
   const attachment = useMemo(() => handleAttachments(attachments), [attachments])
   const realPost = useMemo(() => {
@@ -129,6 +130,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
               border: `1px solid ${avatarColor}`,
               boxShadow:
                 "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
+                
             }}
           />
           {active ? (
@@ -190,11 +192,11 @@ export const PostComponent: React.FC<PostComponentProps> = ({
               components={{
                 // Custom rendering for code blocks with syntax highlighting
                 code({ node, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || "");
+                  const match = /language-(\w+)/.exec(className || "h \n/");
                   const inline = !match;
                   return !inline && match ? (
                     <SyntaxHighlighter
-                      children={String(children).replace(/\n\n$/, "")}
+                      children={String(children).replace(/\n\n\n$/, "")}
                       // @ts-ignore
                       style={dark}
                       language={match[1]}
@@ -237,7 +239,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
               />{" "}
               Reply
             </button>
-            {userToken ? (
+            {user === currentUser ? (
               <>
                 <button
                   className="social-buttons"

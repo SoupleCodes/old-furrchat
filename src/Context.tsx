@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+interface UserData {
+  username: string;
+  token: string;
+  account: Record<string, any>; // Replace with actual type if known
+  relationships: any[]; // Replace with actual type if known
+  chats: any[]; // Replace with actual type if known
+}
+
 
 type PostContextType = {
   post: string;
@@ -9,6 +18,12 @@ type PostContextType = {
   setSelectionEnd: React.Dispatch<React.SetStateAction<number>>;
   replyIds: string[];
   setReplyIds: React.Dispatch<React.SetStateAction<string[]>>;
+  loginSuccess: boolean;
+  setLoginSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  userToken: string;
+  setUserToken: React.Dispatch<React.SetStateAction<string>>;
+  userData: UserData | null; // Use UserData type and allow null
+  setUserData: React.Dispatch<React.SetStateAction<UserData | null>>; // Use UserData type and allow null
 };
 
 const PostContext = createContext<PostContextType | undefined>(undefined);
@@ -21,11 +36,14 @@ export const usePostContext = () => {
   return context;
 };
 
-export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const PostProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [post, setPost] = useState('');
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(0);
   const [replyIds, setReplyIds] = useState<string[]>([]);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [userToken, setUserToken] = useState('');
+  const [userData, setUserData] = useState<UserData | null>(null); // Initialize with null
 
   const value = {
     post,
@@ -35,7 +53,13 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     selectionEnd,
     setSelectionEnd,
     replyIds,
-    setReplyIds
+    setReplyIds,
+    loginSuccess,
+    setLoginSuccess,
+    userToken,
+    setUserToken,
+    userData,
+    setUserData
   };
 
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;

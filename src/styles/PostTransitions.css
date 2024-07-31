@@ -1,18 +1,21 @@
 .post-transition-enter {
   opacity: 0;
-  transform: translateY(-20px); /* Start with a slight upward offset */
+  transform: translateY(-20px) scale(0.9) rotate(-5deg);
+  filter: blur(5px);
 }
 .post-transition-enter-active {
   opacity: 1;
-  transform: translateY(0); /* End at the normal position */
-  transition: opacity 300ms ease-out, transform 300ms ease-out;
+  transform: translateY(0) scale(1) rotate(0deg);
+  filter: blur(0px);
+  transition: opacity 300ms ease-out, transform 300ms ease-out, filter 300ms ease-out;
 }
+
 .post-transition-exit {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 .post-transition-exit-active {
   opacity: 0;
-  transform: translateY(20px); /* Slide down when exiting */
+  transform: translateY(20px) scale(0.9); /* Slide down when exiting and slightly smaller */
   transition: opacity 300ms ease-in, transform 300ms ease-in;
 }
