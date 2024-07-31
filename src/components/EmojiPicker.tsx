@@ -71,16 +71,16 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
   };
 
   function handleButtonClick() {
-    const fileInput = document.getElementById('file-input') as HTMLInputElement | null;
-  
+    const fileInput = document.getElementById(
+      "file-input"
+    ) as HTMLInputElement | null;
+
     if (fileInput) {
       fileInput.click();
     } else {
-      console.error('File input element not found.');
+      console.error("File input element not found.");
     }
   }
-  
-  
 
   // Function to handle file upload
   const handleFileUpload = async (
@@ -103,6 +103,15 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
         console.error("Failed to upload emoji:", error);
       }
     }
+  };
+
+  const removeCustomEmoji = (key: string) => {
+    setCustomEmojis((prevEmojis) => {
+      const updatedEmojis = { ...prevEmojis };
+      delete updatedEmojis[key];
+      localStorage.setItem("userEmojis", JSON.stringify(updatedEmojis));
+      return updatedEmojis;
+    });
   };
 
   // Rendering emojis based on selected category and filtered by search query
@@ -158,9 +167,8 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
           // Handle emoticons
           <>{key}</>
         ) : selectedCategory === "Custom" ? (
-          // Handle custom emojis with remove button
           <div style={{ position: "relative", display: "inline-block" }}>
-            <img src={value} alt={key} title={key} width={75}/>
+            <img src={value} alt={key} title={key} width={75} />
             <button
               style={{
                 position: "absolute",
@@ -174,7 +182,7 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
                 cursor: "pointer",
                 lineHeight: 0.6,
               }}
-              // onClick={() => removeCustomEmoji(key)}
+              onClick={() => removeCustomEmoji(key)} // Remove emoji on click
             >
               x
             </button>
@@ -256,21 +264,20 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
               />
               {selectedCategory === "Custom" && (
                 <>
-<button id="file-upload-as-emoji" onClick={handleButtonClick}>
-  <img
-    src={"/furrchat/assets/icons/emoji_upload.png"}
-    height="32px"
-    alt="Upload Emoji"
-  />
-</button>
-<input
-  id="file-input"
-  type="file"
-  accept=".webp, .png, .jpeg, .gif"
-  onChange={handleFileUpload}
-  style={{ display: "none" }}
-/>
-
+                  <button id="file-upload-as-emoji" onClick={handleButtonClick}>
+                    <img
+                      src={"/furrchat/assets/icons/emoji_upload.png"}
+                      height="32px"
+                      alt="Upload Emoji"
+                    />
+                  </button>
+                  <input
+                    id="file-input"
+                    type="file"
+                    accept=".webp, .png, .jpeg, .gif"
+                    onChange={handleFileUpload}
+                    style={{ display: "none" }}
+                  />
                 </>
               )}
             </span>
