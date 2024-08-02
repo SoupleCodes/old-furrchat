@@ -1,0 +1,175 @@
+/* Common Styles */
+.color-picker-container,
+.user-bio {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.507) 0%,
+    rgba(230, 230, 230, 0.5) 100%
+  );
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 12px;
+}
+
+.color-picker-container label {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+input#pickedAvatarColor {
+  width: 50px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  appearance: none;
+  border-radius: 4px;
+}
+
+input#pickedAvatarColor::-webkit-color-swatch-wrapper,
+input#pickedAvatarColor::-webkit-color-swatch {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Profile Picture Styles */
+.pfpset {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pfp-item,
+.pfp-container {
+  position: relative;
+}
+
+.pick-pfp {
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border: 0.7px solid white;
+  margin: 3px;
+  cursor: pointer;
+}
+
+.pick-pfp:hover {
+  border: 0.5px solid yellow;
+  transition: border 300ms linear;
+}
+
+.remove-pfp {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 0, 0.9) 0%,
+    rgba(200, 0, 0, 0.9) 100%
+  );
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(255, 255, 255, 0.4);
+  transform: translate(50%, -50%);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.remove-pfp:hover {
+  background: radial-gradient(
+    circle,
+    rgba(200, 0, 0, 0.9) 0%,
+    rgba(150, 0, 0, 0.9) 100%
+  );
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Settings Container */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  margin: 0px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.507) 0%,
+    rgba(230, 230, 230, 0.5) 100%
+  );
+}
+
+/* Profile Info */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.post-pfp-container {
+  display: flex;
+}
+
+.user-text {
+  font-size: 18px;
+  text-align: center;
+}
+
+/* User Bio */
+.user-bio {
+  font-size: 16px;
+  text-align: left;
+  font-style: italic;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 4px 0;
+}
+
+.user-bio p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.user-bio-container {
+  flex-grow: 1;
+}
+
+/* Textarea */
+.textarea-userbio {
+  font-size: 16px;
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

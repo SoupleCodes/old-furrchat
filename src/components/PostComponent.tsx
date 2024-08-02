@@ -54,13 +54,14 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
-  const insertQuotedText = useCallback(() => { setPost((prevPost) => `@${user} ${prevPost}`) }, [setPost, user, post]);
+  const insertQuotedText = useCallback(() => { setPost((prevPost) => `@${user} ${prevPost}`); window.scrollTo({ top: 200, behavior: 'smooth' });
+}, [setPost, user, post]);
 
   const { pfp, avatarColor } = useMemo(() => {
     const pfp = author.avatar
       ? `https://uploads.meower.org/icons/${author.avatar}`
       : user === 'Server'? `https://app.meower.org/assets/icon_100-026e1a7d.svg`
-      : defaultPFPS[34 - (author.pfp_data || 0)]
+      : defaultPFPS[(author.pfp_data || 0)]
     const avatarColor = `#${author.avatar_color}`
     return { pfp, avatarColor }
   }, [author]);

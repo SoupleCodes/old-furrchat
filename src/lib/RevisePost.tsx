@@ -21,7 +21,7 @@ const EmojiImage = (sentence: string, list: { [x: string]: any }, replace: boole
     if (sentence.includes(key) && !sentence.includes("\\" + key)) {
       const value = list[key];
       if (replace) {
-        sentence = sentence.replaceAll(key, `![${key}](${value})`);
+        sentence = sentence.replaceAll(key, ` ![${key}](${value}) `);
       } else {
         sentence = sentence.replaceAll(key, '');
       }
@@ -137,7 +137,7 @@ function getReplies(repliesData: any[]) {
                       reply.author.avatar === ""
                         ? reply.author.pfp_data === -3
                           ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                          : `${defaultPFPS[34 - reply.author.pfp_data]}`
+                          : `${defaultPFPS[reply.author.pfp_data]}`
                         : `https://uploads.meower.org/icons/${reply.author.avatar}`
                     }
                     alt="reply pfp"

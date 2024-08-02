@@ -62,7 +62,7 @@ const UListBody = () => {
                   user.avatar === ""
                     ? user.pfp_data === -3
                       ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                      : `${defaultPFPS[34 - user.pfp_data]}`
+                      : `${defaultPFPS[user.pfp_data]}`
                     : `https://uploads.meower.org/icons/${user.avatar}`
                 }
               />{" "}

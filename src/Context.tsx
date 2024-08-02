@@ -1,11 +1,42 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface UserData {
-  username: string;
+export interface UserAccount {
+  _id: string;
+  active_dms: string[];
+  avatar: string;
+  avatar_color: string;
+  ban: {}
+  banned: boolean;
+  bgm: boolean;
+  bgm_song: number;
+  created: string;
+  debug: boolean;
+  favorited_chats: [];
+  flags: number;
+  hide_blocked_users: boolean;
+  last_seen: number;
+  layout: string;
+  lower_username: string;
+  lvl: number;
+  mode: true;
+  permissions: number;
+  pfp_data: number;
+  quote: string;
+  sfx: boolean;
+  theme: string;
+  unread_inbox: boolean;
+  uuid: string;
+  relationships: [];
+  chats: [];
+
+}
+
+export interface UserData {
+  username: any;
   token: string;
-  account: Record<string, any>; // Replace with actual type if known
-  relationships: any[]; // Replace with actual type if known
-  chats: any[]; // Replace with actual type if known
+  account: UserAccount;
+  relationships: any[];
+  chats: any[];
 }
 
 

@@ -119,7 +119,7 @@ p {
 
 .online-indicator {
   position: absolute; /* Position relative to .post-pfp-container */
-  bottom: 6px;
+  bottom: 0px;
   left: 44px;
   width: 12px;
   height: 12px;
@@ -135,7 +135,7 @@ p {
 
 .offline-indicator {
   position: absolute; /* Position relative to .post-pfp-container */
-  bottom: 6px;
+  bottom: 0px;
   left: 44px;
   width: 12px;
   height: 12px;

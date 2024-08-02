@@ -10,43 +10,51 @@ export default function Navbar() {
   const [loginError, setLoginError] = useState(false);
   
   useEffect(() => {
-    try {
-      const storedData = localStorage.getItem("userData");
-      const parsedData = storedData ? JSON.parse(storedData) : {}; 
-      setUserData(parsedData);
-  
-      if (Object.keys(parsedData).length === 0) { 
-        setLoginSuccess(false);
-      } else if (parsedData.token) {
-        setUserToken(parsedData.token); 
-        setLoginSuccess(true);
-  
-        const ws = new WebSocket(
-          `wss://server.meower.org/?v=1&token=${parsedData.token}` 
-        );
-  
-        ws.onmessage = (message) => {
+    const storedData = localStorage.getItem("userData");
+    const parsedData = storedData ? JSON.parse(storedData) : {}; 
+    setUserData(parsedData);
+    
+    if (Object.keys(parsedData).length === 0) { 
+      setLoginSuccess(false);
+      return;
+    } 
+
+    if (parsedData.token) {
+      setUserToken(parsedData.token); 
+      setLoginSuccess(true);
+
+      const ws = new WebSocket(`wss://server.meower.org/?v=1&token=${parsedData.token}`);
+
+      ws.onmessage = (message) => {
+        try {
           const data = JSON.parse(message.data);
           if (data.cmd === "auth") {
             const userData = data.val;
             setUserToken(userData.token);
             setLoginSuccess(true);
-            console.log(userData);
+            setUserData(userData);
             localStorage.setItem("userData", JSON.stringify(userData));
           }
-        };
-  
-        return () => {
-          // Close the WebSocket connection when the component unmounts
-          ws.close();
-        };
-      }
-    } catch (error) {
-      console.error("Error parsing user data from localStorage:", error);
-    }
-  }, [setUserToken, loginSuccess]); // Include dependencies for useEffect
-  
+        } catch (error) {
+          console.error("Error parsing message data:", error);
+        }
+      };
 
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        // You can also handle reconnection logic here
+      };
+
+      ws.onclose = () => {
+        console.log("WebSocket connection closed.");
+        // You can also handle reconnection logic here
+      };
+
+      return () => {
+        ws.close();
+      };
+    }
+  }, [setUserToken, setUserData, setLoginSuccess]);
         
           return (
             <>
@@ -86,6 +94,7 @@ export default function Navbar() {
                   id="password"
                   name="password"
                   placeholder="Enter your password."
+                  autoComplete="current-password"
                   value={password} // Controlled input for password
                   onChange={(event) => setPassword(event.target.value)} // Update state on change
                   required
@@ -106,10 +115,10 @@ export default function Navbar() {
                   <Link to="/messages">Messages</Link>
                   </div>
                   <div id="groupchats" className="navbar-item">
-                    <a>Groupchats</a>
+                  <Link to="/groupchats">Groupchats</Link>
                   </div>
                   <div id="settings" className="navbar-item">
-                  <a>Settings</a>
+                  <Link to="/settings">Settings</Link>
                   </div>
                   <input
                     type="text"

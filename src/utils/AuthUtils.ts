@@ -28,7 +28,8 @@ export const handleSubmit = (
             if (data.cmd === "auth") {
               const userData = data.val;          
               setUserToken(userData.token);
-              localStorage.setItem("userData", JSON.stringify(userData));
+              localStorage.setItem("userData", JSON.stringify(userData))
+              window.location.reload()
             }
           }
         } else {

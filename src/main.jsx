@@ -7,6 +7,8 @@ import "./index.css";
 import Navbar from "./routes/Navbar.tsx";
 import App from "./routes/Home.tsx";
 import Messages from "./routes/Messages.tsx";
+import Groupchats from "./routes/Groupchats.tsx";
+import Settings from "./routes/Settings.jsx";
 
 const AppRouter = () => (
   <Router>
@@ -14,6 +16,8 @@ const AppRouter = () => (
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="messages" element={<Messages />} />
+      <Route path="groupchats" element={<Groupchats />} />
+      <Route path="settings" element={<Settings />} />
     </Routes>
   </Router>
 );
