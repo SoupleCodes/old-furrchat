@@ -21,14 +21,22 @@
     flex-grow: 1;
 }
 
-button {
+.categoryButtons button {
     color: #000000;
 }
 
-button:hover {
+.categoryButtons button:hover {
     filter: brightness(0.8);
 }
 
+.categoryButtons input[type="text"] {
+    padding: 6px;
+    border: 1px solid grey;
+    border-radius: 6px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.7);
+}
 
 .container {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
@@ -88,6 +96,7 @@ button {
     font-size: 24px;
     font-weight: 600;
     opacity: 0.8;
+    text-shadow: 0 0px 2px rgb(255, 255, 255);
 }
 
 .header h2 i {

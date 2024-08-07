@@ -11,6 +11,7 @@ export default function Groupchats() {
   const { userToken } = usePostContext();
   const [groupchats, setGroupchats] = useState<gcParameters[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     async function fetchGroupChats() {
@@ -39,6 +40,7 @@ export default function Groupchats() {
 
   return (
     <div>
+
       <div className={styles.categoryButtons}>
         {categories.map((category) => (
           <button
@@ -49,6 +51,13 @@ export default function Groupchats() {
             {category}
           </button>
         ))}
+        <input
+          type="text"
+          placeholder="Search"
+          className="search-category-container"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
       {groupchats
         .filter((gc) => {
@@ -80,6 +89,18 @@ export default function Groupchats() {
           }
           return false;
         })
+        .filter((gc) => {
+          if (gc.type === 0) {
+            return gc.nickname ? gc.nickname.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+          } else if (gc.type === 1) {
+            const storedData = localStorage.getItem("userData");
+            const parsedData = storedData ? JSON.parse(storedData) : {};
+            const otherUser = gc.type === 1 ? gc.members.find(member => member !== parsedData.account._id) : null;
+            return otherUser ? otherUser.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+          }
+          return false;
+        })
+
         .map((gc) => (
           <Groupchat
             key={gc._id}
