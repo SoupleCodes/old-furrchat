@@ -57,8 +57,7 @@ export default function Messages() {
             edited={post.edited_at !== undefined}
             author={post.author}
             reactions={post.reactions}
-            reply_to={post.reply_to}
-          />
+            reply_to={post.reply_to} u={undefined} p={undefined}          />
         ))
       ) : (
         <p>No messages available</p>

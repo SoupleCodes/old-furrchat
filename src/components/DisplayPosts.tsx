@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 import PostComponent from "./PostComponent";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../styles/PostTransitions.css";
@@ -6,13 +6,22 @@ import "../styles/PostTransitions.css";
 const ws = new WebSocket("wss://server.meower.org");
 
 const DisplayPosts = () => {
+  const parsedData = JSON.parse(localStorage.getItem("userData") || "{}");
+
+  const bannedUsers = parsedData.account?.hide_blocked_users
+    ? new Set(parsedData.relationships.filter((rel: { state: number; }) => rel.state === 2).map((rel: { username: any; }) => rel.username))
+    : new Set();
+
   const [posts, setPosts] = useState<any[]>([]);
   const [isOnline, setIsOnline] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     ws.onmessage = (message) => {
       const data = JSON.parse(message.data);
-      console.log(data)
+      console.log(data);
       const { cmd, val } = data;
 
       if (val?._id) {
@@ -26,7 +35,6 @@ const DisplayPosts = () => {
 
     return () => { ws.onmessage = null; };
   }, [posts, isOnline]);
-
 
   const handleDirectCommand = (val: { id?: any; mode?: any; payload?: any; }) => {
     const { mode, payload } = val;
@@ -76,53 +84,95 @@ const DisplayPosts = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("https://api.meower.org/home");
-        if (response.ok) {
-          const data = await response.json();
-          setPosts(data.autoget || []);
-        } else {
-          console.error("Error fetching posts:", response.statusText);
+  const fetchPosts = useCallback(async (pageNumber: number) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`https://api.meower.org/home?page=${pageNumber}`);
+      if (response.ok) {
+        const data = await response.json();
+        const newPosts = data.autoget || [];
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+        if (newPosts.length === 0) {
+          setHasMore(false);
         }
-      } catch (error) {
-        console.error("An error occurred:", error);
+      } else {
+        console.error("Error fetching posts:", response.statusText);
       }
-    };
-
-    fetchPosts();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return (
+  useEffect(() => {
+    fetchPosts(page);
+  }, [page, fetchPosts]);
+
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    const handleScroll = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        if (
+          window.innerHeight + window.scrollY >=
+          document.body.offsetHeight && hasMore
+        ) {
+          handleLoadMore();
+        }
+      }, 250)
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    if (timer) {
+      clearTimeout(timer);
+    }
+  };
+}, [hasMore, handleLoadMore])
+
+return (
+  <div>
     <TransitionGroup>
-      {posts.map(post => (
-        <CSSTransition
-          key={post._id || Math.random()}
-          timeout={500}
-          classNames="post-transition"
-        >
-          <PostComponent
-            _id={post._id || ""}
-            attachments={post.attachments || []}
-            isDeleted={post.isDeleted || false}
-            post={post.p || ""}
-            pinned={post.pinned || false}
-            post_id={post.post_id || null}
-            post_origin={post.post_origin || null}
-            time={{ e: post.edited_at !== undefined ? post.edited_at : post.t?.e || 0 }}
-            type={post.type || 0}
-            user={post.u || "unknown"}
-            active={isOnline.includes(post.u)}
-            edited={post.edited_at !== undefined}
-            author={post.author}
-            reactions={post.reactions}
-            reply_to={post.reply_to}
-          />
-        </CSSTransition>
-      ))}
+      {posts
+        .filter(post => !bannedUsers.has(post.u))
+        .map(post => (
+          <CSSTransition
+            key={post._id || Math.random()}
+            timeout={500}
+            classNames="post-transition"
+          >
+            <PostComponent
+              _id={post._id || ""}
+              attachments={post.attachments || []}
+              isDeleted={post.isDeleted || false}
+              post={post.p || ""}
+              pinned={post.pinned || false}
+              post_id={post.post_id || null}
+              post_origin={post.post_origin || null}
+              time={{ e: post.edited_at !== undefined ? post.edited_at : post.t?.e || 0 }}
+              type={post.type || 0}
+              user={post.u || "unknown"}
+              active={isOnline.includes(post.u)}
+              edited={post.edited_at !== undefined}
+              author={post.author}
+              reactions={post.reactions}
+              reply_to={post.reply_to} u={undefined} p={undefined} />
+          </CSSTransition>
+        ))}
     </TransitionGroup>
-  );
+  </div>
+);
 };
 
 export default memo(DisplayPosts);

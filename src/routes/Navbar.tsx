@@ -34,6 +34,7 @@ export default function Navbar() {
             setLoginSuccess(true);
             setUserData(userData);
             localStorage.setItem("userData", JSON.stringify(userData));
+            console.log(userData)
           }
         } catch (error) {
           console.error("Error parsing message data:", error);

@@ -16,7 +16,9 @@ import { usePostContext } from "../Context.tsx"
 
 import "/src/styles/SocialButtons.css"
 
-interface PostComponentProps {
+export interface PostComponentProps {
+  u: any
+  p: any
   attachments: any[];
   author: any;
   isDeleted: boolean;
@@ -54,14 +56,15 @@ export const PostComponent: React.FC<PostComponentProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState<string>(revisePost(post));
 
-  const insertQuotedText = useCallback(() => { setPost((prevPost) => `@${user} ${prevPost}`); window.scrollTo({ top: 200, behavior: 'smooth' });
-}, [setPost, user, post]);
+  const insertQuotedText = useCallback(() => {
+    setPost((prevPost) => `@${user} ${prevPost}`); window.scrollTo({ top: 200, behavior: 'smooth' });
+  }, [setPost, user, post]);
 
   const { pfp, avatarColor } = useMemo(() => {
     const pfp = author.avatar
       ? `https://uploads.meower.org/icons/${author.avatar}`
-      : user === 'Server'? `https://app.meower.org/assets/icon_100-026e1a7d.svg`
-      : defaultPFPS[(author.pfp_data || 0)]
+      : user === 'Server' ? `https://app.meower.org/assets/icon_100-026e1a7d.svg`
+        : defaultPFPS[(author.pfp_data || 0)]
     const avatarColor = `#${author.avatar_color}`
     return { pfp, avatarColor }
   }, [author]);
@@ -129,11 +132,11 @@ export const PostComponent: React.FC<PostComponentProps> = ({
             style={{
               borderRadius: "5px",
               border: `1px solid ${avatarColor}`,
-              boxShadow:
-                "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
-                
+              boxShadow: "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
+              objectFit: 'cover'
             }}
           />
+
           {active ? (
             <span className="online-indicator" title="Online"></span>
           ) : (

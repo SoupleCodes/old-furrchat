@@ -688,6 +688,63 @@ const headingOptions = [
   { label: "Heading 6", value: "######" },
 ];
 
+const musicLibrary = [
+  {
+    path: "/furrchat/assets/bgm/meowerisnotdead.mp3",
+    author: "Voxalice",
+    songName: "Meower is (not) dead"
+  },
+  {
+    path: "/furrchat/assets/bgm/meowerisnotdeadinstrumental.wav",
+    author: "Voxalice",
+    songName: "Meower is (not) dead Instrumental"
+  },
+  {
+    path: "/furrchat/assets/bgm/meowerjohnelr.mp3",
+    author: "Johnelr",
+    songName: "Meower."
+  },
+  {
+    path: "/furrchat/assets/bgm/nightsky.wav",
+    author: "Meguy7878",
+    songName: "Night Sky"
+  },
+  {
+    path: "/furrchat/assets/bgm/pbloopremix.wav",
+    author: "Johnelr",
+    songName: "P.B loop remix"
+  },
+  {
+    path: "/furrchat/assets/bgm/percussionbaseloop.wav",
+    author: "Voxalice",
+    songName: "Percussion bass loop"
+  },
+  {
+    path: "/furrchat/assets/bgm/pianoeargrapes.mp3",
+    author: "Maclator",
+    songName: "Piano ear grapes"
+  },
+  {
+    path: "/furrchat/assets/bgm/theelevatoroftime.wav",
+    author: "Voxalice",
+    songName: "The elevator of time"
+  },
+  {
+    path: "/furrchat/assets/bgm/untitledsong1.wav",
+    author: "TheStrykerJay",
+    songName: "Untitled Song 1"
+  },
+  {
+    path: "/furrchat/assets/bgm/untitledsong2.mp3",
+    author: "Dotumantaraye",
+    songName: "Untitled Song 2"
+  },
+];
+
+// console.log(musicLibrary[0].path);
+// console.log(musicLibrary[0].author);
+// console.log(musicLibrary[0].songName);
+
 export {
   emojiData,
   discordEmojis,
@@ -697,5 +754,6 @@ export {
   headingOptions,
   PBJTime,
   CATS,
-  defaultPFPS
+  defaultPFPS,
+  musicLibrary
 };

@@ -86,21 +86,23 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      try {
-        const response = await uploadToEmoji({ file, userToken: USER_TOKEN });
-        const newEmoji = `https://uploads.meower.org/emojis/${response}`;
-        setCustomEmojis((prevEmojis) => ({
-          ...prevEmojis,
-          [`<:${response}>`]: newEmoji,
-        }));
-        localStorage.setItem(
-          "userEmojis",
-          JSON.stringify({ ...customEmojis, [`<:${response}>`]: newEmoji })
-        );
-      } catch (error) {
-        console.error("Failed to upload emoji:", error);
+    if (event.target.files) {
+      for (let i = 0; i < event.target.files.length; i++) {
+        const file = event.target.files[i];
+        try {
+          const response = await uploadToEmoji({ file, userToken: USER_TOKEN });
+          const newEmoji = `https://uploads.meower.org/emojis/${response}`;
+          setCustomEmojis((prevEmojis) => ({
+            ...prevEmojis,
+            [`<:${response}>`]: newEmoji,
+          }));
+          localStorage.setItem(
+            "userEmojis",
+            JSON.stringify({ ...customEmojis, [`<:${response}>`]: newEmoji })
+          );
+        } catch (error) {
+          console.error("Failed to upload emoji:", error);
+        }
       }
     }
   };
@@ -275,6 +277,7 @@ const EmojiPicker = ({ onEmojiSelect, src }: EmojiPickerProps) => {
                     id="file-input"
                     type="file"
                     accept=".webp, .png, .jpeg, .gif"
+                    multiple
                     onChange={handleFileUpload}
                     style={{ display: "none" }}
                   />
