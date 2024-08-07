@@ -67,6 +67,14 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     : `https://uploads.meower.org/icons/${author.avatar}`
     }`
   const avatarColor = `#${author.avatar_color}`
+  const { pfp, avatarColor } = useMemo(() => {
+    const pfp = author.avatar
+      ? `https://uploads.meower.org/icons/${author.avatar}`
+      : user === 'Server' ? `https://app.meower.org/assets/icon_100-026e1a7d.svg`
+        : defaultPFPS[(author.pfp_data || 0)]
+    const avatarColor = `#${author.avatar_color}`
+    return { pfp, avatarColor }
+  }, [author]);
 
   const realDate = formatTimestamp(time.e)
 
