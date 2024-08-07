@@ -84,39 +84,63 @@ const DiscEmojiSupport = (text: string, replace: boolean = true): string =>
       : match;
   });
 
-const MeowerEmojiSupport = (text: string): string =>
-  text.replace(/\\?<:([a-z0-9]+)>/gi, match => {
-    if (match.startsWith("\\")) return match.slice(1);
-    const id = match.slice(2, -1);
-    return `![${id}](https://uploads.meower.org/emojis/${id})`;
+const MeowerEmojiSupport = (text: string): string => {
+  if (typeof text !== "string") {
+    return "";
+  }
+
+  // i.e. <:0idbmJ1EDIuLcK7gRsDqse8y>
+  const regex = /\\?<:([a-z0-9]+)>/gi; // backslash support
+  
+  return text.replace(regex, (match) => {
+    if (match.startsWith("\\")) {
+      return match.substring(1); // plain text
+    } else {
+      const id = match.substring(2, match.length - 1);
+      const url = `https://uploads.meower.org/emojis/${id}`
+      return `![${id}](${url})`;
+    }
   });
+} 
 
-const getReplies = (repliesData: any[]) => (
-  <div>
-    {repliesData.map(({ _id, author, u, p }) => {
-      try {
-        const avatarUrl = `${author.avatar === ""
-        ? author.pfp_data === -3
-          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-          : `${defaultPFPS[author.pfp_data] || defaultPFPS[22]}`
-        : `https://uploads.meower.org/icons/${author.avatar}`
-        }`
-
-        return (
-          <div key={_id} className="reply">
-            <i>
-              {avatarUrl && <img src={avatarUrl} alt="reply pfp" width="16" height="16" style={{ paddingRight: 5 }} />}
-              <b>{u}</b>: {p}
-            </i>
-          </div>
-        );
-      } catch (error) {
-        console.error("Error rendering reply:", error);
-        return null;
-      }
-    })}
-  </div>
-);
+// Function to render replies
+function getReplies(repliesData: any[]) {
+  return (
+    <div>
+      {repliesData.map((reply) => {
+        try {
+          return (
+            <div key={reply._id} className="reply">
+              <i>
+                {reply.author &&
+                reply.author.avatar !== null &&
+                reply.author.avatar !== undefined ? (
+                  <img
+                    src={
+                      reply.author.avatar === ""
+                        ? reply.author.pfp_data === -3
+                          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                          : `${defaultPFPS[reply.author.pfp_data]}`
+                        : `https://uploads.meower.org/icons/${reply.author.avatar}`
+                    }
+                    alt="reply pfp"
+                    width="16"
+                    height="16"
+                    style={{ paddingRight: 5 }}
+                  />
+                ) : null}
+                <b>{reply.u}</b>: {reply.p}
+              </i>
+            </div>
+          );
+        } catch (error) {
+          console.error("Error rendering reply:", error);
+          return null; // Render nothing :)
+        }
+      })}
+    </div>
+  );
+}
 
 const getReactions = (reactionsData: any[]) => (
   <div style={{ maxWidth: "750px" }}>
