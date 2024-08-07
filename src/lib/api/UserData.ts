@@ -15,25 +15,31 @@ type User = {
   uuid: string;
 };
 
-// Cache for user data
-const userDataCache = new Map();
+// Cache for user data and pending requests
+const userDataCache = new Map<string, User>();
+const pendingRequests = new Map<string, Promise<User | null>>();
 
-// Optimized fetchUserData with caching
-function fetchUserData(user: string, find: keyof User) {
+function fetchUserData(user: string): Promise<User | null> {
   if (userDataCache.has(user)) {
-    const cachedUser = userDataCache.get(user);
-    return cachedUser[find];
+    return Promise.resolve(userDataCache.get(user) ?? null);
+  } else if (pendingRequests.has(user)) {
+    return pendingRequests.get(user)!; // Non-null assertion is safe here
   } else {
-    return fetch(`https://api.meower.org/users/${user}`)
-      .then((response) => response.json())
+    const request = fetch(`https://api.meower.org/users/${user}`)
+      .then(response => response.json())
       .then((data: User) => {
         userDataCache.set(user, data);
-        return data[find];
+        pendingRequests.delete(user);
+        return data;
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
+        pendingRequests.delete(user);
         return null;
       });
+
+    pendingRequests.set(user, request);
+    return request;
   }
 }
 

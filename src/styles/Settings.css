@@ -123,6 +123,8 @@ input#pickedAvatarColor::-webkit-color-swatch {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
   -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
   inset 0 2px 0 rgba(255, 255, 255, 0.7);
+  border: 1px solid rgb(172, 172, 172);
+
 }
 
 /* Profile Info */

@@ -5,6 +5,31 @@
     padding-top: 20px;
 }
 
+.categoryButtons {
+    display: flex;
+    margin: 20px 20px 0;
+    flex-direction: row;
+}
+
+.activeButton {
+    background-color: #18406b;
+    color: #fff;
+    border: 1px solid #133050;
+}
+
+.categoryButtons button {
+    flex-grow: 1;
+}
+
+button {
+    color: #000000;
+}
+
+button:hover {
+    filter: brightness(0.8);
+}
+
+
 .container {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
         -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
@@ -21,6 +46,7 @@
     display: flex;
     flex-direction: column;
     height: fit-content;
+    border: 1px solid grey;
 }
 
 button {
@@ -54,7 +80,6 @@ button {
 .header img {
     border-radius: 6px;
     margin-right: 6px;
-    border: 2px solid #007BFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 

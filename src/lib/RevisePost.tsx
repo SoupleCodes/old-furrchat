@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import { emojiData, discordEmojis, PBJTime, defaultPFPS } from "./Data.ts";
 
 // Whitelist of trusted hosts
@@ -91,7 +92,7 @@ const MeowerEmojiSupport = (text: string): string => {
 
   // i.e. <:0idbmJ1EDIuLcK7gRsDqse8y>
   const regex = /\\?<:([a-z0-9]+)>/gi; // backslash support
-  
+
   return text.replace(regex, (match) => {
     if (match.startsWith("\\")) {
       return match.substring(1); // plain text
@@ -101,7 +102,7 @@ const MeowerEmojiSupport = (text: string): string => {
       return `![${id}](${url})`;
     }
   });
-} 
+}
 
 // Function to render replies
 function getReplies(repliesData: any[]) {
@@ -113,8 +114,8 @@ function getReplies(repliesData: any[]) {
             <div key={reply._id} className="reply">
               <i>
                 {reply.author &&
-                reply.author.avatar !== null &&
-                reply.author.avatar !== undefined ? (
+                  reply.author.avatar !== null &&
+                  reply.author.avatar !== undefined ? (
                   <img
                     src={
                       reply.author.avatar === ""
@@ -129,7 +130,9 @@ function getReplies(repliesData: any[]) {
                     style={{ paddingRight: 5 }}
                   />
                 ) : null}
-                <b>{reply.u}</b>: {reply.p}
+                <b>{reply.u}</b>: <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
+                  {reply.p.trim().length > 50 ? reply.p.trim().substring(0, 50) + "..." : reply.p.trim()}
+                </ReactMarkdown>
               </i>
             </div>
           );
@@ -192,7 +195,7 @@ const revisePost = (text: string): string => {
   revisedString = replaceWithMarkdown(revisedString, discordEmojis, (_key, value) => value);
   revisedString = replaceWithMarkdown(revisedString, PBJTime, (_key, value) => value);
 
-  return revisedString.replace(/\n/g, "\n\n");
+  return revisedString.replace(/\n/g, '\n\n');
 };
 
 export {

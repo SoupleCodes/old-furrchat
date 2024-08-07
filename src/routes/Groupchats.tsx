@@ -5,10 +5,12 @@ import { getChatbyID } from '../lib/api/Chat/GetChatbyID';
 import { PostComponentProps } from '../components/PostComponent';
 import { formatTimestamp } from '../utils/FormatTimestamp';
 import { defaultPFPS } from '../lib/Data';
+import fetchUserData from '../lib/api/UserData';
 
 export default function Groupchats() {
   const { userToken } = usePostContext();
   const [groupchats, setGroupchats] = useState<gcParameters[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string | null>("All");
 
   useEffect(() => {
     async function fetchGroupChats() {
@@ -18,7 +20,6 @@ export default function Groupchats() {
         const chats = parsedData.chats;
 
         const chatPromises = chats
-          .filter((gc: any) => gc.type === 0)
           .map(async (gc: any) => {
             const chatData = await getChatbyID(userToken, gc._id);
             return { ...gc, posts: chatData };
@@ -34,26 +35,69 @@ export default function Groupchats() {
     fetchGroupChats();
   }, [userToken]);
 
+  const categories = ["All", "Recent Activity", "Starred", "Owned", "Other Chats", "DMS"];
+
   return (
-    <div className="groupchats">
-      {groupchats.map((gc) => (
-        <Groupchat
-          key={gc._id}
-          _id={gc._id}
-          created={gc.created}
-          deleted={gc.deleted}
-          emojis={gc.emojis}
-          icon={gc.icon}
-          last_active={gc.last_active}
-          members={gc.members}
-          nickname={gc.nickname}
-          owner={gc.owner}
-          stickers={gc.stickers}
-          type={gc.type}
-          posts={gc.posts}
-          icon_color={gc.icon_color}
-        />
-      ))}
+    <div>
+      <div className={styles.categoryButtons}>
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setActiveCategory(category)}
+            className={activeCategory === category ? styles.activeButton : ""}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+      {groupchats
+        .filter((gc) => {
+          if (activeCategory === "All") {
+            return true;
+          } else if (activeCategory === "Starred") {
+            const storedData = localStorage.getItem("userData");
+            const parsedData = storedData ? JSON.parse(storedData) : {};
+            const favoritedChats = parsedData.account?.favorited_chats || [];
+            return favoritedChats.includes(gc._id);
+
+          } else if (activeCategory === "Owned") {
+            const storedData = localStorage.getItem("userData");
+            const parsedData = storedData ? JSON.parse(storedData) : {};
+            return gc.owner === parsedData.account._id;
+
+          } else if (activeCategory === "Other Chats") {
+            const storedData = localStorage.getItem("userData");
+            const parsedData = storedData ? JSON.parse(storedData) : {};
+            return gc.owner !== parsedData.account._id && gc.type !== 1;
+
+          } else if (activeCategory === "DMS") {
+            return gc.type !== 0;
+
+          } else if (activeCategory === "Recent Activity") {
+            const oneWeekAgo = Date.now() / 1000 - (7 * 24 * 60 * 60);
+            console.log(gc.last_active > oneWeekAgo);
+            return gc.last_active > oneWeekAgo;
+          }
+          return false;
+        })
+        .map((gc) => (
+          <Groupchat
+            key={gc._id}
+            _id={gc._id}
+            created={gc.created}
+            deleted={gc.deleted}
+            emojis={gc.emojis}
+            icon={gc.icon}
+            last_active={gc.last_active}
+            members={gc.members}
+            nickname={gc.nickname}
+            owner={gc.owner}
+            stickers={gc.stickers}
+            type={gc.type}
+            posts={gc.posts}
+            icon_color={gc.icon_color}
+          />
+        ))}
     </div>
   );
 }
@@ -83,27 +127,63 @@ const Groupchat: React.FC<gcParameters> = ({
   nickname,
   owner,
   posts,
-  icon_color
+  icon_color,
+  type
 }) => {
 
   const storedData = localStorage.getItem("userData");
   const parsedData = storedData ? JSON.parse(storedData) : {};
+  const otherUser = type === 1 ? members.find(member => member !== parsedData.account._id) : null;
+
+  const [pfp, setPfp] = useState("");
+  const [avatarColor, setAvatarColor] = useState("#007BFF"); // default color
+
+  useEffect(() => {
+    if (type === 1) {
+      fetchUserData(otherUser ?? "").then(data => {
+        const pfpUrl = `${data?.avatar === ""
+          ? data?.pfp_data === -3
+            ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+            : `${defaultPFPS[data?.pfp_data] || defaultPFPS[22]}`
+          : `https://uploads.meower.org/icons/${data?.avatar}`
+          }`;
+        const color = `#${data?.avatar_color || "#007BFF"}`;
+
+        setPfp(pfpUrl);
+        setAvatarColor(color);
+      }).catch(error => {
+        console.error("Error fetching user data:", error);
+      });
+    }
+  }, []);
+
+  const hasPosts = posts.length > 0;
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <img src={icon ? `https://uploads.meower.org/icons/${icon}` : '/furrchat/assets/icons/Favicon.svg'} alt="Group Avatar" width={48} height={48} />
-        <h2 style={{ color: `#${icon_color}`}}>
-          {nickname}
+        <img src={
+          type === 1 ? pfp :
+            icon ? `https://uploads.meower.org/icons/${icon}` : defaultPFPS[22]
+        }
+          alt="Group Avatar"
+          width={48}
+          height={48}
+          style={{
+            border: `2px solid ${avatarColor}`
+          }}
+        />
+        <h2 style={{ color: avatarColor || icon_color }}>
+          {type === 1 && otherUser ? otherUser : nickname}
           <i>{_id}</i>
         </h2>
 
         <div style={{ marginLeft: 'auto' }}>
-        {parsedData.account.favorited_chats.includes(_id) ? (
-          <button>★</button>
-        ) : (
-          <button>☆</button>
-        )}
+          {parsedData.account.favorited_chats.includes(_id) ? (
+            <button>★</button>
+          ) : (
+            <button>☆</button>
+          )}
         </div>
       </div>
 
@@ -111,54 +191,48 @@ const Groupchat: React.FC<gcParameters> = ({
         {[
           { label: 'Created', value: formatTimestamp(created) },
           { label: 'Last Active', value: formatTimestamp(last_active) },
-          { label: 'Owner', value: owner },
         ].map(({ label, value }, index) => (
           <div key={index}>
             <strong>{label}:</strong>
             <span> {value}</span>
           </div>
         ))}
-           <details>
-            <summary>
-              <strong>{members.length} Members:</strong>
-            </summary>
-            <span>
-            {members.join(', ')}
-            </span>
-          </details>
+        {type !== 1 && (
+          <>
+            <div key="owner">
+              <strong>Owner:</strong>
+              <span> {owner}</span>
+            </div>
+            <details>
+              <summary>
+                <strong>{members.length} Members:</strong>
+              </summary>
+              <span>
+                {members.join(', ')}
+              </span>
+            </details></>
+        )}
+
       </div>
 
-      <div className={styles.recentactivity}>
-        {[
-          {
-            user: posts[0].u,
-            message: posts[0].p,
-            avatar: `${posts[0].author.avatar === ""
-              ? posts[0].author.pfp_data === -3
+      {hasPosts && (
+        <div className={styles.recentactivity}>
+          {posts.slice(0, 2).map(({ u: user, p: message, author }) => {
+            const avatar = author.avatar === ""
+              ? author.pfp_data === -3
                 ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                : `${defaultPFPS[posts[0].author.pfp_data] || defaultPFPS[22]}`
-              : `https://uploads.meower.org/icons/${posts[0].author.avatar}`
-              }`
-          },
+                : `${defaultPFPS[author.pfp_data] || defaultPFPS[22]}`
+              : `https://uploads.meower.org/icons/${author.avatar}`;
 
-          {
-            user: posts[1].u,
-            message: posts[1].p,
-            avatar: `${posts[1].author.avatar === ""
-              ? posts[1].author.pfp_data === -3
-                ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                : `${defaultPFPS[posts[1].author.pfp_data] || defaultPFPS[22]}`
-              : `https://uploads.meower.org/icons/${posts[1].author.avatar}`
-              }`
-          }
-
-        ].map(({ user, message, avatar }) => (
-          <div key={user} className={styles.activityitem}>
-            <img src={avatar} alt="User Avatar" width={28} height={28} />
-            <span><b>{`${user}: `}</b> {message}</span>
-          </div>
-        ))}
-      </div>
+            return (
+              <div key={user} className={styles.activityitem}>
+                <img src={avatar} alt="User Avatar" width={28} height={28} />
+                <span><b>{`${user}: `}</b> {message.trim().length > 100 ? message.trim().substring(0, 100) + "..." : message.trim()}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
