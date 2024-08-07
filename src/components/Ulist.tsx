@@ -56,8 +56,8 @@ const UListBody = () => {
               }}
             >
               <img
-                height={18}
-                width={18}
+                height={16}
+                width={16}
                 src={
                   user.avatar === ""
                     ? user.pfp_data === -3
@@ -65,6 +65,7 @@ const UListBody = () => {
                       : `${defaultPFPS[user.pfp_data]}`
                     : `https://uploads.meower.org/icons/${user.avatar}`
                 }
+                object-fit={'cover'}
               />{" "}
               {user._id}
             </button>

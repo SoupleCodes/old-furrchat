@@ -1,0 +1,131 @@
+/* General container styles */
+.groupchats {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.container {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+        -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    padding: 6px;
+    margin: 20px 20px 0;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.6) 0%,
+            rgba(223, 223, 223, 0.6) 20%,
+            rgba(223, 223, 223, 0.6) 80%,
+            rgba(255, 255, 255, 0.6) 100%);
+    font-family: Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
+button {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+        -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.6) 0%,
+            rgba(223, 223, 223, 0.6) 20%,
+            rgba(223, 223, 223, 0.6) 80%,
+            rgba(255, 255, 255, 0.6) 100%);
+    border: 1px solid grey
+}
+
+/* Header section */
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    background: linear-gradient(to bottom,
+            rgba(223, 223, 223, 0.6) 0%,
+            rgba(255, 255, 255, 0.6) 20%,
+            rgba(255, 255, 255, 0.6) 80% rgba(223, 223, 223, 0.6) 100%,
+        );
+    padding: 6px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header img {
+    border-radius: 6px;
+    margin-right: 6px;
+    border: 2px solid #007BFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.header h2 i {
+    margin-left: 8px;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Info box styles */
+.infobox {
+    padding: 6px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.705);
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 6px;
+}
+
+.infobox div {
+    margin-bottom: 6px;
+}
+
+.infobox strong {
+    color: #555;
+    font-size: 14px;
+}
+
+.infobox span {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Recent Activity section */
+.recentactivity {
+    border-top: 1px solid rgba(0, 0, 0, 0.7);
+    padding-top: 6px;
+    color: #666;
+    font-size: 14px;
+}
+
+.recentactivity p {
+    margin: 0 0 6px;
+    font-weight: 600;
+}
+
+.recentactivity .activityitem {
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.705);
+
+    padding: 6px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+}
+
+.recentactivity .activityitem img {
+    border-radius: 6px;
+    margin-right: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.recentactivity .activityitem strong {
+    display: block;
+    margin-bottom: 4px;
+}

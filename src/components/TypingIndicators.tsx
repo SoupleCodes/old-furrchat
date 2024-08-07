@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { LoaderElement } from './LoaderElement.tsx'
 import '../styles/TypingIndicator.css'
-import { usePostContext } from '../Context.tsx'
 
 export const TypingIndicator = () => {
     const [typingUsers, setTypingUsers] = useState(new Set())
     const [typingTimeouts, setTypingTimeouts] = useState({})
-    const { userData } = usePostContext();
-    const currentUser = userData?.username
+    const parsedData = JSON.parse(localStorage.getItem("userData") || "{}");
+    const currentUser = parsedData?.username
 
     useEffect(() => {
         const ws = new WebSocket('wss://server.meower.org?v=1')
@@ -38,12 +37,10 @@ export const TypingIndicator = () => {
             })
         }, 2000)
 
-        setTypingTimeouts(prev => ({ ...prev, [key]: timeout }));
+        setTypingTimeouts(prev => ({ ...prev, [key]: timeout }))
     }, [typingTimeouts])
 
-    const updateTypingIndicator = () => {
-        return Array.from(typingUsers).map((key: any) => key.split('-')[1]).join(', ')
-    };
+    const updateTypingIndicator = () => { return Array.from(typingUsers).map((key: any) => key.split('-')[1]).join(', ')}
 
     return (
         <div id="typingIndicator">
