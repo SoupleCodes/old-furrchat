@@ -50,13 +50,21 @@ audio::-webkit-media-controls-panel {
 }
 
 a {
-  color: #073742;
   text-decoration: inherit;
-  font-weight: bold;
 }
+
+.user-button,
+.userheading,
+.navbar-item a {
+  color: #073742;
+}
+
 a:hover {
-  color: #1a8863;
   text-decoration: underline;
+}
+
+a:hover > img {
+  filter: brightness(60%);
 }
 
 button {

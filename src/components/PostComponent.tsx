@@ -15,6 +15,22 @@ import { ImageRenderer } from "../utils/ImageRenderer.tsx"
 import { usePostContext } from "../Context.tsx"
 
 import "/src/styles/SocialButtons.css"
+import { Link } from "react-router-dom"
+
+export const scrollToPost = (id: string | null) => {
+  if (!id) {
+    console.log("Too far away booooo");
+    return;
+  }
+
+  const element = document.getElementById(id);
+  if (element) {
+    console.log(`Scrolling to element with ID: ${id}`);
+    element.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    console.log(`Element with ID ${id} not found`);
+  }
+};
 
 export interface PostComponentProps {
   u: any
@@ -118,30 +134,32 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
-  return (
-    <div className="container">
-      <div className="user">
-        <span className="post-pfp-container">
-          <img
-            src={pfp}
-            alt="pfp"
-            className="post-pfp"
-            width="48"
-            height="48"
-            style={{
-              borderRadius: "5px",
-              border: `1px solid ${avatarColor}`,
-              boxShadow: "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
-              objectFit: 'cover'
-            }}
-          />
 
-          {active ? (
-            <span className="online-indicator" title="Online"></span>
-          ) : (
-            <span className="offline-indicator" title="Offline"></span>
-          )}
-        </span>
+  return (
+    <div id={post_id || ""} className="container">
+      <div className="user">
+        <Link to={`/users/${user}`}>
+          <span className="post-pfp-container">
+            <img
+              src={pfp}
+              alt="pfp"
+              className="post-pfp"
+              width="48"
+              height="48"
+              style={{
+                borderRadius: "5px",
+                border: `1px solid ${avatarColor}`,
+                boxShadow: "0 2px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7)",
+                objectFit: 'cover'
+              }}
+            />
+            {active ? (
+              <span className="online-indicator" title="Online"></span>
+            ) : (
+              <span className="offline-indicator" title="Offline"></span>
+            )}
+          </span>          </Link>
+
         <p className="post-username-text">
           <strong>
             {userEmojis[user] || ""} {user}

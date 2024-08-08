@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import { emojiData, discordEmojis, PBJTime, defaultPFPS } from "./Data.ts";
+import { scrollToPost } from "../components/PostComponent.tsx";
 
 // Whitelist of trusted hosts
 export const hostWhitelist = [
@@ -111,7 +112,12 @@ function getReplies(repliesData: any[]) {
       {repliesData.map((reply) => {
         try {
           return (
-            <div key={reply._id} className="reply">
+            <div 
+            key={reply._id} 
+            className="reply"
+            onClick={() => scrollToPost(reply.post_id)}
+            style={{ cursor: 'pointer' }}
+            >
               <i>
                 {reply.author &&
                   reply.author.avatar !== null &&

@@ -6,12 +6,15 @@ import { PostComponentProps } from '../components/PostComponent';
 import { formatTimestamp } from '../utils/FormatTimestamp';
 import { defaultPFPS } from '../lib/Data';
 import fetchUserData from '../lib/api/UserData';
+import { Link } from 'react-router-dom';
 
 export default function Groupchats() {
   const { userToken } = usePostContext();
   const [groupchats, setGroupchats] = useState<gcParameters[]>([]);
+  const [, setAllGroupchats] = useState<gcParameters[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [itemsToLoadMore, setItemsToLoadMore] = useState(10);
 
   useEffect(() => {
     async function fetchGroupChats() {
@@ -20,27 +23,76 @@ export default function Groupchats() {
         const parsedData = storedData ? JSON.parse(storedData) : {};
         const chats = parsedData.chats;
 
-        const chatPromises = chats
-          .map(async (gc: any) => {
-            const chatData = await getChatbyID(userToken, gc._id);
-            return { ...gc, posts: chatData };
-          });
+        const chatPromises = chats.map(async (gc: any) => {
+          const chatData = await getChatbyID(userToken, gc._id);
+          return { ...gc, posts: chatData };
+        });
 
         const updatedChats = await Promise.all(chatPromises);
-        setGroupchats(updatedChats);
+        setAllGroupchats(updatedChats);
+
+        const filterChats = (gc: gcParameters) => {
+          if (activeCategory === "All") return true;
+          if (activeCategory === "Starred") {
+            return parsedData.account?.favorited_chats.includes(gc._id);
+          }
+          if (activeCategory === "Owned") {
+            return gc.owner === parsedData.account._id;
+          }
+          if (activeCategory === "Other Chats") {
+            return gc.owner !== parsedData.account._id && gc.type !== 1;
+          }
+          if (activeCategory === "DMS") {
+            return gc.type !== 0;
+          }
+          if (activeCategory === "Recent Activity") {
+            const oneWeekAgo = Date.now() / 1000 - (7 * 24 * 60 * 60);
+            return gc.last_active > oneWeekAgo;
+          }
+          return false;
+        };
+
+        const searchChats = (gc: gcParameters) => {
+          if (gc.type === 0) {
+            return gc.nickname?.toLowerCase().includes(searchQuery.toLowerCase()) ?? true;
+          } else if (gc.type === 1) {
+            const otherUser = gc.members.find(member => member !== parsedData.account._id);
+            return otherUser?.toLowerCase().includes(searchQuery.toLowerCase()) ?? true;
+          }
+          return false;
+        };
+
+        const filteredChats = updatedChats
+          .filter(filterChats)
+          .filter(searchChats);
+
+        setGroupchats(filteredChats.slice(0, itemsToLoadMore));
+
       } catch (error) {
         console.error("Failed to fetch group chats:", error);
       }
     }
 
     fetchGroupChats();
-  }, [userToken]);
+  }, [userToken, itemsToLoadMore, activeCategory, searchQuery]);
+
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
+      setItemsToLoadMore(prevItems => prevItems + 10);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const categories = ["All", "Recent Activity", "Starred", "Owned", "Other Chats", "DMS"];
 
   return (
     <div>
-
       <div className={styles.categoryButtons}>
         {categories.map((category) => (
           <button
@@ -59,66 +111,24 @@ export default function Groupchats() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {groupchats
-        .filter((gc) => {
-          if (activeCategory === "All") {
-            return true;
-          } else if (activeCategory === "Starred") {
-            const storedData = localStorage.getItem("userData");
-            const parsedData = storedData ? JSON.parse(storedData) : {};
-            const favoritedChats = parsedData.account?.favorited_chats || [];
-            return favoritedChats.includes(gc._id);
-
-          } else if (activeCategory === "Owned") {
-            const storedData = localStorage.getItem("userData");
-            const parsedData = storedData ? JSON.parse(storedData) : {};
-            return gc.owner === parsedData.account._id;
-
-          } else if (activeCategory === "Other Chats") {
-            const storedData = localStorage.getItem("userData");
-            const parsedData = storedData ? JSON.parse(storedData) : {};
-            return gc.owner !== parsedData.account._id && gc.type !== 1;
-
-          } else if (activeCategory === "DMS") {
-            return gc.type !== 0;
-
-          } else if (activeCategory === "Recent Activity") {
-            const oneWeekAgo = Date.now() / 1000 - (7 * 24 * 60 * 60);
-            console.log(gc.last_active > oneWeekAgo);
-            return gc.last_active > oneWeekAgo;
-          }
-          return false;
-        })
-        .filter((gc) => {
-          if (gc.type === 0) {
-            return gc.nickname ? gc.nickname.toLowerCase().includes(searchQuery.toLowerCase()) : true;
-          } else if (gc.type === 1) {
-            const storedData = localStorage.getItem("userData");
-            const parsedData = storedData ? JSON.parse(storedData) : {};
-            const otherUser = gc.type === 1 ? gc.members.find(member => member !== parsedData.account._id) : null;
-            return otherUser ? otherUser.toLowerCase().includes(searchQuery.toLowerCase()) : true;
-          }
-          return false;
-        })
-
-        .map((gc) => (
-          <Groupchat
-            key={gc._id}
-            _id={gc._id}
-            created={gc.created}
-            deleted={gc.deleted}
-            emojis={gc.emojis}
-            icon={gc.icon}
-            last_active={gc.last_active}
-            members={gc.members}
-            nickname={gc.nickname}
-            owner={gc.owner}
-            stickers={gc.stickers}
-            type={gc.type}
-            posts={gc.posts}
-            icon_color={gc.icon_color}
-          />
-        ))}
+      {groupchats.map((gc) => (
+        <Groupchat
+          key={gc._id}
+          _id={gc._id}
+          created={gc.created}
+          deleted={gc.deleted}
+          emojis={gc.emojis}
+          icon={gc.icon}
+          last_active={gc.last_active}
+          members={gc.members}
+          nickname={gc.nickname}
+          owner={gc.owner}
+          stickers={gc.stickers}
+          type={gc.type}
+          posts={gc.posts}
+          icon_color={gc.icon_color}
+        />
+      ))}
     </div>
   );
 }
@@ -160,15 +170,15 @@ const Groupchat: React.FC<gcParameters> = ({
   const [avatarColor, setAvatarColor] = useState("#007BFF"); // default color
 
   useEffect(() => {
-    if (type === 1) {
-      fetchUserData(otherUser ?? "").then(data => {
+    if (type === 1 && otherUser) {
+      fetchUserData(otherUser).then(data => {
         const pfpUrl = `${data?.avatar === ""
           ? data?.pfp_data === -3
             ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
             : `${defaultPFPS[data?.pfp_data] || defaultPFPS[22]}`
           : `https://uploads.meower.org/icons/${data?.avatar}`
           }`;
-        const color = `#${data?.avatar_color || "#007BFF"}`;
+        const color = `#${data?.avatar_color || "007BFF"}`;
 
         setPfp(pfpUrl);
         setAvatarColor(color);
@@ -176,7 +186,7 @@ const Groupchat: React.FC<gcParameters> = ({
         console.error("Error fetching user data:", error);
       });
     }
-  }, []);
+  }, [otherUser, type]);
 
   const hasPosts = posts.length > 0;
 
@@ -191,11 +201,12 @@ const Groupchat: React.FC<gcParameters> = ({
           width={48}
           height={48}
           style={{
-            border: `2px solid ${avatarColor}`
+            border: `2px solid ${avatarColor}`,
+            objectFit: 'cover'
           }}
         />
-        <h2 style={{ color: avatarColor || icon_color }}>
-          {type === 1 && otherUser ? otherUser : nickname}
+        <h2 className={styles.userheading} style={{ color: avatarColor || icon_color }}>
+          {type === 1 && otherUser ? <Link to={`/users/${otherUser}`}>{otherUser}</Link> : nickname}
           <i>{_id}</i>
         </h2>
 
@@ -214,6 +225,7 @@ const Groupchat: React.FC<gcParameters> = ({
           { label: 'Last Active', value: formatTimestamp(last_active) },
         ].map(({ label, value }, index) => (
           <div key={index}>
+           
             <strong>{label}:</strong>
             <span> {value}</span>
           </div>
@@ -247,7 +259,7 @@ const Groupchat: React.FC<gcParameters> = ({
 
             return (
               <div key={user} className={styles.activityitem}>
-                <img src={avatar} alt="User Avatar" width={28} height={28} />
+                <img src={avatar} alt="User Avatar" width={28} height={28} style={{ objectFit: 'cover' }}/>
                 <span><b>{`${user}: `}</b> {message.trim().length > 100 ? message.trim().substring(0, 100) + "..." : message.trim()}</span>
               </div>
             );
