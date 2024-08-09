@@ -5,19 +5,21 @@ import { PostProvider } from "./Context.tsx";
 import "./index.css";
 
 import Navbar from "./routes/Navbar.tsx";
-import App from "./routes/Home.tsx";
+import Home from "./routes/Home.tsx";
 import Messages from "./routes/Messages.tsx";
 import Groupchats from "./routes/Groupchats.tsx";
 import Settings from "./routes/Settings.jsx";
 import UserPage from "./routes/UserPage.tsx";
+import GroupchatPage from "./routes/GroupchatPage.tsx";
 
 const AppRouter = () => (
   <Router>
     <Navbar />
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<Home />} />
       <Route path="messages" element={<Messages />} />
-      <Route path="groupchats" element={<Groupchats />} />
+      <Route path="chats" exact element={<Groupchats />} />
+      <Route path="chats/:chatId" element={<GroupchatPage />} />
       <Route path="settings" element={<Settings />} />
       <Route path="users/:username" element={<UserPage />} />
     </Routes>

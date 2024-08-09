@@ -25,7 +25,6 @@ export const scrollToPost = (id: string | null) => {
 
   const element = document.getElementById(id);
   if (element) {
-    console.log(`Scrolling to element with ID: ${id}`);
     element.scrollIntoView({ behavior: 'smooth' });
   } else {
     console.log(`Element with ID ${id} not found`);

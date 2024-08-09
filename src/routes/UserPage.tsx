@@ -14,7 +14,7 @@ export default function UserPage() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const posts = await getPostsFromUser({user: username ?? "", userToken});
+                const posts = await getPostsFromUser({user: username ?? "", userToken, userParam: "posts"});
                 setUserPosts(posts);
             } catch (error) {
                 console.error("Error fetching posts:", error);

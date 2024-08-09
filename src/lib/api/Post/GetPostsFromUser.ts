@@ -1,6 +1,6 @@
-export async function getPostsFromUser({ user, userToken }: { user: string; userToken: string; }) {
+export async function getPostsFromUser({ user, userToken, userParam }: { user: string; userToken: string; userParam: string }) {
 
-    const response = await fetch(`https://api.meower.org/users/${user}/posts`, {
+    const response = await fetch(`https://api.meower.org/users/${user}/${userParam}`, {
       method: "GET",
       headers: {
         'Authorization': userToken,

@@ -116,7 +116,7 @@ export default function Navbar() {
                   <Link to="/messages">Messages</Link>
                   </div>
                   <div id="groupchats" className="navbar-item">
-                  <Link to="/groupchats">Groupchats</Link>
+                  <Link to="/chats">Groupchats</Link>
                   </div>
                   <div id="settings" className="navbar-item">
                   <Link to="/settings">Settings</Link>

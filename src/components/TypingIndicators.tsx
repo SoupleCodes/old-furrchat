@@ -2,7 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { LoaderElement } from './LoaderElement.tsx'
 import '../styles/TypingIndicator.css'
 
-export const TypingIndicator = () => {
+interface typingIndicatorProps {
+    context: "home" | "groupchats";
+    chatId?: string;
+  }
+
+export const TypingIndicator = ({ context, chatId }: typingIndicatorProps) => {
     const [typingUsers, setTypingUsers] = useState(new Set())
     const [typingTimeouts, setTypingTimeouts] = useState({})
     const parsedData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -12,10 +17,11 @@ export const TypingIndicator = () => {
         const ws = new WebSocket('wss://server.meower.org?v=1')
 
         ws.onmessage = (event) => {
-            const { cmd, val: { username, chat_id } } = JSON.parse(event.data)
-            if (cmd === 'typing' && username !== currentUser) handleTypingNotification(username, chat_id)
+            const { cmd, val: { chat_id, username } } = JSON.parse(event.data)
+            if ((cmd === 'typing') && (username.toLowerCase() !== currentUser) && (chat_id.toLowerCase() === chatId || (context === "home" && chat_id === context))) {
+                handleTypingNotification(username, chat_id)
+            }
         }
-
         ws.onerror = (error) => console.error('WebSocket error:', error)
         ws.onclose = (event) => console.log('WebSocket connection closed:', event)
 

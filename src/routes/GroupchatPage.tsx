@@ -4,25 +4,24 @@ import "../styles/Post.css";
 import "../App.css";
 import DisplayPosts from "../components/DisplayPosts.tsx";
 import PostEditor from "../components/MarkdownEditor.tsx";
-import UListBody from "../components/Ulist.tsx";
 import { TypingIndicator } from "../components/TypingIndicators.tsx";
 import { usePostContext } from "../Context.tsx"
+import { useParams } from 'react-router-dom';
 
-export default function Home() {
+export default function GroupchatPage() {
   const { loginSuccess, userToken } = usePostContext();
 
   return (
     <>
-      <UListBody />
-      <PostEditor userToken={ userToken || ""} context="home" />{" "}
-      <TypingIndicator context="home" />
+      <PostEditor userToken={ userToken || ""} context="groupchats" chatId={useParams().chatId}/>{" "}
+      <TypingIndicator context="groupchats" chatId={useParams().chatId}/>
       {!loginSuccess && (
         <p style={{ display: "flex", justifyContent: "left", paddingLeft: 20 }}>
           You're not logged in yet!
         </p>
       )}{" "}
       <div className="posts">
-        <DisplayPosts context="home"/>
+        <DisplayPosts context="groupchats" chatId={useParams().chatId}/>
       </div>
     </>
   );

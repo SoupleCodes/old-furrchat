@@ -211,6 +211,7 @@ const Groupchat: React.FC<gcParameters> = ({
         </h2>
 
         <div style={{ marginLeft: 'auto' }}>
+        <button><Link to={`/chats/${_id}`}>Enter</Link></button>
           {parsedData.account.favorited_chats.includes(_id) ? (
             <button>★</button>
           ) : (

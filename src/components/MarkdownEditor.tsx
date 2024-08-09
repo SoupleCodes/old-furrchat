@@ -20,7 +20,13 @@ import { headingOptions, defaultPFPS } from "../lib/Data.ts";
 import { uploadFileAndGetId } from "../lib/api/Post/SendPost.ts";
 import { usePostContext } from "../Context.tsx";
 
-const PostEditor = ({ userToken }: { userToken: string }) => {
+interface postEditorProps {
+  userToken: string;
+  context: "home" | "groupchats";
+  chatId?: string;
+}
+
+const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
   const { post, setPost } = usePostContext();
   const { replyIds, setReplyIds } = usePostContext();
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -36,17 +42,25 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
     const attachmentIds = await Promise.all(
       attachments.map((file) => uploadFileAndGetId({ file, userToken }))
     );
-
+  
     const reply_to = Array.isArray(replyIds)
       ? replyIds
           .map((reply) => JSON.parse(reply) as Reply)
           .map((reply) => reply.post_id)
           .filter((id) => id)
       : [];
-
-    const requestBody = { content: post, attachments: attachmentIds, reply_to: reply_to }
-
-    fetch("https://api.meower.org/home", {
+  
+    const requestBody: any = { 
+      content: post, 
+      attachments: attachmentIds, 
+      reply_to: reply_to 
+    };
+  
+    if (context === "groupchats" && chatId) {
+      requestBody.chatId = chatId;
+    }
+  
+    fetch(context === "home" ? "https://api.meower.org/home" : `https://api.meower.org/posts/${chatId}`, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -64,7 +78,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
       .catch((error) => {
         console.error("Error sending post:", error);
       });
-  };
+  };  
 
   const appendToPost = (string: string) => {
     let newCursorPosition = selectionStart + string.length;
@@ -106,7 +120,7 @@ const PostEditor = ({ userToken }: { userToken: string }) => {
   };
 
   const sendTypingNotification = () => {
-    fetch("https://api.meower.org/home/typing", {
+    fetch(context === "home" ? "https://api.meower.org/home/typing" : `https://api.meower.org/chats/${chatId}/typing`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
