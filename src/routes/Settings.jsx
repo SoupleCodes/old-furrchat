@@ -6,6 +6,7 @@ import "../styles/Settings.css";
 import { uploadIconAndGetId } from "../lib/api/UploadIconAndGetId.ts";
 import MusicPlayer from '../components/MusicPlayer.tsx';
 import { updateConfigAndLocalStorage } from '../utils/UpdateConfig.ts'; // Import the utility function
+import { DiscEmojiSupport } from '../lib/RevisePost';
 
 export default function Settings() {
   const { userData, setUserData } = usePostContext();
@@ -26,6 +27,18 @@ export default function Settings() {
     }, [parsedData]);
 
     const [bio, setBio] = useState(parsedData.account?.quote || "");
+    const pronounsMatch = bio.match(/\s*\[([^\]]*)\]/);
+
+    let displayedQuote = bio;
+    let pronouns;
+
+    if (pronounsMatch && bio.endsWith(pronounsMatch[0])) {
+        displayedQuote = bio.replace(pronounsMatch[0], '');
+        pronouns = pronounsMatch[1].trim();
+    }
+    
+    displayedQuote = DiscEmojiSupport(displayedQuote);
+
     const [isEditing, setIsEditing] = useState(false);
     const [selectedColorOption, setSelectedColorOption] = useState(
       initialAvatarColor === "!color" ? "none" : "pickedAvatarColor"
@@ -192,7 +205,14 @@ export default function Settings() {
                 }}
               />
             </div>
-            <div className="user-text">{parsedData?.account._id}</div>
+            <div className="user-text">
+              {parsedData?.account._id}
+              {pronouns && pronouns.length > 15 && <br />}
+                        {pronouns &&
+                            <span className="pronouns">
+                                ({pronouns})
+                            </span>}
+              </div>
           </div>
           <div style={{ flexGrow: 1, flexDirection: "column" }}>
             <div className="user-bio-container">
@@ -207,7 +227,7 @@ export default function Settings() {
                 />
               ) : (
                 <div className="user-bio" onClick={() => setIsEditing(true)}>
-                  <ReactMarkdown>{bio}</ReactMarkdown>
+                  <ReactMarkdown>{displayedQuote}</ReactMarkdown>
                 </div>
               )}
             </div>

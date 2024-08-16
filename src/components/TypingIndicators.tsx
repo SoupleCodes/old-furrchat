@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
-import { LoaderElement } from './LoaderElement.tsx'
 import '../styles/TypingIndicator.css'
 
 interface typingIndicatorProps {
     context: "home" | "groupchats";
     chatId?: string;
-  }
+}
 
 export const TypingIndicator = ({ context, chatId }: typingIndicatorProps) => {
     const [typingUsers, setTypingUsers] = useState(new Set())
@@ -51,7 +50,13 @@ export const TypingIndicator = ({ context, chatId }: typingIndicatorProps) => {
     return (
         <div id="typingIndicator">
             {updateTypingIndicator() ? 
-            <> <LoaderElement/> <span className='typing-indicator'>{`${updateTypingIndicator()} is typing...`}</span> </>
+            <> 
+            <div className="loader">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+            </div> 
+            <span className='typing-indicator'>{`${updateTypingIndicator()} is typing...`}</span> </>
             : <span className='no-typing'>{'No one is currently typing...'}</span>}
         </div>
     )

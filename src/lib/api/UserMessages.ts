@@ -5,9 +5,9 @@ interface InboxData {
   pages: number;
 }
 
-export async function getInbox(userToken: string, page: number): Promise<InboxData> { 
+export async function getInbox(userToken: string, page: string | number): Promise<InboxData> { 
   try {
-    const response = await fetch(`https://api.meower.org/inbox/?page=${page}`, {
+    const response = await fetch(`https://api.meower.org/inbox${page !== 'All' ? `?page=${page}` : ''}`, {
       method: "GET",
       headers: {
         Token: userToken,

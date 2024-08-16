@@ -46,6 +46,7 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
       const response = await fetch(url, { headers });
       if (response.ok) {
         const data = await response.json();
+
         const newPosts = data.autoget || [];
         setPosts(prevPosts => [...prevPosts, ...newPosts]);
         setHasMore(newPosts.length > 0);
@@ -77,6 +78,30 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
     console.log(data)
     if (!val) return;
 
+    {/*
+    {
+    "cmd": "create_chat",
+    "val": {
+        "_id": "2dbcddbb-669e-4e8f-8d8a-ae83ea64ecfc",
+        "type": 0,
+        "nickname": "Textart Community",
+        "icon": "",
+        "icon_color": "000000",
+        "owner": "Souple",
+        "members": [
+            "Souple"
+        ],
+        "created": 1723297262,
+        "last_active": 1723297262,
+        "deleted": false,
+        "allow_pinning": false,
+        "emojis": [],
+        "stickers": []
+    }
+}
+      */
+    }
+
     switch (mode) {
       case "post":
         if (val.post_origin === chatId || (context === "home" && val.post_origin === context)) {
@@ -90,7 +115,7 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
           setPosts(posts.map(p => p._id === val._id ? val : p));
         break;
       case "delete_post":
-        setPosts(posts.filter(post => post._id !== val.id));
+        setPosts(posts.filter(post => post._id !== val.post_id));
         break;
       case "post_reaction_add":
       case "post_reaction_remove":

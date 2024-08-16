@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { usePostContext } from "../Context.tsx";
 import { getInbox } from "../lib/api/UserMessages.ts";
 import PostComponent from "../components/PostComponent.tsx";
+import { updateConfigAndLocalStorage } from '../utils/UpdateConfig.ts';
 import '../styles/Messages.css'
 
-interface InboxData {
+export interface InboxData {
   autoget: any[];
   error: boolean;
   "page#": number;
@@ -16,6 +17,7 @@ export default function Messages() {
   const [inbox, setInbox] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { setUserData } = usePostContext();
 
   useEffect(() => {
     const fetchInbox = async () => {
@@ -24,6 +26,7 @@ export default function Messages() {
           const data: InboxData = await getInbox(userToken, currentPage);
           setInbox(Array.isArray(data.autoget) ? data.autoget : []);
           setTotalPages(data.pages || 1);
+          updateConfigAndLocalStorage("unread_inbox", false, userToken, setUserData);
         } catch (error) {
           console.error("Failed to fetch inbox:", error);
         }

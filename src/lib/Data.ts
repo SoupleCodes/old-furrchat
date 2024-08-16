@@ -741,10 +741,6 @@ const musicLibrary = [
   },
 ];
 
-// console.log(musicLibrary[0].path);
-// console.log(musicLibrary[0].author);
-// console.log(musicLibrary[0].songName);
-
 export {
   emojiData,
   discordEmojis,

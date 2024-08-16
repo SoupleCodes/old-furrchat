@@ -182,6 +182,7 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
         <EmojiPicker
           onEmojiSelect={appendToPost}
           src="/furrchat/assets/markdown/Emoji.png"
+          chatID={chatId}
         />
         <Dropdown
           options={headingOptions}

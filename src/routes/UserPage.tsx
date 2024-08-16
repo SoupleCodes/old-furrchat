@@ -5,33 +5,33 @@ import ReactMarkdown from 'react-markdown';
 import PostComponent from '../components/PostComponent';
 import { getPostsFromUser } from '../lib/api/Post/GetPostsFromUser.ts';
 import { usePostContext } from '../Context';
+import { DiscEmojiSupport } from "../lib/RevisePost";
+import { ImageRenderer } from '../utils/ImageRenderer.tsx';
+import { defaultPFPS } from '../lib/Data.ts';
 
 export default function UserPage() {
     const { username } = useParams();
     const [userData, setUserData] = useState<any>(null);
     const { userToken } = usePostContext();
     const [userPosts, setUserPosts] = useState<any[]>([]);
+
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchData = async () => {
             try {
-                const posts = await getPostsFromUser({user: username ?? "", userToken, userParam: "posts"});
+                const posts = await getPostsFromUser({ user: username ?? "", userToken, userParam: "posts" });
                 setUserPosts(posts);
+
+                const userData = await fetchUserData(username ?? "");
+                setUserData(userData);
             } catch (error) {
-                console.error("Error fetching posts:", error);
+                console.error("Error fetching data:", error);
             }
+        };
+
+        if (username) {
+            fetchData();
         }
-        
-        fetchPosts();
     }, [username, userToken]);
-    
-    useEffect(() => {
-        fetchUserData(username ?? "").then(data => {
-            setUserData(
-                data);
-        }).catch(error => {
-            console.error("Error fetching user data:", error);
-        });
-    }, [username]);
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -39,14 +39,27 @@ export default function UserPage() {
 
     const {
         _id, avatar, avatar_color, banned,
-        created, last_seen,
+        created, last_seen, pfp_data,
         quote
     } = userData;
 
-    const avatarUrl = avatar ? `https://uploads.meower.org/icons/${avatar}` :
-        userData.pfp_data === -3 ?
-            "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg" :
-            `/furrchat/assets/default_pfps/icon${userData.pfp_data}.svg`;
+    const pronounsMatch = quote.match(/\s*\[([^\]]*)\]/);
+
+    let displayedQuote = quote;
+    let pronouns;
+
+    if (pronounsMatch && quote.endsWith(pronounsMatch[0])) {
+        displayedQuote = quote.replace(pronounsMatch[0], '');
+        pronouns = pronounsMatch[1].trim();
+    }
+
+    displayedQuote = DiscEmojiSupport(displayedQuote);
+
+    const avatarUrl = avatar === ""
+        ? pfp_data === -3
+            ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+            : `${defaultPFPS[pfp_data]}`
+        : `https://uploads.meower.org/icons/${avatar}`;
 
     return (
         <div className="settings-container">
@@ -67,44 +80,56 @@ export default function UserPage() {
                             }}
                         />
                     </div>
-                    <div className="user-text">{_id}</div>
+                    <div className="user-text">
+                        {_id}
+                        {pronouns && pronouns.length > 15 && <br />}
+                        {pronouns &&
+                            <span className="pronouns">
+                                ({pronouns})
+                            </span>}
+                    </div>
                 </div>
                 <div style={{ flexGrow: 1, flexDirection: "column" }}>
                     <div className="user-bio-container">
-                    <div className="user-bio">
-                        <ReactMarkdown>{quote}</ReactMarkdown>
+                        <div className="user-bio">
+                            <ReactMarkdown
+                                components={{
+                                    //@ts-ignore
+                                    img: ImageRenderer
+                                }}
+                            >{displayedQuote}</ReactMarkdown>
                         </div>
                         <div className="user-bio">
-                        <p>Created: {new Date(created * 1000).toLocaleString()}</p>
-                        <p>Last Seen: {new Date(last_seen * 1000).toLocaleString()}</p>
-                        {banned && <p className="banned">Banned</p>}
+                            <p>Created: {new Date(created * 1000).toLocaleString()}</p>
+                            <p>Last Seen: {new Date(last_seen * 1000).toLocaleString()}</p>
+                            {banned && <p className="banned">Banned</p>}
                         </div>
                     </div>
                 </div>
             </div>
             <div className="user-bio-container" style={{ margin: 'auto' }}>
-            {userPosts.slice(0, 10).map(post => (
-    <PostComponent
-        key={post._id}
-        post={post.p} 
-        u={post.u} 
-        p={post.p} 
-        attachments={post.attachments} 
-        author={post.author} 
-        isDeleted={post.isDeleted} 
-        pinned={post.pinned} 
-        post_id={post.post_id} 
-        post_origin={post.post_origin} 
-        reactions={post.reactions} 
-        reply_to={post.reply_to} 
-        time={post.t} 
-        type={post.type} 
-        _id={post._id} 
-        user={post.u} 
-        active={false} 
-        edited={post.edited_at !== undefined} 
-    />
-))}
+                {userPosts.slice(0, 10).map(post => (
+                    <PostComponent
+                        key={post._id}
+                        post={post.p}
+                        u={post.u}
+                        p={post.p}
+                        attachments={post.attachments}
+                        author={post.author}
+                        isDeleted={post.isDeleted}
+                        pinned={post.pinned}
+                        post_id={post.post_id}
+                        post_origin={post.post_origin}
+                        reactions={post.reactions}
+                        reply_to={post.reply_to}
+                        time={post.t}
+                        type={post.type}
+                        _id={post._id}
+                        user={post.u}
+                        active={false}
+                        edited={post.edited_at !== undefined}
+                    />
+                ))}
             </div>
         </div>
     );

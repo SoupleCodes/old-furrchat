@@ -1,16 +1,9 @@
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-} from "react";
 import useUserList from "../lib/api/OnlineList";
 import { defaultPFPS } from "../lib/Data";
 import { Link } from "react-router-dom";
 
 const UListBody = () => {
   const userList: any = useUserList();
-
   return (
     <>
       <div
@@ -37,18 +30,10 @@ const UListBody = () => {
           (user: {
             pfp_data: number;
             avatar: any;
-            _id:
-            | string
-            | number
-            | boolean
-            | ReactElement<any, string | JSXElementConstructor<any>>
-            | Iterable<ReactNode>
-            | ReactPortal
-            | null
-            | undefined;
+            _id: string;
           }) => (
-
             <button
+              key={user._id}
               style={{
                 padding: "5px",
                 boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
@@ -67,15 +52,12 @@ const UListBody = () => {
                       : `${defaultPFPS[user.pfp_data]}`
                     : `https://uploads.meower.org/icons/${user.avatar}`
                 }
-                object-fit={'cover'}
+                object-fit={"cover"}
               />{" "}
-              <Link 
-              to={`/users/${user._id}`}
-              className="user-button"
-              >
-              {user._id}</Link>
+              <Link to={`/users/${user._id}`} className="user-button">
+                {user._id}
+              </Link>
             </button>
-
       )
         )}
     </div >

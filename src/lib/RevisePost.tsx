@@ -1,6 +1,8 @@
 import ReactMarkdown from "react-markdown";
 import { emojiData, discordEmojis, PBJTime, defaultPFPS } from "./Data.ts";
 import { scrollToPost } from "../components/PostComponent.tsx";
+import CustomColor from "./ColorMarkdown.tsx";
+import { Link } from "react-router-dom";
 
 // Whitelist of trusted hosts
 export const hostWhitelist = [
@@ -91,12 +93,11 @@ const MeowerEmojiSupport = (text: string): string => {
     return "";
   }
 
-  // i.e. <:0idbmJ1EDIuLcK7gRsDqse8y>
-  const regex = /\\?<:([a-z0-9]+)>/gi; // backslash support
+  const regex = /\\?<:([a-z0-9]+)>/gi;
 
   return text.replace(regex, (match) => {
     if (match.startsWith("\\")) {
-      return match.substring(1); // plain text
+      return match.substring(1);
     } else {
       const id = match.substring(2, match.length - 1);
       const url = `https://uploads.meower.org/emojis/${id}`
@@ -112,11 +113,11 @@ function getReplies(repliesData: any[]) {
       {repliesData.map((reply) => {
         try {
           return (
-            <div 
-            key={reply._id} 
-            className="reply"
-            onClick={() => scrollToPost(reply.post_id)}
-            style={{ cursor: 'pointer' }}
+            <div
+              key={reply._id}
+              className="reply"
+              onClick={() => scrollToPost(reply.post_id)}
+              style={{ cursor: 'pointer' }}
             >
               <i>
                 {reply.author &&
@@ -136,8 +137,23 @@ function getReplies(repliesData: any[]) {
                     style={{ paddingRight: 5 }}
                   />
                 ) : null}
-                <b>{reply.u}</b>: <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
-                  {reply.p.trim().length > 50 ? reply.p.trim().substring(0, 50) + "..." : reply.p.trim()}
+                <Link to={`/users/${reply.u}`}><b>{reply.u}</b></Link>: <ReactMarkdown
+                  components={{
+                    p: ({ children }) => {
+                      if (children && typeof children === 'string') {
+                        const text = children.trim();
+                        if (text.length > 70) {
+                          return <CustomColor>{text.substring(0, 50).replace(/\n/g, '') + "..."}</CustomColor>;
+                        } else {
+                          return <CustomColor>{text}</CustomColor>;
+                        }
+                      } else {
+                        return <>{children}</>;
+                      }
+                    },
+                  }}
+                >
+                  {DiscEmojiSupport(MeowerEmojiSupport(reply.p))}
                 </ReactMarkdown>
               </i>
             </div>
