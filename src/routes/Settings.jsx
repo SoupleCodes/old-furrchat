@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { usePostContext } from "../Context.tsx";
 import { defaultPFPS } from "../lib/Data.ts";
-import ReactMarkdown from "react-markdown";
 import "../styles/Settings.css";
 import { uploadIconAndGetId } from "../lib/api/UploadIconAndGetId.ts";
 import MusicPlayer from '../components/MusicPlayer.tsx';
@@ -217,19 +216,13 @@ export default function Settings() {
           <div style={{ flexGrow: 1, flexDirection: "column" }}>
             <div className="user-bio-container">
               Your Quote:
-              {isEditing ? (
-                <textarea
+              <textarea
                   className="textarea-userbio"
                   value={bio}
                   onChange={handleBioChange}
                   onBlur={handleBioBlur}
                   onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleBioBlur()}
-                />
-              ) : (
-                <div className="user-bio" onClick={() => setIsEditing(true)}>
-                  <ReactMarkdown>{displayedQuote}</ReactMarkdown>
-                </div>
-              )}
+              />
             </div>
             <div className="color-picker-container">
               <label htmlFor="pickedAvatarColor">Avatar Color:</label>

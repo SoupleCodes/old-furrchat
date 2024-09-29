@@ -8,6 +8,7 @@ import { usePostContext } from '../Context';
 import { DiscEmojiSupport } from "../lib/RevisePost";
 import { ImageRenderer } from '../utils/ImageRenderer.tsx';
 import { defaultPFPS } from '../lib/Data.ts';
+import { Link } from 'react-router-dom';
 
 export default function UserPage() {
     const { username } = useParams();
@@ -19,7 +20,7 @@ export default function UserPage() {
         const fetchData = async () => {
             try {
                 const posts = await getPostsFromUser({ user: username ?? "", userToken, userParam: "posts" });
-                setUserPosts(posts);
+                setUserPosts(posts.autoget);
 
                 const userData = await fetchUserData(username ?? "");
                 setUserData(userData);
@@ -63,6 +64,7 @@ export default function UserPage() {
 
     return (
         <div className="settings-container">
+            <div className="settings">
             <div className="user-profile">
                 <div className="profile-info">
                     <div className="post-pfp-container">
@@ -73,42 +75,52 @@ export default function UserPage() {
                             width="128"
                             height="128"
                             style={{
-                                borderRadius: "5px",
+                                borderRadius: "25%",
                                 border: "2.5px solid",
                                 borderColor: `#${avatar_color}`,
-                                boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.4)"
+                                boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.4)",
                             }}
                         />
                     </div>
                     <div className="user-text">
                         {_id}
-                        {pronouns && pronouns.length > 15 && <br />}
+                        <br />
                         {pronouns &&
                             <span className="pronouns">
                                 ({pronouns})
                             </span>}
                     </div>
                 </div>
-                <div style={{ flexGrow: 1, flexDirection: "column" }}>
-                    <div className="user-bio-container">
-                        <div className="user-bio">
-                            <ReactMarkdown
-                                components={{
-                                    //@ts-ignore
-                                    img: ImageRenderer
-                                }}
-                            >{displayedQuote}</ReactMarkdown>
-                        </div>
-                        <div className="user-bio">
-                            <p>Created: {new Date(created * 1000).toLocaleString()}</p>
-                            <p>Last Seen: {new Date(last_seen * 1000).toLocaleString()}</p>
-                            {banned && <p className="banned">Banned</p>}
-                        </div>
+                <div className="user-bio-container">
+                    {displayedQuote &&
+                    <div className="user-bio">
+                        <ReactMarkdown
+                            components={{
+                                //@ts-ignore
+                                img: ImageRenderer
+                            }}
+                        >{displayedQuote}</ReactMarkdown>
+                    </div>
+                    }
+                    <div className="user-bio">
+                        <p>Created: {new Date(created * 1000).toLocaleString()}</p>
+                    </div>
+                    <div className="user-bio">
+                        <p>Last Seen: {new Date(last_seen * 1000).toLocaleString()}</p>
+                        {banned && <p className="banned">Banned</p>}
                     </div>
                 </div>
             </div>
-            <div className="user-bio-container" style={{ margin: 'auto' }}>
-                {userPosts.slice(0, 10).map(post => (
+            <div className="settings-buttons" style={{ float: 'right' }}>
+                    <Link to={`/users/${_id}/dm`}>
+                        <button className="button">Message</button>
+                    </Link>
+                </div>
+            </div>
+            <hr style={{ borderTop: '1px solid #0000001f', width: '100%' }} />
+            <strong>User's Latest Posts:</strong>
+            <div className="user-posts">
+                {userPosts.slice(0, 12).map(post => (
                     <PostComponent
                         key={post._id}
                         post={post.p}

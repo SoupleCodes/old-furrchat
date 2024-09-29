@@ -11,6 +11,7 @@ import Groupchats from "./routes/Groupchats.tsx";
 import Settings from "./routes/Settings.jsx";
 import UserPage from "./routes/UserPage.tsx";
 import GroupchatPage from "./routes/GroupchatPage.tsx";
+import UserDmPage from "./routes/UserDMPage.tsx";
 
 const AppRouter = () => (
   <Router>
@@ -22,6 +23,7 @@ const AppRouter = () => (
       <Route path="chats/:chatId" element={<GroupchatPage />} />
       <Route path="settings" element={<Settings />} />
       <Route path="users/:username" element={<UserPage />} />
+      <Route path="users/:username/dm" element={<UserDmPage />} />
     </Routes>
   </Router>
 );

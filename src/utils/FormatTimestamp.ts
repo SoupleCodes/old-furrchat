@@ -5,6 +5,10 @@
  */
 
 export function formatTimestamp(timestamp: number): string {
+  if (!timestamp) {
+    return '';
+  }
+  
   // Convert the Unix timestamp from seconds to milliseconds
   const realDate = new Date(timestamp * 1000);
   

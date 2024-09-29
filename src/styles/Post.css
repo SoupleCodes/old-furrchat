@@ -22,7 +22,7 @@
   max-height: 80vh;
   overflow-y: auto;
   text-align: left;
-  line-height: 1.2; /* Adjust line height for better readability */
+  line-height: 1.2;
 }
 
 .post-username-text {

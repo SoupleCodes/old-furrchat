@@ -11,8 +11,6 @@ interface DisplayPostsProps {
   chatId?: string;
 }
 
-// <:bITQ0YsxBTGsBaDbxtxySEbc> <:t0vI3l0lkkV0Oc4xS1bLLqGD>
-
 const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
   const { userToken } = usePostContext();
   const [posts, setPosts] = useState<any[]>([]);
@@ -41,6 +39,7 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
       const url = context === "groupchats" && chatId
         ? `https://api.meower.org/posts/${chatId}?page=${pageNumber}`
         : `https://api.meower.org/home?page=${pageNumber}`;
+
       const headers: HeadersInit = userToken ? { "Token": userToken } : {};
 
       const response = await fetch(url, { headers });
@@ -77,30 +76,6 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
     const { cmd: mode, val } = data;
     console.log(data)
     if (!val) return;
-
-    {/*
-    {
-    "cmd": "create_chat",
-    "val": {
-        "_id": "2dbcddbb-669e-4e8f-8d8a-ae83ea64ecfc",
-        "type": 0,
-        "nickname": "Textart Community",
-        "icon": "",
-        "icon_color": "000000",
-        "owner": "Souple",
-        "members": [
-            "Souple"
-        ],
-        "created": 1723297262,
-        "last_active": 1723297262,
-        "deleted": false,
-        "allow_pinning": false,
-        "emojis": [],
-        "stickers": []
-    }
-}
-      */
-    }
 
     switch (mode) {
       case "post":

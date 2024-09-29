@@ -181,10 +181,11 @@ const Groupchat: React.FC<gcParameters> = ({
         />
         <h2 className={styles.userheading} style={{ color: avatarColor || icon_color }}>
           {type === 1 && otherUser ? <Link to={`/users/${otherUser}`}>{otherUser}</Link> : nickname}
+          <br/>
           <i>{_id}</i>
         </h2>
         <div style={{ marginLeft: 'auto' }}>
-          <button><Link to={`/chats/${_id}`}>Enter</Link></button>
+          <button><Link to={otherUser ? `/users/${otherUser}/dm` : `/chats/${_id}`}>Enter</Link></button>
           <button>{parsedData.account.favorited_chats.includes(_id) ? '★' : '☆'}</button>
         </div>
       </div>

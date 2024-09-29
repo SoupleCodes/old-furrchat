@@ -129,7 +129,7 @@ const filterAndSortEmojis = (entries: [string, string][]) =>
                 src={value}
                 alt={key}
                 title={'Right click to delete'}
-                width={75}
+                height={24}
                 onContextMenu={(e) => {
                   e.preventDefault();
                   removeCustomEmoji(key);

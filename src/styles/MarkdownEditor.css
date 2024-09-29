@@ -20,6 +20,10 @@
   text-align: center;
 }
 
+.emoji-item:hover {
+  background: linear-gradient(rgb(223, 223, 223) 50%, rgb(175, 175, 175));
+}
+
 .emoji-item img {
   max-width: 100%; /* Ensures the emoji doesn't exceed the container width */
   max-height: 100%; /* Ensures the emoji doesn't exceed the container height */

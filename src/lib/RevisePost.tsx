@@ -32,10 +32,14 @@ export const hostWhitelist = [
 const isWhitelistedURL = (url: string): boolean =>
   hostWhitelist.some(whitelistURL => url.startsWith(whitelistURL));
 
-const convertWhitelistedURLsToImages = (text: string): string =>
-  text.replace(/(https:\/\/[^\s]+)/g, (url) =>
+const convertWhitelistedURLsToImages = (text: string | undefined): string => {
+  if (!text) {
+    return "";
+  }
+  return text.replace(/(https:\/\/[^\s]+)/g, (url) =>
     isWhitelistedURL(url) ? `![image](${url})` : url
   );
+};
 
 const handleAttachments = (attachments: any[]): string =>
   attachments
@@ -78,15 +82,22 @@ const extractInfo = (
   return null;
 };
 
-const DiscEmojiSupport = (text: string, replace: boolean = true): string =>
-  text.replace(/\\?<(a)?:(\w+):(\d+)>/gi, match => {
+const DiscEmojiSupport = (text: string | undefined, replace: boolean = true): string => {
+  if (!text) {
+    return "";
+  }
+
+  return text.replace(/\\?<(a)?:(\w+):(\d+)>/gi, match => {
     if (match.startsWith("\\")) return match.slice(1);
     if (!replace) return '';
+    
     const { name, number, isAnimated } = extractInfo(match) || {};
     return name
       ? `![${name}](https://cdn.discordapp.com/emojis/${number}.${isAnimated ? 'gif' : 'png'}?size=16&quality=lossless)`
       : match;
   });
+};
+
 
 const MeowerEmojiSupport = (text: string): string => {
   if (typeof text !== "string") {

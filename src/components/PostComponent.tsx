@@ -83,7 +83,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     }`
   const avatarColor = `#${author.avatar_color}`
 
-  const realDate = formatTimestamp(time.e)
+  const realDate = time && time.e ? formatTimestamp(time.e) : 'Invalid time';
 
   const attachment = useMemo(() => handleAttachments(attachments), [attachments])
   const realPost = useMemo(() => {

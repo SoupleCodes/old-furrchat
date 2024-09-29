@@ -3,7 +3,7 @@ export async function getPostsFromUser({ user, userToken, userParam }: { user: s
     const response = await fetch(`https://api.meower.org/users/${user}/${userParam}`, {
       method: "GET",
       headers: {
-        'Authorization': userToken,
+        'Token': userToken,
       },
     });
   
@@ -13,5 +13,5 @@ export async function getPostsFromUser({ user, userToken, userParam }: { user: s
   
     const data = await response.json();
     console.log('Data:', data);
-    return data.autoget;
+    return data;
 }
