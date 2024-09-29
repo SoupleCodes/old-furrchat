@@ -8,7 +8,7 @@ interface ImageRendererProps {
 export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
   const fileExtension = src.split(".").pop()?.toLowerCase();
 
-  if (src.includes("emoji" || "smilies")) {
+  if (src.includes("emoji") || src.includes("smilies")) {
     return (
       <img
         src={src}

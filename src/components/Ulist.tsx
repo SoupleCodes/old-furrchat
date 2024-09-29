@@ -1,4 +1,3 @@
-import { ReactElement, JSXElementConstructor, ReactNode, Key } from "react";
 import useUserList from "../lib/api/OnlineList";
 import { Link } from "react-router-dom";
 
@@ -12,7 +11,7 @@ const UListBody = () => {
         </div>
         <div className="uList-users">
         <span style={{ fontWeight: 600, color: "#333" }}>
-        {userList.map((user: { _id: string | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Key | null | undefined; }, index: number) => (
+        {userList.map((user: { _id: string }, index: number) => (
           <span>
             <Link to={`/users/${user._id}`} className="user-button" style={{ fontWeight: '200' }}>
               {user._id}
