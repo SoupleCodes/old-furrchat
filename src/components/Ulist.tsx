@@ -1,65 +1,27 @@
+import { ReactElement, JSXElementConstructor, ReactNode, Key } from "react";
 import useUserList from "../lib/api/OnlineList";
-import { defaultPFPS } from "../lib/Data";
 import { Link } from "react-router-dom";
 
 const UListBody = () => {
   const userList: any = useUserList();
   return (
     <>
-      <div
-        className="uList"
-        style={{
-          borderRadius: "8px",
-          padding: "12px",
-          margin: "20px",
-          marginBottom: "0px",
-          border: "1px solid #83838396",
-          background:
-            "linear-gradient(to bottom, rgba(255, 255, 255, 0.4) , rgba(96, 156, 140, 0.5))",
-          boxShadow:
-            "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
-        }}
-      >
+      <div className="uList">
+        <div className="uList-heading">
+        {`${userList.length} users:`}
+        </div>
+        <div className="uList-users">
         <span style={{ fontWeight: 600, color: "#333" }}>
-          <img height="20" src={`/furrchat/assets/icons/PeopleIcon.png`} />
-          {` There are currently ${userList.length} users online.`}
+        {userList.map((user: { _id: string | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Key | null | undefined; }, index: number) => (
+          <span>
+            <Link to={`/users/${user._id}`} className="user-button" style={{ fontWeight: '200' }}>
+              {user._id}
+            </Link>
+            {index < userList.length - 1 && ", "}
+          </span>
+        ))}
         </span>
-        <br />
-        <hr />
-        {userList.map(
-          (user: {
-            pfp_data: number;
-            avatar: any;
-            _id: string;
-          }) => (
-            <button
-              key={user._id}
-              style={{
-                padding: "5px",
-                boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
-                background:
-                  "linear-gradient(to bottom, rgba(255, 255, 255, 0.2) , rgba(255, 255, 255, 0.3))",
-                border: "1px solid rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              <img
-                height={16}
-                width={16}
-                src={
-                  user.avatar === ""
-                    ? user.pfp_data === -3
-                      ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-                      : `${defaultPFPS[user.pfp_data]}`
-                    : `https://uploads.meower.org/icons/${user.avatar}`
-                }
-                object-fit={"cover"}
-              />{" "}
-              <Link to={`/users/${user._id}`} className="user-button">
-                {user._id}
-              </Link>
-            </button>
-      )
-        )}
+        </div>
     </div >
       <br />
     </>

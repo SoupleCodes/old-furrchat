@@ -178,103 +178,6 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
 
   return (
     <div>
-      <div className="markdown-container">
-        <EmojiPicker
-          onEmojiSelect={appendToPost}
-          src="/furrchat/assets/markdown/Emoji.png"
-          chatID={chatId}
-        />
-        <Dropdown
-          options={headingOptions}
-          onSelect={(option: any) =>
-            handleMarkdownClick(option.value + " ", false)
-          }
-        />
-
-        {[
-          { icon: "Bold.png", action: () => handleMarkdownClick("**") },
-          {
-            icon: "Strikethrough.png",
-            action: () => handleMarkdownClick("~~"),
-          },
-          { icon: "Italic.png", action: () => handleMarkdownClick("*") },
-
-          {
-            icon: "UnorderedList.png",
-            action: () => handleMarkdownClick("\n - ", false),
-          },
-          {
-            icon: "OrderedList.png",
-            action: () => handleMarkdownClick("\n1. - ", false),
-          },
-          {
-            icon: "Checklist.png",
-            action: () => handleMarkdownClick("- [] ", false),
-          },
-          { icon: "Quote.png", action: () => handleMarkdownClick("> ", false) },
-          { icon: "Code.png", action: () => handleMarkdownClick("\n``` \n") },
-          {
-            icon: "Table.png",
-            action: () =>
-              handleMarkdownClick(
-                "\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |",
-                false
-              ),
-          },
-          {
-            icon: "Link.png",
-            action: () =>
-              handleMarkdownClick("[link description](link)", false),
-          },
-          {
-            icon: "Image.png",
-            action: () =>
-              handleMarkdownClick("![image description](image link)", false),
-          },
-        ].map(({ icon, action }) => (
-          <div className="markdown-button" onClick={action} key={icon}>
-            <img
-              src={`/furrchat/assets/markdown/${icon}`}
-              alt={icon.replace(".png", "")}
-              height="48"
-              title={icon
-                .replace(".png", "")
-                .replace(/([A-Z])/g, " $1")
-                .trim()}
-            />
-          </div>
-        ))}
-
-        <div className="markdown-button">
-          <label htmlFor="file-upload">
-            <img
-              src="/furrchat/assets/markdown/Upload.png"
-              alt="Upload Image"
-              height="48"
-              title="Upload Image"
-            />
-          </label>
-          <input
-            id="file-upload"
-            type="file"
-            multiple
-            onChange={ handleFileUpload }
-            style={{ display: "none" }}
-          />
-        </div>
-
-        <div
-          className="markdown-button"
-          onClick={() => setShowPreview(!showPreview)}
-        >
-          <img
-            src="/furrchat/assets/markdown/Preview.png"
-            alt="preview"
-            height="48"
-            title="Preview (Alpha)"
-          />
-        </div>
-      </div>
       <div className="attachments" style={{ borderRadius: '2px' }}>
         {replyIds.map((reply, index) => (
           <div
@@ -321,16 +224,53 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
           </div>
         ))}
       </div>
-      <span
-        className="userpost"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          resize: "none",
-          marginBottom: "14px",
-        }}
-      >
+      <div className="markdown-buttons">
+        <img src="/furrchat/assets/markdown/B.png" id="bold" className="markdown-item" onClick={() => handleMarkdownClick("**")}/>
+        <img src="/furrchat/assets/markdown/I.png" id="italic" className="markdown-item" onClick={() => handleMarkdownClick("*")}/>
+        <img src="/furrchat/assets/markdown/S.png" id="strikethrough" className="markdown-item" onClick={() => handleMarkdownClick("~~")}/>
+        <Dropdown
+          options={headingOptions}
+          onSelect={(option: any) =>
+            handleMarkdownClick(option.value + " ", false)
+          }
+        />
+        <EmojiPicker
+          onEmojiSelect={appendToPost}
+          src="/furrchat/assets/markdown/E.png"
+          chatID={chatId}
+        />        
+        <img src="/furrchat/assets/markdown/Q.png" id="unorderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n - ", false) }/>
+        <img src="/furrchat/assets/markdown/F.png" id="orderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n1. - ", false) }/>
+        <img src="/furrchat/assets/markdown/K.png" id="checkbox" className="markdown-item" onClick={() => handleMarkdownClick("- [] ", false) }/>
+        <img src="/furrchat/assets/markdown/D.png" id="quote" className="markdown-item" onClick={() => handleMarkdownClick("> ", false) }/>
+        <img src="/furrchat/assets/markdown/P.png" id="code" className="markdown-item" onClick={() => handleMarkdownClick("\n``` \n") }/>
+        <img src="/furrchat/assets/markdown/M.png" id="table" className="markdown-item" onClick={() =>
+          handleMarkdownClick(
+            "\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |",
+            false
+          )
+        }/>
+        <img src="/furrchat/assets/markdown/N.png" id="hyperlink" className="markdown-item" onClick={() =>
+          handleMarkdownClick("[link description](link)", false)
+        }/>
+        <img src="/furrchat/assets/markdown/L.png" id="image-markdown" className="markdown-item" onClick={() =>
+          handleMarkdownClick("![image description](image link)", false)
+        }/>
+           <label htmlFor="file-upload">
+            <img src="/furrchat/assets/markdown/Z.png" id="upload" className="markdown-item"/>
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            multiple
+            onChange={ handleFileUpload }
+            style={{ display: "none" }}
+          />
+        <span className="markdown-item" id="preview-button" onClick={() => setShowPreview(!showPreview)}>
+          {showPreview ? "Hide Preview" : "Show Preview"}</span>
+        <form className="markdown-item" id="post-button" onClick={sendPost}>Post</form>
+      </div>
+      <span>
         {showPreview ? (
           <div className="markdown-preview">
             <ReactMarkdown
@@ -389,17 +329,8 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
                 }}
               style={{
                 flex: 1,
-                marginRight: "5px",
-                width: "1090px",
                 minHeight: "50px",
                 maxHeight: "500px",
-                background:
-                  "linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(72, 173, 148, 0.3) 100%)",
-                borderColor: "4px solid rgba(0, 0, 0, 0.2)",
-                borderRadius: "10px",
-                border: "1px solid #83838396",
-                boxShadow:
-                  "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
                 padding: "10px",
               }}
               onSelect={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -407,22 +338,6 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
                 setSelectionEnd(e.target.selectionEnd);
               }}
             ></textarea>
-            <button
-              type="submit"
-              style={{
-                width: "70px",
-                background:
-                  "linear-gradient(to bottom, #ffffff 0%, #e6e6e6 50%, #cccccc 100%)",
-                boxShadow:
-                  "5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.3), 0 3px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset",
-                borderRadius: "5px",
-                border: "1px solid #83838396",
-                padding: "10px",
-                color: "grey",
-              }}
-            >
-              Post
-            </button>
 
             <div></div>
           </form>

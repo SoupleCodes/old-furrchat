@@ -11,21 +11,16 @@
 
   text-rendering: optimizeLegibility;
 
-  background: linear-gradient(
-    to right,
-    rgba(72, 173, 148, 0.8) 0%,
-    rgba(113, 188, 212, 0.8) 75%,
-    rgba(232, 243, 242, 0.904) 100%
-  );
+  background-image: linear-gradient(to right, rgba(72, 173, 148, 0.8) 0%, rgba(113, 188, 212, 0.8) 75%, rgba(232, 243, 242, 0.904) 100%);
   display: flex;
   justify-content: center;
 }
 
-  .noto-color-emoji-regular {
-    font-family: "Noto Color Emoji";
-    font-weight: 400;
-    font-style: normal;
-  }
+.noto-color-emoji-regular {
+  font-family: "Noto Color Emoji";
+  font-weight: 400;
+  font-style: normal;
+}
 
 hr {
   border-top: 1px solid #0000001f;
@@ -34,7 +29,7 @@ hr {
 audio {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
     -5px -5px 10px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2),
-    0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+    0 1px 0 0 rgbinseta(255, 255, 255, 0.7) ;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 26px;
 }
@@ -68,14 +63,17 @@ a:hover > img {
 }
 
 button {
-  border-radius: 8px;
   padding: 0.3em 0.6em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
-  border-style: solid;
+  border-color: #C7C3BF;
+  background-color: #E9E9E9;
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E9E9E9 100%);
+  background-image: linear-gradient(to bottom, #FFFFFF 0%, #E9E9E9 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#E9E9E9',GradientType=0 );
+  box-shadow: 0 0 0 1px #FFFFFF inset;
 }
 
 /* Scrollbar CSS */

@@ -6,7 +6,7 @@ import { Outlet, Link } from "react-router-dom"
 export default function Navbar() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginSuccess, setLoginSuccess, userToken, setUserToken, setUserData } = usePostContext();
+  const { setLoginSuccess, userToken, setUserToken, setUserData } = usePostContext();
   const [loginError, setLoginError] = useState(false);
   const [, setInboxCount] = useState(0);
 
@@ -72,43 +72,59 @@ export default function Navbar() {
           height="200"
           style={{ padding: 5 }}
         />
-        <div className="login">
+        <div className="login" style={{ borderRadius: '5px' }}>
+          <div style={{ boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.5) inset, 0px 0px 4px rgba(0, 0, 0, 0.2)', padding: '10px', borderRadius: '5px' }}>
           <form
-            onSubmit={handleSubmit(
-              username,
-              password,
-              userToken,
-              setUserToken,
-              setLoginSuccess,
-              setLoginError
-            )}
-          >
-            <label htmlFor="username">Username: </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username."
-              value={username} // Controlled input for username
-              onChange={(event) => setUsername(event.target.value)} // Update state on change
-              required
-            />
-            {"   |   "}
-            <label htmlFor="password">Password: </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password."
-              autoComplete="current-password"
-              value={password} // Controlled input for password
-              onChange={(event) => setPassword(event.target.value)} // Update state on change
-              required
-            />
-            <input type="submit" value="Submit" className="password-submit" />{" "}
-          </form>
-          {loginError && <p>Login failed. Please try again.</p>}
-          {loginSuccess && <p>Login successful!</p>}
+  onSubmit={handleSubmit(username, password, userToken, setUserToken, setLoginSuccess, setLoginError)}
+  className="login-form"
+>
+  <div className="username-field"> {/* Wrapper for username field */}
+    <img className="username-icon" src="/furrchat/assets/icons/UsernameIcon.png" alt="Username icon" height="32"/> {/* Username icon */}
+    <label htmlFor="username" className="username-label">Username:</label>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Enter your username."
+      value={username}
+      onChange={(event) => setUsername(event.target.value)}
+      required
+      style={{ boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
+    />
+  </div>
+  <div className="password-field">
+    <img className="password-icon" src="/furrchat/assets/icons/Passkey.png" alt="Password icon" height="32"/>
+    <label htmlFor="password" className="password-label">Password:</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Enter your password."
+      autoComplete="current-password"
+      value={password}
+      onChange={(event) => setPassword(event.target.value)}
+      required
+      style={{ boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
+    />
+  </div>
+  <input
+    type="submit"
+    value="Submit"
+    className="password-submit"
+    style={{
+      background: 'linear-gradient(to bottom, #4CAF50, #367c39)',
+      boxShadow: 'inset 0 0 5px green',
+      color: 'white',
+      padding: '5px 20px',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      marginLeft: 'auto',
+      marginRight: '0',
+    }}
+  /></form>
+          </div>
+          {loginError && <p style={{ color: 'red', lineHeight: '0px', }}>Login failed. Please try again.</p>}
         </div>
       </div>
       <div className="navbar">
@@ -130,9 +146,9 @@ export default function Navbar() {
           <input
             type="text"
             placeholder=" ⌕ Search home posts!"
+            className="navbar-search"
             name="search"
-          />{" "}
-          {/* Search input */}
+          />
         </div>
       </div>
       <Outlet />

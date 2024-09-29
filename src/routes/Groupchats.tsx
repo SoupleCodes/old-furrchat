@@ -226,14 +226,16 @@ const Groupchat: React.FC<gcParameters> = ({
 
             return (
               <div key={user} className={styles.activityitem}>
+                <Link to={`/users/${user}`}>
                 <img src={avatar} alt="User Avatar" width={28} height={28} style={{ objectFit: 'cover' }} />
+                </Link>
                 <span>
                   <b>{`${user}: `}</b>
                   <ReactMarkdown
                     components={{
                       p: ({ children }) => {
                         if (children && typeof children === 'string') {
-                          const text = children.trim();
+                          const text = children;
                           if (text.length > 100) {
                             return <>{text.substring(0, 100)}...</>
                           } else {
@@ -245,7 +247,7 @@ const Groupchat: React.FC<gcParameters> = ({
                       },
                     }}
                   >
-                    {DiscEmojiSupport(MeowerEmojiSupport(message))}
+                    {DiscEmojiSupport(MeowerEmojiSupport(message.trim()))}
                   </ReactMarkdown>
                   {message.reactions && getReactions(message.reactions)}
                 </span>

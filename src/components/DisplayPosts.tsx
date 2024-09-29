@@ -141,7 +141,7 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
   };
 
   return (
-    <div>
+    <>
       <TransitionGroup>
         {posts
           .filter(post => !bannedUsers.has(post.u))
@@ -171,7 +171,7 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
           ))}
       </TransitionGroup>
       {loading && <p>Loading more posts...</p>}
-    </div>
+    </>
   );
 };
 

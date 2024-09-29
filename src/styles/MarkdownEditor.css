@@ -1,7 +1,5 @@
 /* Markdown Container CSS*/
-
 .markdown-container {
-  margin: 4px 20px;
   display: flex;
   padding-bottom: 35px;
   width: 1180px;
@@ -13,33 +11,8 @@
 }
 
 /* Emoji Picker */
-
 .emoticon-item {
-  word-break: break-word;
-  margin-right: 5px;
-  display: inline-block;
-}
-
-.emoji-grid {
-  background: linear-gradient(
-    to bottom,
-    rgb(255, 255, 255) 0%,
-    rgb(230, 230, 230) 100%
-  );
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border: 1px solid lightgray;
-  padding: 10px;
-
-  position: fixed;
-  top: 380px;
-  left: 24px;
-  z-index: 1000;
-  width: 270px;
-  height: 300px;
-  overflow-y: auto;
+  font-size: small;
 }
 
 .emoji-item {
@@ -54,28 +27,57 @@
 }
 
 textarea {
-  resize: none;
+  background: linear-gradient(rgba(255, 255, 255, 0.404), rgba(211, 211, 211, 0.466));
 }
 
 textarea:focus {
   outline: none;
 }
 
-/* Preview CSS */
-
+/* Markdown Editor CSS */
 .markdown-preview {
-  margin-right: 5px;
-  width: 1160px;
   padding-bottom: 35px;
-  min-height: 50px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(72, 173, 148, 0.3) 100%
-  );
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.1),
-    5px 5px 10px rgba(0, 0, 0, 0.2);
-  padding: 10px;
+  min-height: 35px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background: linear-gradient(rgba(255, 255, 255, 0.404), rgba(211, 211, 211, 0.466));
+}
+
+.markdown-buttons {
+  display: flex;
+  background: linear-gradient(white, lightgrey);
+  border: 1px solid grey;
+  max-width: 100%;
+  height: 25px;
+  border-radius: 2px;
+}
+
+.markdown-item {
+  padding: 0px 7px;
+  background: url('/furrchat/assets/Markdown-button-divider.png') no-repeat right top;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.281);
+  opacity: 0.7;
+  height: 25px;
+}
+
+#preview-button {
+  background: linear-gradient(to bottom, #2cad30, #207e25);
+  color: white;
+}
+
+#post-button {
+  background: linear-gradient(to bottom, #2c9aad, #20497e);
+  color: white;
+}
+
+.markdown-item:hover {
+  background: linear-gradient(rgb(223, 223, 223) 50%, rgb(175, 175, 175));
+}
+
+#preview-button:hover {
+  background: linear-gradient(to bottom, #268829, #175f29);
+}
+
+#post-button:hover {
+  background: linear-gradient(to bottom, #277c8b, #20397c);
+  color: white;
 }

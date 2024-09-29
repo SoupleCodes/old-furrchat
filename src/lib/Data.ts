@@ -155,20 +155,14 @@ const emojiData: EmojiMap = {
   ":beer:": "/furrchat/assets/smilies/bier.gif",
   ":chubby:": "/furrchat/assets/smilies/chubby.gif",
   ":clown:": "/furrchat/assets/smilies/clown.gif",
-  " =O) ": "/furrchat/assets/smilies/clown.gif",
   ":confused:": "/furrchat/assets/smilies/confused.gif",
-  ":S": "/furrchat/assets/smilies/confused.gif",
   ":cool:": "/furrchat/assets/smilies/coool.gif",
-  " B) ": "/furrchat/assets/smilies/coool.gif",
-  " B-) ": "/furrchat/assets/smilies/coool.gif",
-  " 8) ": "/furrchat/assets/smilies/coool.gif",
   ":devilwhip:": "/furrchat/assets/smilies/devil_whip.gif",
   ":devil:": "/furrchat/assets/smilies/devil.gif",
   ":spain:": "/furrchat/assets/smilies/es.png",
   ":finland:": "/furrchat/assets/smilies/fi.png",
   ":france:": "/furrchat/assets/smilies/fr.png",
   ":frown:": "/furrchat/assets/smilies/frown.gif",
-  " :( ": "/furrchat/assets/smilies/frown.gif",
   ":frusty:": "/furrchat/assets/smilies/frusty.gif",
   ":fyou:": "/furrchat/assets/smilies/fyou.gif",
   ":hooligan:": "/furrchat/assets/smilies/got-hooligan.gif",
@@ -177,7 +171,6 @@ const emojiData: EmojiMap = {
   ":king:": "/furrchat/assets/smilies/koning.gif",
   ":skorea:": "/furrchat/assets/smilies/kr.png",
   ":drool:": "/furrchat/assets/smilies/kwijl.gif",
-  " =P~ ": "/furrchat/assets/smilies/kwijl.gif",
   ":list:": "/furrchat/assets/smilies/lijstje.gif",
   ":loveit:": "/furrchat/assets/smilies/loveit.gif",
   ":lurk:": "/furrchat/assets/smilies/lurk.gif",
@@ -191,20 +184,15 @@ const emojiData: EmojiMap = {
   ":die:": "/furrchat/assets/smilies/plzdie.gif",
   ":puh:": "/furrchat/assets/smilies/puh.gif",
   ":puh2:": "/furrchat/assets/smilies/puh2.gif",
-  " :P ": "/furrchat/assets/smilies/puh2.gif",
   ":puhbye:": "/furrchat/assets/smilies/puhbye.gif",
   ":puke:": "/furrchat/assets/smilies/pukey.gif",
   ":cow:": "/furrchat/assets/smilies/rc5.gif",
   ":redcard:": "/furrchat/assets/smilies/redcard.gif",
   ":bored:": "/furrchat/assets/smilies/saai.gif",
-  " :/ ": "/furrchat/assets/smilies/saai.gif",
   ":shiny:": "/furrchat/assets/smilies/shiny.gif",
   ":sleeping:": "/furrchat/assets/smilies/slapen.gif",
   ":zzz:": "/furrchat/assets/smilies/sleepey.gif",
   ":sleephappy:": "/furrchat/assets/smilies/sleephappy.gif",
-  " :) ": "/furrchat/assets/smilies/smile.gif",
-  " :D ": "/furrchat/assets/smilies/smile.gif",
-  " :-D ": "/furrchat/assets/smilies/smile.gif",
   ":snap:": "/furrchat/assets/smilies/smiliecam.gif",
   ":steam:": "/furrchat/assets/smilies/steam.gif",
   ":toilet_puke:": "/furrchat/assets/smilies/toilet-puke.gif",
@@ -397,17 +385,6 @@ const GIFS: EmojiMap = {
     "https://uploads.meower.org/attachments/GrjtUveRiUr7mCARZIR4EGEf/mower.png",
   bunger:
     "https://uploads.meower.org/attachments/qA8nsPQ0ifB3is13YTD7WQxV/bunger.gif",
-};
-
-const CATS: EmojiMap = {
-  ":picture-cat-1:": "https://uploads.meower.org/attachments/Kd6w71bLBaEaNiG4JRBxbBEG/IMG_8008.jpeg",
-  ":picture-cat-2:": "https://uploads.meower.org/attachments/sAueWwMwkIG5SzbtBVANlizp/IMG_20240728_144041_622.jpg",
-  ":picture-cat-3:": "https://uploads.meower.org/attachments/mZYMlWQLhtrawGq6xjQkJ4GW/IMG_20240718_115004_313.jpg",
-  ":picture-cat-4:": "https://uploads.meower.org/attachments/YnwfddATqANhpmTIDiZBocqJ/OFGUREWacrItZs3VWnbb0pJJ.webp",
-  ":picture-cat-5:": "https://uploads.meower.org/attachments/GJTPI5UMOnBY4yhfq4hxDRDR/IMG_20240728_214338_816.jpg",
-  ":picture-cat-6:": "https://uploads.meower.org/attachments/e3TIyWqO20UYwaxxj9sArWA0/IMG_20240619_213521_120.jpg",
-  ":picture-cat-7:": "https://uploads.meower.org/attachments/JeEpslLObLbD5p3rNzkdy6er/IMG_20240728_142901_629.jpg",
-
 };
 
 const defaultPFPS: { [key: number]: string } = {
@@ -749,7 +726,6 @@ export {
   userEmojis,
   headingOptions,
   PBJTime,
-  CATS,
   defaultPFPS,
   musicLibrary
 };
