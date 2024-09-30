@@ -1,4 +1,6 @@
 import React from "react";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 interface ImageRendererProps {
   src: string; // Source URL of the file to be rendered
@@ -91,12 +93,23 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
     case "svg":
     case "blob?preview":
       return (
-        <img
-          src={src}
-          alt={alt}
-          style={{ height: "auto", width: "auto", maxHeight: "375px" }}
-          title={src}
-        />
+        <>
+          <Popup trigger={<img
+            src={src}
+            alt={alt}
+            style={{ height: "auto", width: "auto", maxHeight: "375px", cursor: "pointer" }}
+            title={src}
+          />} position="center center" modal>
+            <center>
+            <img
+              src={src}
+              alt={alt}
+              style={{ maxWidth: "800px", maxHeight: "600px" }}
+              title={src}
+            />
+            </center>
+          </Popup>
+        </>
       );
 
     // Default fallback for unknown file types

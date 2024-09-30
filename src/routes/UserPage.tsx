@@ -44,7 +44,7 @@ export default function UserPage() {
         quote
     } = userData;
 
-    const pronounsMatch = quote.match(/\s*\[([^\]]*)\]/);
+    const pronounsMatch = quote.match(/\s*\[([^\]]+)\]\s*$/);
 
     let displayedQuote = quote;
     let pronouns;
@@ -84,11 +84,10 @@ export default function UserPage() {
                     </div>
                     <div className="user-text">
                         {_id}
-                        <br />
                         {pronouns &&
-                            <span className="pronouns">
+                            <p className="pronouns">
                                 ({pronouns})
-                            </span>}
+                            </p>}
                     </div>
                 </div>
                 <div className="user-bio-container">

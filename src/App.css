@@ -189,8 +189,9 @@ input.navbar-search {
   }
 }
 
-.dropdown-menu {
-  position: fixed;
+.popup-overlay {
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
 }
 
 img {

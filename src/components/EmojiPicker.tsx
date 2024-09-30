@@ -173,6 +173,7 @@ const filterAndSortEmojis = (entries: [string, string][]) =>
           }}>
             {filterAndSortEmojis(categories[selectedCategory])}
           </div>
+          <span style={{ display: "flex" }}>
           <input
                 id="emoji-search"
                 type="text"
@@ -188,7 +189,7 @@ const filterAndSortEmojis = (entries: [string, string][]) =>
               >
                 <img
                   src="/furrchat/assets/icons/emoji_upload.png"
-                  height="32px"
+                  height="24px"
                   alt="Upload Emoji"
                 />
               </button>
@@ -202,6 +203,7 @@ const filterAndSortEmojis = (entries: [string, string][]) =>
               />
             </span>
           )}
+          </span>
         </div>
       )}
     </div>
