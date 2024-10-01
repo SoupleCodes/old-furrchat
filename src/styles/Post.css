@@ -58,11 +58,9 @@
   font-family: Verdana;
   max-width: 100%;
   max-height: 500px;
-  background: linear-gradient(rgba(255, 255, 255, 0.404), rgba(211, 211, 211, 0.466));
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(211, 211, 211, 0.5));
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
   border: 1px solid grey;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
 }
 
 .post-pfp-container {

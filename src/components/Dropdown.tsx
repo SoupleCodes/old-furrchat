@@ -16,7 +16,7 @@ export default function Dropdown({ options, onSelect }: any) {
     <div className="dropdown">
       <img src="/furrchat/assets/markdown/T.png" onClick={toggleDropdown} className="markdown-item"/>
       {isOpen && (
-        <div className="dropdown-menu" style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px', borderRadius: '4px', padding: '8px' }}>
+        <div className="dropdown-menu" style={{ position: 'absolute' }}>
           <select
             onChange={(e) => handleOptionSelect({ value: e.target.value, label: e.target.value })}
             style={{ padding: '8px', boxShadow: '1px solid #ccc', borderRadius: '4px' }}

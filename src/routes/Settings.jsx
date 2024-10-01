@@ -188,6 +188,7 @@ export default function Settings() {
 
     return (
       <div className="settings-container">
+                    <div className="settings">
         <div className="user-profile">
           <div className="profile-info">
             <div className="post-pfp-container">
@@ -257,15 +258,18 @@ export default function Settings() {
             </div>
           </div>
         </div>
+        <br/>
         <div className="user-profile">
           <span style={{ flexGrow: 1, flexDirection: "column" }}>
             Profile Picture:
             {renderPFPSet()}
           </span>
         </div>
+        <br/>
         <div className="user-profile">
           <MusicPlayer />
         </div>
+        <br/>
         <div className="user-profile">
           <label htmlFor="hideBlockedUsers">
             Hide Blocked Users:
@@ -278,6 +282,7 @@ export default function Settings() {
               }}
             />
           </label>
+        </div>
         </div>
       </div>
     );

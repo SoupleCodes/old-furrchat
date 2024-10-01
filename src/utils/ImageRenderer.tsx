@@ -97,7 +97,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
           <Popup trigger={<img
             src={src}
             alt={alt}
-            style={{ height: "auto", width: "auto", maxHeight: "375px", cursor: "pointer" }}
+            style={{ height: "auto", width: "auto", maxHeight: "200px", cursor: "pointer" }}
             title={src}
           />} position="center center" modal>
             <center>
@@ -107,6 +107,10 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
               style={{ maxWidth: "800px", maxHeight: "600px" }}
               title={src}
             />
+            <br/>
+            <a href={src} download>
+              Download {src.split("/").pop()}
+            </a>
             </center>
           </Popup>
         </>
