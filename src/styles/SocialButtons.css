@@ -1,5 +1,4 @@
 .social-buttons {
-  padding: 5px;
   border-width: 1px;
   border-radius: 2px;
   font-size: 0.6rem;
@@ -11,6 +10,10 @@
     rgba(255, 255, 255, 0.2),
     rgba(133, 133, 133, 0.3)
   );
+}
+
+.social-buttons img {
+  height: 9px;
 }
 
 #ReplyButton {
@@ -34,4 +37,5 @@
 #ReactButton {
   background: linear-gradient(in hsl longer hue 45deg, rgba(255, 0, 0, 0.308) 0 0);
   color: #ffffff;
+  padding: 0px;
 }

@@ -9,13 +9,14 @@
   z-index: 20000;
   border: 1px solid grey;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
-  width: 39.1%
+  width: 30%
 }
 
 .emoji-categories {
   display: flex;
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .emoji-list {

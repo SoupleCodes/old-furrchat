@@ -121,6 +121,7 @@ export default function Navbar() {
       cursor: 'pointer',
       marginLeft: 'auto',
       marginRight: '0',
+      fontWeight: "600"
     }}
   /></form>
           </div>
@@ -134,7 +135,7 @@ export default function Navbar() {
             <Link to="/">Home</Link>
           </div>
           <div id="messages" className="navbar-item">
-            <Link to="/messages">Messages</Link>
+            <Link to="/messages">Inbox</Link>
             <span className="notification-indicator"></span>
           </div>
           <div id="groupchats" className="navbar-item">

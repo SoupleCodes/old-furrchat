@@ -90,7 +90,7 @@ const DiscEmojiSupport = (text: string | undefined, replace: boolean = true): st
   return text.replace(/\\?<(a)?:(\w+):(\d+)>/gi, match => {
     if (match.startsWith("\\")) return match.slice(1);
     if (!replace) return '';
-    
+
     const { name, number, isAnimated } = extractInfo(match) || {};
     return name
       ? `![${name}](https://cdn.discordapp.com/emojis/${number}.${isAnimated ? 'gif' : 'png'}?size=16&quality=lossless)`
@@ -178,37 +178,85 @@ function getReplies(repliesData: any[]) {
   );
 }
 
-const getReactions = (reactionsData: any[]) => (
-  <div style={{ maxWidth: "750px" }}>
-    {reactionsData.map(({ emoji, count }) => {
-      try {
-        const isStandardEmoji = isValidEmoji(emoji);
-        const emojiContent = isStandardEmoji
-          ? emoji
-          : <img src={`https://uploads.meower.org/emojis/${emoji}`} alt="Reaction!" style={{ height: "10px" }} />;
+const getReactions = (
+  reactionsData: any[], 
+  post_id: string | null,
+  reactToPost: (post_id: string | null, emoji: string) => void
+) => {
 
-        return (
-          <button
-            key={emoji}
-            style={{
-              padding: "5px",
-              fontSize: "8px",
-              fontWeight: "bold",
-              boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
-              background: "linear-gradient(to bottom,rgba(255, 255, 255, 0.3), rgba(153, 153, 133, 0.3))",
-              border: "1px solid rgba(0, 0, 0, 0.2)"
-            }}
-          >
-            {emojiContent} {count}
-          </button>
-        );
-      } catch (error) {
-        console.error("Error rendering reactions:", error);
-        return null;
-      }
-    })}
-  </div>
-);
+  return (
+    <div
+      style={{
+        maxWidth: "750px",
+        boxSizing: "content-box",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "2px"
+      }}
+    >
+      {reactionsData.map(({ emoji, count }) => {
+        try {
+          const isStandardEmoji = isValidEmoji(emoji);
+          const emojiContent = isStandardEmoji ? (
+            <span style={{ fontSize: "14px" }}>{emoji}</span>
+          ) : (
+            <img
+              src={`https://uploads.meower.org/emojis/${emoji}`}
+              alt="Reaction!"
+              style={{ height: "14px" }}
+            />
+          );
+  
+          return (
+            <button
+              key={emoji}
+              onClick={() => reactToPost(post_id, emoji)} // Pass userToken here
+              style={{
+                fontSize: "10px",
+                fontWeight: "bold",
+                background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(153, 153, 133, 0.4))",
+                borderWidth: "1px",
+                borderRadius: "2px",
+                cursor: "pointer",
+                position: "relative", // Make button relative for positioning count
+                transition: "background 0.3s, transform 0.1s",
+                display: "flex",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.8)";
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(153, 153, 133, 0.4))";
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              {emojiContent}
+              <span style={{
+                position: "absolute",
+                bottom: "0px",
+                right: "0px",
+                fontSize: "8px",
+                background: "rgba(255, 255, 255, 0.7)",
+                borderRadius: "2px",
+                fontWeight: "normal",
+                display: "flex",
+              }}>
+                {count}
+              </span>
+            </button>
+          );
+        } catch (error) {
+          console.error("Error rendering reactions:", error);
+          return null;
+        }
+      })}
+    </div>
+  );
+  
+};
+
 
 const isValidEmoji = (emoji: string): boolean =>
   /\p{Emoji_Presentation}/u.test(emoji);

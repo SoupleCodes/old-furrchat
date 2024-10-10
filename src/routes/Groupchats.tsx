@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { PostComponentProps } from '../components/PostComponent';
 import ReactMarkdown from 'react-markdown';
 import { DiscEmojiSupport, MeowerEmojiSupport, getReactions } from '../lib/RevisePost';
+import { reactToAPost } from '../lib/api/Post/ReactToPost';
 
 export default function Groupchats() {
   const { userToken } = usePostContext();
@@ -38,44 +39,34 @@ export default function Groupchats() {
     };
 
     fetchGroupChats();
-  }, [userToken, itemsToLoadMore, activeCategory, searchQuery]);
+  }, [userToken]);
 
   const updateGroupChats = (updatedChats: gcParameters[], parsedData: any) => {
     const oneWeekAgo = Date.now() / 1000 - (7 * 24 * 60 * 60);
 
-    const filterChats = (gc: gcParameters) => {
-      switch (activeCategory) {
-        case "Starred":
-          return parsedData.account?.favorited_chats.includes(gc._id);
-        case "Owned":
-          return gc.owner === parsedData.account._id;
-        case "Other Chats":
-          return gc.owner !== parsedData.account._id && gc.type !== 1;
-        case "DMS":
-          return gc.type !== 0;
-        case "Recent Activity":
-          return gc.last_active > oneWeekAgo;
-        case "All":
-        default:
-          return true;
-      }
-    };
+    const filteredChats = updatedChats.filter(gc => {
+      const matchesCategory = (() => {
+        switch (activeCategory) {
+          case "Starred":
+            return parsedData.account?.favorited_chats.includes(gc._id);
+          case "Owned":
+            return gc.owner === parsedData.account._id;
+          case "Other Chats":
+            return gc.owner !== parsedData.account._id && gc.type !== 1;
+          case "DMS":
+            return gc.type !== 0;
+          case "Recent Activity":
+            return gc.last_active > oneWeekAgo;
+          case "All":
+          default:
+            return true;
+        }
+      })();
 
-    const searchChats = (gc: gcParameters) => {
-      const query = searchQuery.toLowerCase();
-      if (gc.type === 0) {
-        return gc.nickname?.toLowerCase().includes(query) ?? true;
-      } else if (gc.type === 1) {
-        const otherUser = gc.members.find(member => member !== parsedData.account._id);
-        return otherUser?.toLowerCase().includes(query) ?? true;
-      }
-      return false;
-    };
+      const matchesSearch = gc.nickname?.toLowerCase().includes(searchQuery.toLowerCase()) ?? true;
 
-    const filteredChats = updatedChats
-      .filter(filterChats)
-      .filter(searchChats)
-      .slice(0, itemsToLoadMore);
+      return matchesCategory && matchesSearch;
+    }).slice(0, itemsToLoadMore);
 
     setGroupchats(filteredChats);
   };
@@ -141,9 +132,8 @@ export type gcParameters = {
   posts: PostComponentProps[];
 };
 
-const Groupchat: React.FC<gcParameters> = ({
-  _id, created, icon, last_active, members, nickname, owner, posts, icon_color, type
-}) => {
+const Groupchat: React.FC<gcParameters> = (props) => {
+  const { _id, created, icon, last_active, members, nickname, owner, posts, icon_color, type } = props;
   const storedData = localStorage.getItem("userData");
   const parsedData = storedData ? JSON.parse(storedData) : {};
   const otherUser = type === 1 ? members.find(member => member !== parsedData.account._id) : null;
@@ -175,26 +165,23 @@ const Groupchat: React.FC<gcParameters> = ({
         <img
           src={type === 1 ? pfp : icon ? `https://uploads.meower.org/icons/${icon}` : defaultPFPS[22]}
           alt="Group Avatar"
-          width={48}
-          height={48}
+          width={24}
+          height={24}
           style={{ border: `2px solid ${avatarColor}`, objectFit: 'cover' }}
+          className={styles.userAvatar}
         />
         <h2 className={styles.userheading} style={{ color: avatarColor || icon_color }}>
           {type === 1 && otherUser ? <Link to={`/users/${otherUser}`}>{otherUser}</Link> : nickname}
-          <br/>
           <i>{_id}</i>
         </h2>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: 'auto', fontSize: '14px' }}>
           <button><Link to={otherUser ? `/users/${otherUser}/dm` : `/chats/${_id}`}>Enter</Link></button>
           <button>{parsedData.account.favorited_chats.includes(_id) ? '★' : '☆'}</button>
         </div>
       </div>
 
       <div className={styles.infobox}>
-        {[
-          { label: 'Created', value: formatTimestamp(created) },
-          { label: 'Last Active', value: formatTimestamp(last_active) },
-        ].map(({ label, value }, index) => (
+        {[{ label: 'Created', value: formatTimestamp(created) }, { label: 'Last Active', value: formatTimestamp(last_active) }].map(({ label, value }, index) => (
           <div key={index}>
             <strong>{label}:</strong>
             <span> {value}</span>
@@ -228,7 +215,7 @@ const Groupchat: React.FC<gcParameters> = ({
             return (
               <div key={user} className={styles.activityitem}>
                 <Link to={`/users/${user}`}>
-                <img src={avatar} alt="User Avatar" width={28} height={28} style={{ objectFit: 'cover' }} />
+                  <img className={styles.useravatar} src={avatar} alt="User Avatar" width={24} height={24} style={{ objectFit: 'cover' }} />
                 </Link>
                 <span>
                   <b>{`${user}: `}</b>
@@ -237,20 +224,15 @@ const Groupchat: React.FC<gcParameters> = ({
                       p: ({ children }) => {
                         if (children && typeof children === 'string') {
                           const text = children;
-                          if (text.length > 100) {
-                            return <>{text.substring(0, 100)}...</>
-                          } else {
-                            return <>{text}</>;
-                          }
-                        } else {
-                          return <>{children}</>;
+                          return <>{text.length > 100 ? `${text.substring(0, 100)}...` : text}</>;
                         }
+                        return <>{children}</>;
                       },
                     }}
                   >
                     {DiscEmojiSupport(MeowerEmojiSupport(message.trim()))}
                   </ReactMarkdown>
-                  {message.reactions && getReactions(message.reactions)}
+                  {message.reactions && getReactions(message.reactions, message.post_id, reactToAPost)}
                 </span>
               </div>
             );

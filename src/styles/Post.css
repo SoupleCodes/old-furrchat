@@ -19,7 +19,7 @@
   border-top: 1px solid #0000001f;
   font-size: 0.8rem;
   width: 100%;
-  max-height: 80vh;
+  max-height: 400px;
   overflow-y: auto;
   text-align: left;
   line-height: 1.2;
@@ -55,7 +55,7 @@
   display: flex;
   border-radius: 5px;
   padding: 5px;
-  font-family: Verdana;
+  font-family: "Noto Color Emoji", Verdana;
   max-width: 100%;
   max-height: 500px;
   background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(211, 211, 211, 0.5));
@@ -80,7 +80,7 @@
 .post-content {
   margin-left: 10px;
   margin-top: 12px;
-  width: 92.5%
+  width: 92.5%;
 }
 
 /* Timestamp */

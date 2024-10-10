@@ -1,9 +1,10 @@
-import React, { useState, useMemo, useCallback } from "react"
+import React, { useState, useMemo, useCallback, useEffect } from "react"
 import ReactMarkdown from "react-markdown"
 import emojiRegex from "emoji-regex"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism"
 import remarkGfm from "remark-gfm"
+import { useParams } from 'react-router-dom';
 
 import { defaultPFPS, userEmojis } from "../lib/Data.ts"
 import { formatTimestamp } from "../utils/FormatTimestamp.ts"
@@ -16,6 +17,8 @@ import { usePostContext } from "../Context.tsx"
 
 import "/src/styles/SocialButtons.css"
 import { Link } from "react-router-dom"
+import EmojiPicker from "./EmojiPicker.tsx"
+import { reactToAPost } from "../lib/api/Post/ReactToPost.ts"
 
 export const scrollToPost = (id: string | null) => {
   if (!id) {
@@ -65,6 +68,7 @@ export const PostComponent: React.FC<PostComponentProps> = ({
 }) => {
   const { setPost, userToken } = usePostContext();
   const { replyIds, setReplyIds } = usePostContext();
+  const reactToPost = reactToAPost();
   const { userData } = usePostContext();
   const currentUser = userData?.username
 
@@ -75,12 +79,32 @@ export const PostComponent: React.FC<PostComponentProps> = ({
     setPost((prevPost) => `@${user} ${prevPost}`); window.scrollTo({ top: 200, behavior: 'smooth' });
   }, [setPost, user, post]);
 
-  const pfp = `${author.avatar === ""
-    ? author.pfp_data === -3
-      ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
-      : `${defaultPFPS[author.pfp_data] || defaultPFPS[22]}`
-    : `https://uploads.meower.org/icons/${author.avatar}`
-    }`
+  const imageCache = new Map();
+  const [pfp, setPfp] = useState('');
+  
+  useEffect(() => {
+    const imageUrl = `https://uploads.meower.org/icons/${author.avatar}`;
+  
+    if (imageCache.has(imageUrl)) {
+      setPfp(imageCache.get(imageUrl));
+      return; // Exit early if image is cached
+    }
+  
+    const img = new Image();
+    img.onload = () => {
+      setPfp(imageUrl);
+      imageCache.set(imageUrl, imageUrl);
+    };
+    img.onerror = () => {
+      const fallbackPfp = author.pfp_data === -3 || !defaultPFPS[author.pfp_data]
+        ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+        : `${defaultPFPS[author.pfp_data]}`;
+      setPfp(fallbackPfp);
+      imageCache.set(imageUrl, fallbackPfp);
+    };
+    img.src = imageUrl;
+  }, [author.avatar, author.pfp_data]);
+
   const avatarColor = `#${author.avatar_color}`
 
   const realDate = time && time.e ? formatTimestamp(time.e) : 'Invalid time';
@@ -131,9 +155,8 @@ export const PostComponent: React.FC<PostComponentProps> = ({
       setReplyIds((prevIds) => [...prevIds, reply]);
     }
     window.scrollTo({ top: 200, behavior: 'smooth' });
-  };
-
-
+  }; 
+  
   return (
     <div id={post_id || ""} className="container">
       <div className="user">
@@ -241,12 +264,24 @@ export const PostComponent: React.FC<PostComponentProps> = ({
         )}
         <hr />
         <div className="social" style={{ display: "flex" }}>
-          <div className="reactions">{getReactions(reactions)}</div>
+          <div className="reactions">
+            {getReactions(reactions, post_id, reactToPost)}
+          </div>
           <div style={{ marginLeft: "auto" }}>
-            {/* <EmojiPicker onEmojiSelect={appendToPost} src="/furrchat/assets/markdown/Emoji.png"/>
-             <button className="social-buttons" id="ReactButton">
-              <img src={`/furrchat/assets/icons/React.png`} height={9} /> React
-            </button> */}
+            <button
+             className="social-buttons" 
+             id="ReactButton"
+             >
+             <EmojiPicker 
+             className="emoji"
+             chatID={useParams().chatId}
+             onEmojiSelect={(emoji: string) => {
+              reactToPost(post_id, emoji);
+            }} 
+             src="/furrchat/assets/markdown/E.png"
+             text=" React"
+             />
+            </button>
             <button
               className="social-buttons"
               id="ReplyButton"

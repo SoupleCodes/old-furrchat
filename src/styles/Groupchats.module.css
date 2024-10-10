@@ -1,7 +1,7 @@
 /* General container styles */
 .groupchats {
     display: flex;
-    justify-content: center;
+    width: 100%;
     padding-top: 20px;
 }
 
@@ -34,8 +34,9 @@
     background-color: #E9E9E9;
     background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E9E9E9 100%);
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #E9E9E9 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#E9E9E9',GradientType=0 );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#E9E9E9', GradientType=0 );
     box-shadow: 0 0 0 1px #FFFFFF inset;
+    border-radius: 4px;
 }
 
 .container {
@@ -80,7 +81,7 @@
 
 .header h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
     opacity: 0.8;
     text-shadow: 0 0px 2px rgb(255, 255, 255);
@@ -89,7 +90,7 @@
 .header h2 i {
     margin-left: 8px;
     color: #999;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 /* Info box styles */
@@ -97,22 +98,17 @@
     padding: 6px;
     border-radius: 6px;
     background-color: rgba(255, 255, 255, 0.705);
-
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 6px;
-}
-
-.infobox div {
     margin-bottom: 6px;
 }
 
 .infobox strong {
     color: #555;
-    font-size: 14px;
+    font-size: 11px;
 }
 
 .infobox span {
-    font-size: 14px;
+    font-size: 11px;
     color: #333;
 }
 
@@ -121,7 +117,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.7);
     padding-top: 6px;
     color: #666;
-    font-size: 14px;
+    font-size: 11px;
 }
 
 .recentactivity p {
@@ -132,21 +128,15 @@
 .recentactivity .activityitem {
     border-radius: 6px;
     background-color: rgba(255, 255, 255, 0.705);
-
-    padding: 6px;
-    margin-bottom: 6px;
+    padding: 1px;
+    margin-bottom: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
 }
 
-.recentactivity .activityitem img {
+.useravatar {
     border-radius: 6px;
     margin-right: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.recentactivity .activityitem strong {
-    display: block;
-    margin-bottom: 4px;
 }

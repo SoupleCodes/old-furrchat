@@ -3,7 +3,7 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:  Inter, "Noto Color Emoji", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -14,12 +14,6 @@
   background-image: linear-gradient(to right, rgba(72, 173, 148, 0.8) 0%, rgba(113, 188, 212, 0.8) 75%, rgba(232, 243, 242, 0.904) 100%);
   display: flex;
   justify-content: center;
-}
-
-.noto-color-emoji-regular {
-  font-family: "Noto Color Emoji";
-  font-weight: 400;
-  font-style: normal;
 }
 
 hr {
@@ -69,11 +63,11 @@ button {
   font-family: inherit;
   cursor: pointer;
   border-color: #C7C3BF;
-  background-color: #E9E9E9;
-  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E9E9E9 100%);
-  background-image: linear-gradient(to bottom, #FFFFFF 0%, #E9E9E9 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#E9E9E9',GradientType=0 );
-  box-shadow: 0 0 0 1px #FFFFFF inset;
+  background-color: #e9e9e9a2;
+  background-image: -webkit-linear-gradient(top, #ffffffc2 0%, #e9e9e9c4 100%);
+  background-image: linear-gradient(to bottom, ffffffc2 0%, #e9e9e9c4 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='ffffffc2', endColorstr='#e9e9e9c4',GradientType=0 );
+  box-shadow: 0 0 0 1px ffffffc2 inset;
 }
 
 /* Scrollbar CSS */

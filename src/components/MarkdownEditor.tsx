@@ -238,6 +238,7 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
           onEmojiSelect={appendToPost}
           src="/furrchat/assets/markdown/E.png"
           chatID={chatId}
+          className="markdown-item"
         />        
         <img src="/furrchat/assets/markdown/Q.png" id="unorderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n - ", false) }/>
         <img src="/furrchat/assets/markdown/F.png" id="orderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n1. - ", false) }/>
