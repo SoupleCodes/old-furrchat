@@ -135,7 +135,6 @@ export default function UserPage() {
                         reply_to={post.reply_to}
                         time={post.t}
                         type={post.type}
-                        _id={post._id}
                         user={post.u}
                         active={false}
                         edited={post.edited_at !== undefined}
