@@ -31,7 +31,9 @@ export const scrollToPost = (id: string) => {
   }
 };
 
-interface PostComponentProps {
+export interface PostComponentProps {
+  u: any
+  p: any
   attachments: any[];
   author: {
     _id: string;
@@ -41,10 +43,14 @@ interface PostComponentProps {
   };
   post: string;
   post_id: string | null;
+  pinned: boolean;
+  isDeleted: boolean;
+  post_origin: string | null;
   reactions: any[];
   reply_to: any[];
   time: { e: number } | null;
   user: string;
+  type: number;
   active: boolean;
   edited: boolean;
 }

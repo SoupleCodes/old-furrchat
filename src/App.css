@@ -169,7 +169,7 @@ input.navbar-search {
 .notification-indicator {
   position: relative;
   bottom: 20px;
-  left: 68px;
+  left: 40px;
   width: 10px;
   height: 10px;
   background: linear-gradient(to bottom, #ff0000, #cc0000);

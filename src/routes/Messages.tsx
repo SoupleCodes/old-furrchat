@@ -44,7 +44,6 @@ export default function Messages() {
         inbox.map((post) => (
           <PostComponent
             key={post._id || post.post_id}
-            _id={post._id || ""}
             attachments={post.attachments || []}
             isDeleted={post.isDeleted || false}
             post={post.p || ""}

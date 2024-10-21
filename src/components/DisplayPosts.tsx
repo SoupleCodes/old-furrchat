@@ -127,7 +127,6 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
               classNames="post-transition"
             >
               <PostComponent
-                _id={post._id || ""}
                 attachments={post.attachments || []}
                 isDeleted={post.isDeleted || false}
                 post={post.p || ""}
@@ -141,7 +140,9 @@ const DisplayPosts = ({ context, chatId }: DisplayPostsProps) => {
                 edited={Boolean(post.edited_at)}
                 author={post.author}
                 reactions={post.reactions}
-                reply_to={post.reply_to} u={undefined} p={undefined} />
+                reply_to={post.reply_to} 
+                u={undefined} 
+                p={undefined} />
             </CSSTransition>
           ))}
       </TransitionGroup>
