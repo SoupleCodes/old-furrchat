@@ -281,7 +281,7 @@ const revisePost = (text: string): string => {
 
   revisedString = replaceWithMarkdown(revisedString, discordEmojis, (_key, value) => value);
   revisedString = replaceWithMarkdown(revisedString, PBJTime, (_key, value) => value);
-  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)(\s|$)/g, '$1[@$2](/users/$2)$3');
+  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)(\s|$)/g, '$1[@$2](/furrchat/#/users/$2)$3');
 
   return revisedString.replace(/\n/g, '\n\n');
 };
