@@ -3,7 +3,7 @@
 }
 
 :root {
-  font-family:  Inter, "Noto Color Emoji", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, "Noto Color Emoji";
   line-height: 1.5;
   font-weight: 400;
 
@@ -56,18 +56,44 @@ a:hover > img {
   filter: brightness(60%);
 }
 
+:root {
+  --button-color: #82b852; /* Default button color */
+  --button-gradient-start: #96cc67; /* Default gradient start */
+  --button-gradient-end: #639934; /* Default gradient end */
+  --button-text-color: #ffffff; /* Default text color */
+  --button-border-color: #000000; /* Default border color */
+  --button-border-radius: 4px; /* Default border radius */
+}
+
 button {
   padding: 0.3em 0.6em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  border-color: #C7C3BF;
-  background-color: #e9e9e9a2;
-  background-image: -webkit-linear-gradient(top, #ffffffc2 0%, #e9e9e9c4 100%);
-  background-image: linear-gradient(to bottom, ffffffc2 0%, #e9e9e9c4 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='ffffffc2', endColorstr='#e9e9e9c4',GradientType=0 );
-  box-shadow: 0 0 0 1px ffffffc2 inset;
+
+  color: var(--button-text-color);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: var(--button-color);
+  background-image: linear-gradient(to bottom, var(--button-gradient-start), var(--button-gradient-end));
+  background-repeat: repeat-x;
+  border-color: var(--button-border-color) var(--button-border-color) rgba(128, 0, 128, 0.7); /* Darken the border slightly */
+  
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #cccccc;
+  border-bottom-color: #b3b3b3;
+  border-radius: var(--button-border-radius);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+  letter-spacing: 1px;
+}
+
+button:hover {
+  background-image: linear-gradient(to bottom, var(--button-gradient-end), var(--button-gradient-start)); /* Invert on hover */
 }
 
 /* Scrollbar CSS */

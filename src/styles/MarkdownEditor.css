@@ -32,6 +32,7 @@
 
 textarea {
   background: linear-gradient(rgba(255, 255, 255, 0.404), rgba(211, 211, 211, 0.466));
+  font-family: Monospace, "Noto Color Emoji";
 }
 
 textarea:focus {

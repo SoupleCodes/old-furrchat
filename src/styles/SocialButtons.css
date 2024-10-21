@@ -1,41 +1,27 @@
 .social-buttons {
-  border-width: 1px;
-  border-radius: 2px;
   font-size: 0.6rem;
-}
-
-.social-buttons:hover {
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.2),
-    rgba(133, 133, 133, 0.3)
-  );
-}
-
-.social-buttons img {
-  height: 9px;
+  transition: background 0.3s ease, filter 0.3s ease;
 }
 
 #ReplyButton {
-  background: linear-gradient(to bottom, rgba(127, 188, 228, 0.507), rgba(59, 83, 150, 0.678));
-  color: #ffffff;
-}
-
-#ReplyButton:hover, #DeleteButton:hover {
-  background: linear-gradient(to top, rgba(127, 188, 228, 0.507), rgba(59, 83, 150, 0.678));
+  --button-color: rgba(127, 188, 228, 0.507);
+  --button-gradient-start: rgba(127, 188, 228, 0.507);
+  --button-gradient-end: rgba(59, 83, 150, 0.678);
 }
 
 #DeleteButton {
-  background: linear-gradient(to bottom, rgba(228, 127, 127, 0.507), rgba(150, 59, 59, 0.678));
+  --button-color: rgba(228, 127, 127, 0.507);
+  --button-gradient-start: rgba(228, 127, 127, 0.507);
+  --button-gradient-end: rgba(150, 59, 59, 0.678);
 }
-
-#DeleteButton:hover {
-  background: linear-gradient(to top, rgba(228, 127, 127, 0.507), rgba(150, 59, 59, 0.678));
-}
-
 
 #ReactButton {
-  background: linear-gradient(in hsl longer hue 45deg, rgba(255, 0, 0, 0.308) 0 0);
-  color: #ffffff;
+  --button-color: rgba(242, 192, 255);
+  --button-gradient-start: rgba(178, 88, 252, 0.699);
+  --button-gradient-end: rgba(160, 26, 165, 0.678);
   padding: 0px;
+}
+
+.social-buttons-react-button {
+  filter: invert(100%);
 }

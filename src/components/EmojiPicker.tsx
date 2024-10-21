@@ -7,7 +7,6 @@ import { uploadToEmoji } from "../lib/api/UploadToEmoji";
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void;
   src: string;
-  chatID?: string;
   className?: string;
   text?: string;
 }
@@ -22,47 +21,34 @@ type Category =
   | "✈️"
   | "🎁"
   | "⚛️"
-  | "🚩"
-  ;
+  | "🚩";
 
-const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPickerProps) => {
+const EmojiPicker = ({ onEmojiSelect, src, className, text }: EmojiPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<Category>("😀");
-  const [customEmojis, setCustomEmojis] = useState<{ [key: string]: string }>(
-    JSON.parse(localStorage.getItem("userEmojis") || "{}")
-  );
+  const [customEmojis, setCustomEmojis] = useState<{ [key: string]: string }>({});
 
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const { userData } = usePostContext();
   const USER_TOKEN = userData?.token;
 
   useEffect(() => {
-    const fetchEmojis = async () => {
-      if (chatID && USER_TOKEN) {
-        try {
-          const response = await fetch(`https://api.meower.org/chats/${chatID}`, {
-            headers: { Token: USER_TOKEN },
+    const fetchEmojis = () => {
+      const emojis: { [key: string]: string } = {};
+      userData?.chats.forEach((chat: any) => {
+        if (Array.isArray(chat.emojis)) {
+          chat.emojis.forEach((emoji: any) => {
+            const emojiURL = `https://uploads.meower.org/emojis/${emoji._id}`;
+            emojis[emojiURL] = `<:${emoji._id}>`;
           });
-          if (response.ok) {
-            const data = await response.json();
-            if (!data.error && data.emojis) {
-              const newCustomEmojis = data.emojis.reduce((acc: { [key: string]: string }, emoji: any) => {
-                const emojiURL = `https://uploads.meower.org/emojis/${emoji._id}`;
-                acc[`<:${emoji._id}>`] = emojiURL;
-                return acc;
-              }, {});
-              setCustomEmojis(prev => ({ ...prev, ...newCustomEmojis }));
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching emojis:", error);
         }
-      }
+      });
+      setCustomEmojis(emojis);
     };
-
+  
     fetchEmojis();
-  }, [chatID, USER_TOKEN]);
+  }, [userData?.chats]);
 
   const categories: Record<Category, [string, string][]> = {
     '😀': Object.entries(realEmojis.People),
@@ -97,14 +83,6 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
     }
   };
 
-  {/*
-  const removeCustomEmoji = (key: string) => {
-    const updatedEmojis = { ...customEmojis };
-    delete updatedEmojis[key];
-    setCustomEmojis(updatedEmojis);
-  };
-*/}
-
   const filterAndSortEmojis = (entries: [string, string][]) =>
     entries
       .filter(([key]) => key.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -112,10 +90,7 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
         return (
           <span
             key={index}
-            onClick={() => {
-              let emojiToInsert = value;
-              handleEmojiClick(emojiToInsert);
-            }}
+            onClick={() => handleEmojiClick(value)}
             className="emoji-item"
             style={{ height: "20px" }}
           >
@@ -124,19 +99,10 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
                 src={`https://cdn.discordapp.com/emojis/${value.split(":")[2].slice(0, -1)}.${value.startsWith("<a:") ? "gif" : "webp"}?size=128&quality=lossless`}
                 alt={key}
                 title={key}
-                key={key}
                 height="20px"
               />
             ) : selectedCategory === "✨" ? (
-              <div>
-                <img
-                  src={value}
-                  alt={key}
-                  height="24px"
-                  style={{ cursor: "pointer" }}
-                  key={key}
-                />
-              </div>
+              <img src={key} alt={value} height="24px" style={{ cursor: "pointer" }} />
             ) : (
               <span>{value}</span>
             )}
@@ -146,16 +112,14 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
 
   return (
     <div className="emoji-picker-container">
-      {text ?
+      {text ? (
         <div onClick={() => setIsOpen(prev => !prev)} style={{ display: 'inline-block', cursor: 'pointer', padding: '0.3em 0.6em' }}>
-          <img src={src} alt="Emojis" className={className} title="Emojis" />
+          <img src={src} height={9} alt="Emojis" className={className} title="Emojis" />
           {text}
         </div>
-        :
-        <>
-          <img src={src} alt="Emojis" className={className} title="Emojis" onClick={() => setIsOpen(prev => !prev)} />
-          {text}</>
-      }
+      ) : (
+        <img src={src} alt="Emojis" className={className} title="Emojis" onClick={() => setIsOpen(prev => !prev)} />
+      )}
       {isOpen && (
         <div className="emoji-picker" ref={emojiPickerRef} style={{ fontSize: "12.7px" }}>
           <div className="emoji-categories">
@@ -163,23 +127,16 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
               <button
                 key={category}
                 style={{
-                  background:
-                    selectedCategory === category ?
-                      "linear-gradient(to bottom, rgb(230, 230, 230) 0%, rgb(205, 205, 205) 100%)" :
-                      "linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(230, 230, 230) 100%)",
+                  background: selectedCategory === category ? "linear-gradient(to bottom, rgb(230, 230, 230) 0%, rgb(205, 205, 205) 100%)" : "linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(230, 230, 230) 100%)",
                   border: "none",
                   color: selectedCategory === category ? "white" : "black",
-                  fontSize: "12.7px",
+                  fontSize: "12px",
                   width: '100%'
                 }}
                 onClick={() => handleCategoryClick(category as Category)}
               >
                 {category === "Discord" ? (
-                  <img
-                    src="/furrchat/assets/discord-mark-blue.png"
-                    alt="Discord"
-                    height="10px !important"
-                  />
+                  <img src="/furrchat/assets/discord-mark-blue.png" alt="Discord" height="10px" />
                 ) : (
                   category
                 )}
@@ -187,13 +144,10 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
             ))}
           </div>
 
-          <div className="emoji-list" style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(30px, 1fr))",
-            gap: "5px",
-            padding: 0,
-          }}>
-            {filterAndSortEmojis(categories[selectedCategory])}
+          <div className="emojis">
+            <div className="emoji-list">
+              {filterAndSortEmojis(categories[selectedCategory])}
+            </div>
           </div>
 
           <span style={{ display: "flex" }}>
@@ -210,11 +164,7 @@ const EmojiPicker = ({ onEmojiSelect, src, chatID, className, text }: EmojiPicke
                   id="file-upload-as-emoji"
                   onClick={() => document.getElementById("file-input")?.click()}
                 >
-                  <img
-                    src="/furrchat/assets/icons/emoji_upload.png"
-                    height="24px"
-                    alt="Upload Emoji"
-                  />
+                  <img src="/furrchat/assets/icons/emoji_upload.png" height="24px" alt="Upload Emoji" />
                 </button>
                 <input
                   id="file-input"

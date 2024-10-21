@@ -1,6 +1,5 @@
 import React from "react";
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 interface ImageRendererProps {
   src: string; // Source URL of the file to be rendered
@@ -15,7 +14,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
       <img
         src={src}
         alt={alt}
-        style={{ maxWidth: "20px" }}
+        style={{ height: "1rem", verticalAlign: "middle" }}
         title={alt}
       />
     );
@@ -109,7 +108,7 @@ export const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
             />
             <br/>
             <a href={src} download>
-              Download {src.split("/").pop()}
+              <span style={{ fontWeight: "bold", color: "black" }}>Download {src.split("/").pop()}</span>
             </a>
             </center>
           </Popup>

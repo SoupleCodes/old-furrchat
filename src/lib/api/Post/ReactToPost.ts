@@ -44,5 +44,5 @@ export const reactToAPost = () => {
     }
   }, [userData, userToken]); 
 
-  return reactToPost; // Return the memoized function
+  return reactToPost;
 };

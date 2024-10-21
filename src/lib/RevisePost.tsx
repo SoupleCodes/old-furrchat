@@ -3,6 +3,7 @@ import { emojiData, discordEmojis, PBJTime, defaultPFPS } from "./Data.ts";
 import { scrollToPost } from "../components/PostComponent.tsx";
 import CustomColor from "./ColorMarkdown.tsx";
 import { Link } from "react-router-dom";
+import { ImageRenderer } from "../utils/ImageRenderer.tsx"
 
 // Whitelist of trusted hosts
 export const hostWhitelist = [
@@ -93,7 +94,7 @@ const DiscEmojiSupport = (text: string | undefined, replace: boolean = true): st
 
     const { name, number, isAnimated } = extractInfo(match) || {};
     return name
-      ? `![${name}](https://cdn.discordapp.com/emojis/${number}.${isAnimated ? 'gif' : 'png'}?size=16&quality=lossless)`
+      ? `![${name}](https://cdn.discordapp.com/emojis/${number}.${isAnimated ? 'gif' : 'png'}?size=256&quality=lossless)`
       : match;
   });
 };
@@ -162,6 +163,9 @@ function getReplies(repliesData: any[]) {
                         return <>{children}</>;
                       }
                     },
+                                    // Custom rendering for images using ImageRenderer
+                // @ts-ignore
+                img: ImageRenderer
                   }}
                 >
                   {DiscEmojiSupport(MeowerEmojiSupport(reply.p))}
@@ -219,7 +223,7 @@ const getReactions = (
                 borderWidth: "1px",
                 borderRadius: "2px",
                 cursor: "pointer",
-                position: "relative", // Make button relative for positioning count
+                position: "relative",
                 transition: "background 0.3s, transform 0.1s",
                 display: "flex",
               }}
@@ -242,6 +246,8 @@ const getReactions = (
                 borderRadius: "2px",
                 fontWeight: "normal",
                 display: "flex",
+                padding: "1px",
+                color: "black",
               }}>
                 {count}
               </span>
@@ -275,6 +281,7 @@ const revisePost = (text: string): string => {
 
   revisedString = replaceWithMarkdown(revisedString, discordEmojis, (_key, value) => value);
   revisedString = replaceWithMarkdown(revisedString, PBJTime, (_key, value) => value);
+  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)(\s|$)/g, '$1[@$2](/users/$2)$3');
 
   return revisedString.replace(/\n/g, '\n\n');
 };
