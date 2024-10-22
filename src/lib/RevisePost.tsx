@@ -30,8 +30,7 @@ export const hostWhitelist = [
 ];
 
 // Function to check if a URL is in the whitelist
-const isWhitelistedURL = (url: string): boolean =>
-  hostWhitelist.some(whitelistURL => url.startsWith(whitelistURL));
+const isWhitelistedURL = (url: string): boolean => hostWhitelist.some(whitelistURL => url.startsWith(whitelistURL));
 
 const convertWhitelistedURLsToImages = (text: string | undefined): string => {
   if (!text) {
@@ -163,7 +162,6 @@ function getReplies(repliesData: any[]) {
                         return <>{children}</>;
                       }
                     },
-                                    // Custom rendering for images using ImageRenderer
                 // @ts-ignore
                 img: ImageRenderer
                   }}
@@ -281,7 +279,7 @@ const revisePost = (text: string): string => {
 
   revisedString = replaceWithMarkdown(revisedString, discordEmojis, (_key, value) => value);
   revisedString = replaceWithMarkdown(revisedString, PBJTime, (_key, value) => value);
-  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)(\s|$)/g, '$1[@$2](/furrchat/#/users/$2)$3');
+  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)([\s,.]|$)/g, '$1[@$2](/furrchat/#/users/$2)$3');
 
   return revisedString.replace(/\n/g, '\n\n');
 };

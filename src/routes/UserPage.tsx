@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import PostComponent from '../components/PostComponent';
 import { getPostsFromUser } from '../lib/api/Post/GetPostsFromUser.ts';
 import { usePostContext } from '../Context';
-import { DiscEmojiSupport } from "../lib/RevisePost";
+import { DiscEmojiSupport, revisePost } from "../lib/RevisePost";
 import { ImageRenderer } from '../utils/ImageRenderer.tsx';
 import { defaultPFPS } from '../lib/Data.ts';
 import { Link } from 'react-router-dom';
@@ -55,6 +55,7 @@ export default function UserPage() {
     }
 
     displayedQuote = DiscEmojiSupport(displayedQuote);
+    displayedQuote = revisePost(displayedQuote);
 
     const avatarUrl = avatar === ""
         ? pfp_data === -3

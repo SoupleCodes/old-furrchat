@@ -68,7 +68,7 @@ export const PostComponent = React.memo(({ attachments, author, post, post_id, r
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
     if (event.target.value !== 'other') {
-      setAdditionalComment(''); // Clear additional comment if a different reason is selected
+      setAdditionalComment('');
     }
   };
 
