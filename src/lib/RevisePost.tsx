@@ -85,7 +85,8 @@ const extractInfo = (
 const DiscEmojiSupport = (text: string | undefined, replace: boolean = true): string => {
   if (!text) {
     return "";
-  }
+}
+
 
   return text.replace(/\\?<(a)?:(\w+):(\d+)>/gi, match => {
     if (match.startsWith("\\")) return match.slice(1);
@@ -293,4 +294,5 @@ export {
   revisePost,
   extractInfo,
   getReactions,
+  replaceWithMarkdown
 };
