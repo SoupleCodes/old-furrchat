@@ -139,7 +139,7 @@ function getReplies(repliesData: any[]) {
                     src={
                       reply.author.avatar === ""
                         ? reply.author.pfp_data === -3
-                          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                          ? "/old-furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
                           : `${defaultPFPS[reply.author.pfp_data]}`
                         : `https://uploads.meower.org/icons/${reply.author.avatar}`
                     }
@@ -280,7 +280,7 @@ const revisePost = (text: string): string => {
 
   revisedString = replaceWithMarkdown(revisedString, discordEmojis, (_key, value) => value);
   revisedString = replaceWithMarkdown(revisedString, PBJTime, (_key, value) => value);
-  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)([\s,.]|$)/g, '$1[@$2](/furrchat/#/users/$2)$3');
+  revisedString = revisedString.replace(/(^|\s)@([a-zA-Z0-9_-]+)([\s,.]|$)/g, '$1[@$2](/old-furrchat/#/users/$2)$3');
 
   return revisedString.replace(/\n/g, '\n\n');
 };

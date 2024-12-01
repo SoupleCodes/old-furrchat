@@ -51,7 +51,7 @@ export default function Settings() {
       })),
       {
         key: "upload",
-        url: "/furrchat/assets/icons/pfp_upload.png",
+        url: "/old-furrchat/assets/icons/pfp_upload.png",
         title: "Upload Custom PFP"
       }
     ]);

@@ -192,7 +192,7 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
                     src={
                       JSON.parse(reply).avatar === ""
                         ? JSON.parse(reply).pfp_data === -3
-                          ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                          ? "/old-furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
                           : `${defaultPFPS[34 - JSON.parse(reply).pfp_data]}`
                         : `https://uploads.meower.org/icons/${
                             JSON.parse(reply).avatar
@@ -225,9 +225,9 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
         ))}
       </div>
       <div className="markdown-buttons">
-        <img src="/furrchat/assets/markdown/B.png" id="bold" className="markdown-item" onClick={() => handleMarkdownClick("**")}/>
-        <img src="/furrchat/assets/markdown/I.png" id="italic" className="markdown-item" onClick={() => handleMarkdownClick("*")}/>
-        <img src="/furrchat/assets/markdown/S.png" id="strikethrough" className="markdown-item" onClick={() => handleMarkdownClick("~~")}/>
+        <img src="/old-furrchat/assets/markdown/B.png" id="bold" className="markdown-item" onClick={() => handleMarkdownClick("**")}/>
+        <img src="/old-furrchat/assets/markdown/I.png" id="italic" className="markdown-item" onClick={() => handleMarkdownClick("*")}/>
+        <img src="/old-furrchat/assets/markdown/S.png" id="strikethrough" className="markdown-item" onClick={() => handleMarkdownClick("~~")}/>
         <Dropdown
           options={headingOptions}
           onSelect={(option: any) =>
@@ -236,28 +236,28 @@ const PostEditor = ({ userToken, context, chatId }: postEditorProps) => {
         />
         <EmojiPicker
           onEmojiSelect={appendToPost}
-          src="/furrchat/assets/markdown/E.png"
+          src="/old-furrchat/assets/markdown/E.png"
           className="markdown-item"
         />        
-        <img src="/furrchat/assets/markdown/Q.png" id="unorderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n - ", false) }/>
-        <img src="/furrchat/assets/markdown/F.png" id="orderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n1. - ", false) }/>
-        <img src="/furrchat/assets/markdown/K.png" id="checkbox" className="markdown-item" onClick={() => handleMarkdownClick("- [] ", false) }/>
-        <img src="/furrchat/assets/markdown/D.png" id="quote" className="markdown-item" onClick={() => handleMarkdownClick("> ", false) }/>
-        <img src="/furrchat/assets/markdown/P.png" id="code" className="markdown-item" onClick={() => handleMarkdownClick("\n``` \n") }/>
-        <img src="/furrchat/assets/markdown/M.png" id="table" className="markdown-item" onClick={() =>
+        <img src="/old-furrchat/assets/markdown/Q.png" id="unorderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n - ", false) }/>
+        <img src="/old-furrchat/assets/markdown/F.png" id="orderedlist" className="markdown-item" onClick={() => handleMarkdownClick("\n1. - ", false) }/>
+        <img src="/old-furrchat/assets/markdown/K.png" id="checkbox" className="markdown-item" onClick={() => handleMarkdownClick("- [] ", false) }/>
+        <img src="/old-furrchat/assets/markdown/D.png" id="quote" className="markdown-item" onClick={() => handleMarkdownClick("> ", false) }/>
+        <img src="/old-furrchat/assets/markdown/P.png" id="code" className="markdown-item" onClick={() => handleMarkdownClick("\n``` \n") }/>
+        <img src="/old-furrchat/assets/markdown/M.png" id="table" className="markdown-item" onClick={() =>
           handleMarkdownClick(
             "\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |",
             false
           )
         }/>
-        <img src="/furrchat/assets/markdown/N.png" id="hyperlink" className="markdown-item" onClick={() =>
+        <img src="/old-furrchat/assets/markdown/N.png" id="hyperlink" className="markdown-item" onClick={() =>
           handleMarkdownClick("[link description](link)", false)
         }/>
-        <img src="/furrchat/assets/markdown/L.png" id="image-markdown" className="markdown-item" onClick={() =>
+        <img src="/old-furrchat/assets/markdown/L.png" id="image-markdown" className="markdown-item" onClick={() =>
           handleMarkdownClick("![image description](image link)", false)
         }/>
            <label htmlFor="file-upload">
-            <img src="/furrchat/assets/markdown/Z.png" id="upload" className="markdown-item"/>
+            <img src="/old-furrchat/assets/markdown/Z.png" id="upload" className="markdown-item"/>
           </label>
           <input
             id="file-upload"

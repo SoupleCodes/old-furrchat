@@ -66,7 +66,7 @@ export default function Navbar() {
     <>
       <div className="banner">
         <img
-          src={"/furrchat/assets/Logo.png"}
+          src={"/old-furrchat/assets/Logo.png"}
           alt="logo"
           className="logo"
           height="200"
@@ -79,7 +79,7 @@ export default function Navbar() {
   className="login-form"
 >
   <div className="username-field"> {/* Wrapper for username field */}
-    <img className="username-icon" src="/furrchat/assets/icons/UsernameIcon.png" alt="Username icon" height="32"/> {/* Username icon */}
+    <img className="username-icon" src="/old-furrchat/assets/icons/UsernameIcon.png" alt="Username icon" height="32"/> {/* Username icon */}
     <label htmlFor="username" className="username-label">Username:</label>
     <input
       type="text"
@@ -93,7 +93,7 @@ export default function Navbar() {
     />
   </div>
   <div className="password-field">
-    <img className="password-icon" src="/furrchat/assets/icons/Passkey.png" alt="Password icon" height="32"/>
+    <img className="password-icon" src="/old-furrchat/assets/icons/Passkey.png" alt="Password icon" height="32"/>
     <label htmlFor="password" className="password-label">Password:</label>
     <input
       type="password"

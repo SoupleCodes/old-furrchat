@@ -14,7 +14,7 @@ export default function Dropdown({ options, onSelect }: any) {
 
   return (
     <div className="dropdown">
-      <img src="/furrchat/assets/markdown/T.png" onClick={toggleDropdown} className="markdown-item"/>
+      <img src="/old-furrchat/assets/markdown/T.png" onClick={toggleDropdown} className="markdown-item"/>
       {isOpen && (
         <div className="dropdown-menu" style={{ position: 'absolute' }}>
           <select

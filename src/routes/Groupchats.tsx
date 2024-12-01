@@ -208,7 +208,7 @@ const Groupchat: React.FC<gcParameters> = (props) => {
           {posts.slice(0, 2).map(({ u: user, p: message, author }) => {
             const avatar = author.avatar === ""
               ? author.pfp_data === -3
-                ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+                ? "/old-furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
                 : defaultPFPS[author.pfp_data] || defaultPFPS[22]
               : `https://uploads.meower.org/icons/${author.avatar}`;
 

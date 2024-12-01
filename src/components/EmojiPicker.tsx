@@ -199,7 +199,7 @@ const EmojiPicker = ({ onEmojiSelect, src, className, text }: EmojiPickerProps) 
                 onClick={() => handleCategoryClick(category as Category)}
               >
                 {category === "Discord" ? (
-                  <img src="/furrchat/assets/discord-mark-blue.png" alt="Discord" height="10px" />
+                  <img src="/old-furrchat/assets/discord-mark-blue.png" alt="Discord" height="10px" />
                 ) : (
                   category
                 )}
@@ -237,7 +237,7 @@ const EmojiPicker = ({ onEmojiSelect, src, className, text }: EmojiPickerProps) 
                   id="file-upload-as-emoji"
                   onClick={() => document.getElementById("file-input")?.click()}
                 >
-                  <img src="/furrchat/assets/icons/emoji_upload.png" height="24px" alt="Upload Emoji" />
+                  <img src="/old-furrchat/assets/icons/emoji_upload.png" height="24px" alt="Upload Emoji" />
                 </button>
                 <input
                   id="file-input"

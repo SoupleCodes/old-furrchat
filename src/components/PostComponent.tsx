@@ -94,7 +94,7 @@ export const PostComponent = React.memo(({ attachments, author, post, post_id, r
     };
     img.onerror = () => {
       const fallbackPfp = author.pfp_data === -3 || !defaultPFPS[author.pfp_data]
-        ? "/furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
+        ? "/old-furrchat/assets/default_pfps/icon_guest-e8db7c16.svg"
         : `${defaultPFPS[author.pfp_data]}`;
       setPfp(fallbackPfp);
       imageCache.set(imageUrl, fallbackPfp);
@@ -287,20 +287,20 @@ export const PostComponent = React.memo(({ attachments, author, post, post_id, r
                 className="social-buttons-react-button"
                 chatID={useParams().chatId}
                 onEmojiSelect={(emoji) => reactToPost(post_id, emoji)}
-                src="/furrchat/assets/markdown/E.png"
+                src="/old-furrchat/assets/markdown/E.png"
                 text=" React"
               />
             </button>
             <button className="social-buttons" id="ReplyButton" onClick={handleReplyClick} data-reply-id={post_id}>
-              <img src={`/furrchat/assets/icons/Reply.png`} height={9} alt="Reply" /> Reply
+              <img src={`/old-furrchat/assets/icons/Reply.png`} height={9} alt="Reply" /> Reply
             </button>
             {user === currentUser && (
               <>
                 <button className="social-buttons" id="DeleteButton" onClick={() => deletePost(post_id, userToken)}>
-                  <img src={`/furrchat/assets/icons/Delete.png`} height={9} alt="Delete" /> Delete
+                  <img src={`/old-furrchat/assets/icons/Delete.png`} height={9} alt="Delete" /> Delete
                 </button>
                 <button className="social-buttons" id="EditButton" onClick={() => setIsEditing(true)}>
-                  <img src={`/furrchat/assets/icons/Edit.png`} height={9} alt="Edit" /> Edit
+                  <img src={`/old-furrchat/assets/icons/Edit.png`} height={9} alt="Edit" /> Edit
                 </button>
               </>
             )}
